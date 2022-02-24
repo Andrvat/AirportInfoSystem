@@ -5,10 +5,9 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.io.Closeable;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimeZone;
 
 public class OracleDbConnector implements Closeable {
@@ -52,5 +51,17 @@ public class OracleDbConnector implements Closeable {
         Statement statement = this.connection.createStatement();
         logger.debug("New statement " + statement + " was successfully created");
         return statement;
+    }
+
+    public ResultSet getStringsQueryResultSet(String query, List<String> parameters) throws SQLException {
+        PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+        for (int i = 0; i < parameters.size(); ++i) {
+            preparedStatement.setString(i + 1, parameters.get(i));
+        }
+        boolean hasResult = preparedStatement.execute();
+        if (!hasResult) {
+            throw new SQLSyntaxErrorException("Query " + query + " has no result");
+        }
+        return preparedStatement.getResultSet();
     }
 }
