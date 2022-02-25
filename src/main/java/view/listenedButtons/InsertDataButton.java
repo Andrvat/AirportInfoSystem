@@ -26,7 +26,7 @@ public class InsertDataButton extends JButton {
                 JPanel insertDataPanel = new JPanel(new GridLayout(0, 1));
                 Map<JLabel, JTextField> inputForms = new HashMap<>();
                 for (AbstractMap.SimpleEntry<String, String> entry : columnsInfo) {
-                    inputForms.put(new JLabel(entry.getKey()), new JTextField(""));
+                    inputForms.put(new JLabel(entry.getKey().replaceAll("_", " ")), new JTextField(""));
                 }
 
                 for (Map.Entry<JLabel, JTextField> entry : inputForms.entrySet()) {
@@ -39,7 +39,7 @@ public class InsertDataButton extends JButton {
                 if (result == JOptionPane.OK_OPTION) {
                     Map<String, String> enteredData = new HashMap<>();
                     for (Map.Entry<JLabel, JTextField> entry : inputForms.entrySet()) {
-                        String fieldName = entry.getKey().getText();
+                        String fieldName = entry.getKey().getText().replaceAll(" ", "_");
                         StringBuilder input = new StringBuilder(entry.getValue().getText());
                         if (input.toString().equals("")) {
                             JOptionPane.showMessageDialog(null, "Empty field " + fieldName);
