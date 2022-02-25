@@ -11,7 +11,10 @@ public class RowsCounterButton extends JButton {
         this.setText("Count rows");
         this.addActionListener(event -> {
             String tableName = JOptionPane.showInputDialog("Enter the table name");
-            if (Objects.isNull(tableName) || tableName.equals("")) {
+            if (Objects.isNull(tableName)) {
+                return;
+            }
+            if (tableName.equals("")) {
                 JOptionPane.showMessageDialog(null, "Empty table name!");
                 return;
             }

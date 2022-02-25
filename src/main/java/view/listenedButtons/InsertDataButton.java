@@ -1,4 +1,72 @@
 package view.listenedButtons;
 
-public class InsertDataButton {
+import controller.ControllerManager;
+
+import javax.swing.*;
+import java.awt.*;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.List;
+
+public class InsertDataButton extends JButton {
+    public InsertDataButton(ControllerManager controllerManager) {
+        this.setText("Insert new values");
+        this.addActionListener(event -> {
+            String tableName = JOptionPane.showInputDialog("Enter the table name");
+            if (Objects.isNull(tableName)) {
+                return;
+            }
+            if (tableName.equals("")) {
+                JOptionPane.showMessageDialog(null, "Empty table name!");
+                return;
+            }
+            try {
+                List<AbstractMap.SimpleEntry<String, String>> columnsInfo = controllerManager.getColumnsInfoByName(tableName);
+
+                JPanel insertDataPanel = new JPanel(new GridLayout(0, 1));
+                Map<JLabel, JTextField> inputForms = new HashMap<>();
+                for (AbstractMap.SimpleEntry<String, String> entry : columnsInfo) {
+                    inputForms.put(new JLabel(entry.getKey()), new JTextField(""));
+                }
+
+                for (Map.Entry<JLabel, JTextField> entry : inputForms.entrySet()) {
+                    insertDataPanel.add(entry.getKey());
+                    insertDataPanel.add(entry.getValue());
+                }
+
+                int result = JOptionPane.showConfirmDialog(null, insertDataPanel, this.getText(),
+                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                if (result == JOptionPane.OK_OPTION) {
+                    Map<String, String> enteredData = new HashMap<>();
+                    for (Map.Entry<JLabel, JTextField> entry : inputForms.entrySet()) {
+                        String fieldName = entry.getKey().getText();
+                        StringBuilder input = new StringBuilder(entry.getValue().getText());
+                        if (input.toString().equals("")) {
+                            JOptionPane.showMessageDialog(null, "Empty field " + fieldName);
+                            return;
+                        }
+                        for (AbstractMap.SimpleEntry<String, String> columnInfo : columnsInfo) {
+                            if (columnInfo.getKey().equals(fieldName) && columnInfo.getValue().contains("VARCHAR")) {
+                                input = new StringBuilder('\'' + input.toString() + '\'');
+                            }
+                        }
+                        enteredData.put(fieldName, input.toString());
+                    }
+
+                    String resultMessage = "";
+                    try {
+                        controllerManager.insertValuesIntoTable(tableName, enteredData);
+                        resultMessage = "Data was successfully inserted";
+                    } catch (SQLException exception) {
+                        resultMessage = exception.getMessage();
+                    } finally {
+                        JOptionPane.showMessageDialog(null, resultMessage);
+                    }
+                }
+
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+        });
+    }
 }

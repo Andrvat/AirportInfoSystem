@@ -15,7 +15,7 @@ public class MainDisplay extends JFrame {
     private static final int SCREEN_WIDTH = 1080;
     private static final int SCREEN_HEIGHT = 720;
 
-    private static final int LAYOUT_SIDE_PAD = 475;
+    private static final int LAYOUT_SIDE_PAD = 465;
     private static final int LAYOUT_NORTH_PAD = 200;
     private static final int LAYOUT_COMPONENTS_PAD = 50;
 
@@ -40,8 +40,8 @@ public class MainDisplay extends JFrame {
         contentPane.add(menuLabel);
         contentPane.add(this.mainMenu);
 
-        springLayout.putConstraint(SpringLayout.WEST, menuLabel, LAYOUT_SIDE_PAD - 10, SpringLayout.WEST, contentPane);
-        springLayout.putConstraint(SpringLayout.WEST, this.mainMenu, LAYOUT_SIDE_PAD, SpringLayout.WEST, contentPane);
+        springLayout.putConstraint(SpringLayout.WEST, menuLabel, LAYOUT_SIDE_PAD, SpringLayout.WEST, contentPane);
+        springLayout.putConstraint(SpringLayout.WEST, this.mainMenu, LAYOUT_SIDE_PAD - 10, SpringLayout.WEST, contentPane);
         springLayout.putConstraint(SpringLayout.NORTH, menuLabel, LAYOUT_NORTH_PAD, SpringLayout.NORTH, contentPane);
         springLayout.putConstraint(SpringLayout.NORTH, this.mainMenu, LAYOUT_COMPONENTS_PAD, SpringLayout.NORTH, menuLabel);
 

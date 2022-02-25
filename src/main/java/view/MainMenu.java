@@ -1,6 +1,7 @@
 package view;
 
 import controller.ControllerManager;
+import view.listenedButtons.InsertDataButton;
 import view.listenedButtons.RowsCounterButton;
 
 import javax.swing.*;
@@ -27,12 +28,12 @@ public class MainMenu extends JPanel {
 
         JPanel menuButtons = new JPanel(new GridBagLayout());
 
-        JButton counterButton = new RowsCounterButton(this.controllerManager);
-        menuButtons.add(counterButton, gridBagConstraints);
+        JButton rowsCounterButton = new RowsCounterButton(this.controllerManager);
+        menuButtons.add(rowsCounterButton, gridBagConstraints);
         menuButtons.add(new JLabel(" "), gridBagConstraints);
 
-        JButton newButton = new JButton("TExt");
-        menuButtons.add(newButton, gridBagConstraints);
+        JButton insertDataButton = new InsertDataButton(this.controllerManager);
+        menuButtons.add(insertDataButton, gridBagConstraints);
         menuButtons.add(new JLabel(" "), gridBagConstraints);
 
 
