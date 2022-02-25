@@ -1,6 +1,7 @@
 package view;
 
 import controller.ControllerManager;
+import view.listenedButtons.RowsCounterButton;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -26,21 +27,14 @@ public class MainMenu extends JPanel {
 
         JPanel menuButtons = new JPanel(new GridBagLayout());
 
-        JButton counterButton = new JButton("Count rows");
+        JButton counterButton = new RowsCounterButton(this.controllerManager);
         menuButtons.add(counterButton, gridBagConstraints);
-        counterButton.addActionListener(event -> {
-            String tableName = JOptionPane.showInputDialog("Enter the table name");
-            if (Objects.isNull(tableName) || tableName.equals("")) {
-                JOptionPane.showMessageDialog(null, "Empty table name!");
-                return;
-            }
-            try {
-                int amount = this.controllerManager.getRowsNumberByName(tableName);
-                JOptionPane.showMessageDialog(null, "Table <" + tableName + "> contains " + amount + " rows");
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage());
-            }
-        });
+        menuButtons.add(new JLabel(" "), gridBagConstraints);
+
+        JButton newButton = new JButton("TExt");
+        menuButtons.add(newButton, gridBagConstraints);
+        menuButtons.add(new JLabel(" "), gridBagConstraints);
+
 
         gridBagConstraints.weighty = 1;
         this.add(menuButtons, gridBagConstraints);
