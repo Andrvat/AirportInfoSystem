@@ -49,6 +49,14 @@ public class InsertDataButton extends JButton {
                             if (columnInfo.getKey().equals(fieldName) && columnInfo.getValue().contains("VARCHAR")) {
                                 input = new StringBuilder('\'' + input.toString() + '\'');
                             }
+                            if (columnInfo.getKey().equals(fieldName) && columnInfo.getValue().contains("DATE")) {
+                                input = new StringBuilder("TO_DATE('" +
+                                        input.toString()
+                                                .replaceAll("-", ".")
+                                                .replaceAll("/", ".")
+                                                .replaceAll("\\\\", "-") +
+                                        "', 'DD/MM/YYYY')");
+                            }
                         }
                         enteredData.put(fieldName, input.toString());
                     }
