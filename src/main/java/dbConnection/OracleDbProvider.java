@@ -42,10 +42,6 @@ public class OracleDbProvider implements Closeable {
         }
     }
 
-    public boolean isValid(int timeoutSeconds) throws SQLException {
-        return this.connection.isValid(timeoutSeconds);
-    }
-
     public Statement getCreatedStatement() throws SQLException {
         Statement statement = this.connection.createStatement();
         logger.debug("New statement " + statement + " was successfully created");

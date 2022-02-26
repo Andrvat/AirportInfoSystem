@@ -4,6 +4,7 @@ import dbConnection.OracleDbProvider;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
@@ -20,4 +21,10 @@ public abstract class AbstractComponent {
         resultSet.next();
         return resultSet.getInt(1);
     }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public abstract void insertValues(ArrayList<String> values);
 }
