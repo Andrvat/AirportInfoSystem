@@ -6,12 +6,11 @@ import org.apache.log4j.Logger;
 
 import java.io.Closeable;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
-public class OracleDbConnector implements Closeable {
-    private static final Logger logger = LogManager.getLogger(OracleDbConnector.class);
+public class OracleDbProvider implements Closeable {
+    private static final Logger logger = LogManager.getLogger(OracleDbProvider.class);
 
     private static final String DB_TIME_ZONE = "Asia/Novosibirsk";
 
@@ -20,7 +19,7 @@ public class OracleDbConnector implements Closeable {
     private final String userPassword;
     private final Connection connection;
 
-    public OracleDbConnector(String dbUrl, String userLogin, String userPassword) throws SQLException {
+    public OracleDbProvider(String dbUrl, String userLogin, String userPassword) throws SQLException {
         this.dbUrl = dbUrl;
         this.userLogin = userLogin;
         this.userPassword = userPassword;
@@ -37,9 +36,9 @@ public class OracleDbConnector implements Closeable {
     public void close() {
         try {
             this.connection.close();
-        } catch (SQLException e) {
+        } catch (SQLException exception) {
             logger.error("Could not close Oracle database connection. \n" +
-                    "Message: " + e.getMessage());
+                    "Message: " + exception.getMessage());
         }
     }
 

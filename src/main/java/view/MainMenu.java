@@ -5,10 +5,7 @@ import view.listenedButtons.InsertDataButton;
 import view.listenedButtons.RowsCounterButton;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.sql.SQLException;
-import java.util.Objects;
 
 public class MainMenu extends JPanel {
 

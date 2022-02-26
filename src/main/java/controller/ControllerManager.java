@@ -1,12 +1,10 @@
 package controller;
 
-import dbConnection.OracleDbConnector;
+import dbConnection.OracleDbProvider;
 import lombok.Builder;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLDataException;
 import java.sql.SQLException;
@@ -16,7 +14,7 @@ import java.util.*;
 @Builder
 public class ControllerManager {
 
-    private final OracleDbConnector connector;
+    private final OracleDbProvider connector;
 
     public void initRequiredTables(String propertiesPath) throws IOException, SQLException {
         Properties scriptProperties = new Properties();

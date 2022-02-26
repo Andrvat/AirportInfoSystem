@@ -1,4 +1,4 @@
-import dbConnection.OracleDbConnector;
+import dbConnection.OracleDbProvider;
 import org.junit.*;
 
 import java.sql.ResultSet;
@@ -10,26 +10,26 @@ public class ConnectionTest {
     private static final String TEST_USER_LOGIN = "TEST_USER";
     private static final String TEST_USER_PASSWORD = "sun";
 
-    private static OracleDbConnector connector;
+    private static OracleDbProvider provider;
 
     @Before
     public void init() throws SQLException {
-        connector = new OracleDbConnector(TEST_URL, TEST_USER_LOGIN, TEST_USER_PASSWORD);
+        provider = new OracleDbProvider(TEST_URL, TEST_USER_LOGIN, TEST_USER_PASSWORD);
     }
 
     @After
     public void close() {
-        connector.close();
+        provider.close();
     }
 
     @Test
     public void getJdbcConnection() throws SQLException {
-        Assert.assertTrue(connector.isValid(1));
+        Assert.assertTrue(provider.isValid(1));
     }
 
     @Test
     public void executeSelectOperation() throws SQLException {
-        Statement statement = connector.getCreatedStatement();
+        Statement statement = provider.getCreatedStatement();
         boolean hasResult = statement.execute("SELECT * FROM teacher");
         Assert.assertTrue(hasResult);
 
