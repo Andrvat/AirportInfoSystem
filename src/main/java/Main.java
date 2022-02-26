@@ -19,7 +19,8 @@ public class Main {
                     cmdArgsParser.getUserPassword());
             ControllerManager controllerManager = ControllerManager.builder()
                     .connector(connector).build();
-            MainDisplay mainDisplay = new MainDisplay(controllerManager);
+            controllerManager.initRequiredTables(cmdArgsParser.getTableScriptsPath());
+            new MainDisplay(controllerManager);
         } catch (Exception exception) {
             logger.error(exception.getMessage());
             exception.printStackTrace();

@@ -11,6 +11,7 @@ public class CmdArgsParser {
     private static final String URL_MAP_KEY = "dbUrl";
     private static final String USER_LOGIN_MAP_KEY = "userLogin";
     private static final String USER_PASSWORD_MAP_KEY = "userPassword";
+    private static final String TABLE_SCRIPTS_MAP_KEY = "scripts";
 
     private final Options cmdOptions = new Options();
 
@@ -35,10 +36,17 @@ public class CmdArgsParser {
                 .hasArg(true)
                 .description("Oracle database user's password")
                 .build();
+        OptionSettings dbScriptSettings = OptionSettings.builder()
+                .opt("s")
+                .longOpt("scriptPath")
+                .hasArg(true)
+                .description("Path to scripts witch create necessary tables")
+                .build();
         this.addAllSettingsToOptions(new ArrayList<>() {{
             add(dbUrlSettings);
             add(dbUserSettings);
             add(dbUPasswordSettings);
+            add(dbScriptSettings);
         }});
     }
 
@@ -58,6 +66,7 @@ public class CmdArgsParser {
         this.dbConnectionParameters.put(URL_MAP_KEY, commandLine.getOptionValue("u"));
         this.dbConnectionParameters.put(USER_LOGIN_MAP_KEY, commandLine.getOptionValue("l"));
         this.dbConnectionParameters.put(USER_PASSWORD_MAP_KEY, commandLine.getOptionValue("p"));
+        this.dbConnectionParameters.put(TABLE_SCRIPTS_MAP_KEY, commandLine.getOptionValue("s"));
 
         if (this.dbConnectionParameters.containsValue(null)) {
             throw new InvalidParameterException("Some cmd required argument is null");
@@ -74,5 +83,9 @@ public class CmdArgsParser {
 
     public String getUserPassword() {
         return this.dbConnectionParameters.get(USER_PASSWORD_MAP_KEY);
+    }
+
+    public String getTableScriptsPath() {
+        return this.dbConnectionParameters.get(TABLE_SCRIPTS_MAP_KEY);
     }
 }
