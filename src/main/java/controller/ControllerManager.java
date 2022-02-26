@@ -1,10 +1,10 @@
 package controller;
 
 import dbConnection.OracleDbProvider;
+import entities.AbstractComponent;
 import lombok.Builder;
+import model.DbModel;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLDataException;
 import java.sql.SQLException;
@@ -14,36 +14,30 @@ import java.util.*;
 @Builder
 public class ControllerManager {
 
-    private final OracleDbProvider connector;
+    private final OracleDbProvider provider;
 
-    public void initRequiredTables(String propertiesPath) throws IOException, SQLException {
-        Properties scriptProperties = new Properties();
-        scriptProperties.load(new FileInputStream(propertiesPath));
-        for (String key : scriptProperties.stringPropertyNames()) {
-            try {
-                this.getRowsNumberByName(key);
-            } catch (SQLException exception) {
-                String value = scriptProperties.getProperty(key);
-                Statement statement = this.connector.getCreatedStatement();
-                statement.execute(value);
-            }
-        }
-    }
+    private final DbModel model;
 
-    public int getRowsNumberByName(String tableName) throws SQLException {
-        String query = "SELECT COUNT(*) AS amount FROM " + tableName.toUpperCase(Locale.ROOT);
-        ResultSet resultSet = this.connector.getStringsQueryResultSet(query, Collections.emptyList());
-        resultSet.next();
-        return resultSet.getInt(1);
-
-    }
+//    public void initRequiredTables(String propertiesPath) throws IOException, SQLException {
+//        Properties scriptProperties = new Properties();
+//        scriptProperties.load(new FileInputStream(propertiesPath));
+//        for (String key : scriptProperties.stringPropertyNames()) {
+//            try {
+//                this.getRowsNumberByName(key);
+//            } catch (SQLException exception) {
+//                String value = scriptProperties.getProperty(key);
+//                Statement statement = this.provider.getCreatedStatement();
+//                statement.execute(value);
+//            }
+//        }
+//    }
 
     public List<AbstractMap.SimpleEntry<String, String>> getColumnsInfoByName(String tableName) throws SQLException {
         String query = """
                 SELECT column_name AS name, data_type AS type
                 FROM USER_TAB_COLUMNS
                 WHERE table_name =\040""" + "'" + tableName.toUpperCase(Locale.ROOT) + "'";
-        ResultSet resultSet = this.connector.getStringsQueryResultSet(query, Collections.emptyList());
+        ResultSet resultSet = this.provider.getStringsQueryResultSet(query, Collections.emptyList());
         List<AbstractMap.SimpleEntry<String, String>> columnsNames = new ArrayList<>();
         if (!resultSet.next()) {
             throw new SQLDataException("Invalid table name");
@@ -72,7 +66,19 @@ public class ControllerManager {
         query.delete(query.length() - 2, query.length());
         query.append(")");
 
-        Statement statement = this.connector.getCreatedStatement();
+        Statement statement = this.provider.getCreatedStatement();
         statement.execute(query.toString());
+    }
+
+    public String[] getTableNames() {
+        HashMap<String, Class> entitiesClasses = this.model.getEntitiesClasses();
+        return entitiesClasses.keySet().toArray(new String[0]);
+    }
+
+    public int getRowsNumberByName(String selectedTableName) throws Exception {
+        AbstractComponent component = (AbstractComponent) this.model.getEntityClassByKey(selectedTableName)
+                .getConstructor()
+                .newInstance();
+        return component.getRowsNumber(this.provider);
     }
 }

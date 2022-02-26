@@ -1,6 +1,8 @@
 import argsParsing.CmdArgsParser;
 import controller.ControllerManager;
 import dbConnection.OracleDbProvider;
+import entities.Ticket;
+import model.DbModel;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import view.MainDisplay;
@@ -10,6 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
+            new Ticket();
             CmdArgsParser cmdArgsParser = new CmdArgsParser();
             cmdArgsParser.parseArguments(args);
 
@@ -17,9 +20,11 @@ public class Main {
                     cmdArgsParser.getDbUrl(),
                     cmdArgsParser.getUserLogin(),
                     cmdArgsParser.getUserPassword());
+            DbModel model = new DbModel();
             ControllerManager controllerManager = ControllerManager.builder()
-                    .connector(provider).build();
-            controllerManager.initRequiredTables(cmdArgsParser.getTableScriptsPath());
+                    .provider(provider)
+                    .model(model)
+                    .build();
             new MainDisplay(controllerManager);
         } catch (Exception exception) {
             logger.error(exception.getMessage());
