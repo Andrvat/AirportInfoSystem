@@ -4,9 +4,7 @@ import dbConnection.OracleDbProvider;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Locale;
 
 public abstract class AbstractComponent {
     private final String tableName;
@@ -26,5 +24,5 @@ public abstract class AbstractComponent {
         return tableName;
     }
 
-    public abstract void insertValues(ArrayList<String> values);
+    public abstract void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException;
 }

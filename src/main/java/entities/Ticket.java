@@ -4,15 +4,17 @@ import annotations.DbColumnNumber;
 import annotations.DbColumnVarchar;
 import annotations.DbConstrains;
 import annotations.DbTable;
+import dbConnection.OracleDbProvider;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 @DbTable(name = "TICKET")
 public class Ticket extends AbstractComponent {
-    @DbColumnNumber(name = "ID_TICKET", constrains = @DbConstrains(isPrimaryKey = true))
-    private Integer id;
+    @DbColumnNumber(name = "ID_TICKET", constrains = @DbConstrains(isPrimaryKey = true, isAllowedNull = false))
+    private Integer idTicket;
 
     @DbColumnVarchar(name = "FIRST_NAME", value = 50, constrains = @DbConstrains(isAllowedNull = false))
     private String firstName;
@@ -24,18 +26,18 @@ public class Ticket extends AbstractComponent {
     private String patronymic;
 
     @DbColumnNumber(name = "SEAT_NUMBER", constrains = @DbConstrains(isAllowedNull = false))
-    private Integer seat;
+    private Integer seatNumber;
 
     public Ticket() {
         super(Ticket.class.getAnnotation(DbTable.class).name());
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdTicket() {
+        return idTicket;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdTicket(Integer idTicket) {
+        this.idTicket = idTicket;
     }
 
     public String getFirstName() {
@@ -62,17 +64,37 @@ public class Ticket extends AbstractComponent {
         this.patronymic = patronymic;
     }
 
-    public Integer getSeat() {
-        return seat;
+    public Integer getSeatNumber() {
+        return seatNumber;
     }
 
-    public void setSeat(Integer seat) {
-        this.seat = seat;
+    public void setSeatNumber(Integer seatNumber) {
+        this.seatNumber = seatNumber;
+    }
+
+    public static String getIdTicketAnnotationName() throws NoSuchFieldException {
+        return Ticket.class.getDeclaredField("idTicket").getAnnotation(DbColumnNumber.class).name();
+    }
+
+    public static String getFirstNameAnnotationName() throws NoSuchFieldException {
+        return Ticket.class.getDeclaredField("firstName").getAnnotation(DbColumnVarchar.class).name();
+    }
+
+    public static String getLastNameAnnotationName() throws NoSuchFieldException {
+        return Ticket.class.getDeclaredField("lastName").getAnnotation(DbColumnVarchar.class).name();
+    }
+
+    public static String getPatronymicAnnotationName() throws NoSuchFieldException {
+        return Ticket.class.getDeclaredField("patronymic").getAnnotation(DbColumnVarchar.class).name();
+    }
+
+    public static String getSeatNumberAnnotationName() throws NoSuchFieldException {
+        return Ticket.class.getDeclaredField("seatNumber").getAnnotation(DbColumnNumber.class).name();
     }
 
     @Override
-    public void insertValues(ArrayList<String> values) {
-        StringBuilder stringBuilder = new StringBuilder()
+    public void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException {
+        StringBuilder query = new StringBuilder()
                 .append("INSERT INTO ")
                 .append(this.getTableName())
                 .append(" (");
@@ -83,16 +105,35 @@ public class Ticket extends AbstractComponent {
             } else {
                 Annotation annotation = annotations[0];
                 if (annotation instanceof DbColumnNumber columnNumber) {
-                    stringBuilder.append(columnNumber.name());
+                    query.append(columnNumber.name());
                 } else if (annotation instanceof DbColumnVarchar columnVarchar) {
-                    stringBuilder.append(columnVarchar.name());
+                    query.append(columnVarchar.name());
                 }
-                stringBuilder.append(", ");
+                query.append(", ");
             }
         }
-        stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
-        stringBuilder.append(") VALUES (");
-        // TODO: get fields values and convert them to string type for string builder
+        query.delete(query.length() - 2, query.length());
+        query.append(") VALUES (");
+        for (Field field : Ticket.class.getDeclaredFields()) {
+            Annotation[] annotations = field.getDeclaredAnnotations();
+            if (annotations.length == 0) {
+                System.err.println("Field is not a db column");
+                continue;
+            }
+            field.setAccessible(true);
+            Object value = field.get(this);
+            Annotation annotation = annotations[0];
+            if (annotation instanceof DbColumnNumber) {
+                query.append(value);
+            } else if (annotation instanceof DbColumnVarchar) {
+                query.append("'").append(value).append("'");
+            }
+            query.append(", ");
+        }
+        query.delete(query.length() - 2, query.length());
+        query.append(")");
 
+        Statement statement = provider.getCreatedStatement();
+        statement.execute(query.toString());
     }
 }
