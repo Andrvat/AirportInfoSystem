@@ -55,19 +55,15 @@ public class MainDisplay extends JFrame {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                int chosenOption =
-                        JOptionPane.showConfirmDialog(thisFrame,
-                                "Are you sure?",
-                                "Exit",
-                                JOptionPane.YES_NO_OPTION);
-                if (isYesChosen(chosenOption)) {
+                int result = JOptionPane.showConfirmDialog(thisFrame,
+                        "Are you sure?",
+                        "Exit",
+                        JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.OK_OPTION) {
                     System.exit(0);
                 }
             }
 
-            private boolean isYesChosen(int index) {
-                return index == 0;
-            }
         });
     }
 }

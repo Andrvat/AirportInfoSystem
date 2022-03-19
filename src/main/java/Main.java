@@ -1,4 +1,3 @@
-import argsParsing.CmdArgsParser;
 import controller.ControllerManager;
 import dbConnection.OracleDbProvider;
 import entities.Ticket;
@@ -13,13 +12,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             new Ticket();
-            CmdArgsParser cmdArgsParser = new CmdArgsParser();
-            cmdArgsParser.parseArguments(args);
-
-            OracleDbProvider provider = new OracleDbProvider(
-                    cmdArgsParser.getDbUrl(),
-                    cmdArgsParser.getUserLogin(),
-                    cmdArgsParser.getUserPassword());
+            OracleDbProvider provider = new OracleDbProvider();
             DbModel model = new DbModel();
             ControllerManager controllerManager = ControllerManager.builder()
                     .provider(provider)

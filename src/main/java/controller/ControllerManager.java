@@ -6,6 +6,7 @@ import dbConnection.OracleDbProvider;
 import entities.AbstractComponent;
 import entities.Ticket;
 import lombok.Builder;
+import lombok.Getter;
 import model.DbModel;
 
 import java.lang.annotation.Annotation;
@@ -18,6 +19,10 @@ public class ControllerManager {
     private final OracleDbProvider provider;
 
     private final DbModel model;
+
+    public OracleDbProvider getProvider() {
+        return provider;
+    }
 
     public List<String> getColumnsNamesByName(String tableName) {
         Class<?> componentClass = this.model.getEntityClassByKey(tableName);

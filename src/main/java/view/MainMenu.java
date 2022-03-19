@@ -1,7 +1,9 @@
 package view;
 
 import controller.ControllerManager;
+import view.listenedButtons.DisconnectButton;
 import view.listenedButtons.InsertDataButton;
+import view.listenedButtons.LoginFormButton;
 import view.listenedButtons.RowsCounterButton;
 
 import javax.swing.*;
@@ -25,6 +27,14 @@ public class MainMenu extends JPanel {
 
         JPanel menuButtons = new JPanel(new GridBagLayout());
 
+        JButton loginFormButton = new LoginFormButton(this.controllerManager);
+        menuButtons.add(loginFormButton, gridBagConstraints);
+        menuButtons.add(new JLabel(" "), gridBagConstraints);
+
+        JButton disconnectButton = new DisconnectButton(this.controllerManager);
+        menuButtons.add(disconnectButton, gridBagConstraints);
+        menuButtons.add(new JLabel(" "), gridBagConstraints);
+
         JButton rowsCounterButton = new RowsCounterButton(this.controllerManager);
         menuButtons.add(rowsCounterButton, gridBagConstraints);
         menuButtons.add(new JLabel(" "), gridBagConstraints);
@@ -32,7 +42,6 @@ public class MainMenu extends JPanel {
         JButton insertDataButton = new InsertDataButton(this.controllerManager);
         menuButtons.add(insertDataButton, gridBagConstraints);
         menuButtons.add(new JLabel(" "), gridBagConstraints);
-
 
         gridBagConstraints.weighty = 1;
         this.add(menuButtons, gridBagConstraints);

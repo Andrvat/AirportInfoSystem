@@ -14,16 +14,24 @@ public class OracleDbProvider implements Closeable {
 
     private static final String DB_TIME_ZONE = "Asia/Novosibirsk";
 
-    private final String dbUrl;
-    private final String userLogin;
-    private final String userPassword;
-    private final Connection connection;
+    private String dbUrl;
+    private String userLogin;
+    private String userPassword;
+    private Connection connection;
 
-    public OracleDbProvider(String dbUrl, String userLogin, String userPassword) throws SQLException {
+    public void setDbUrl(String dbUrl) {
         this.dbUrl = dbUrl;
-        this.userLogin = userLogin;
-        this.userPassword = userPassword;
+    }
 
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    public void registerDbProvider() throws SQLException {
         TimeZone dbTimeZone = TimeZone.getTimeZone(DB_TIME_ZONE);
         TimeZone.setDefault(dbTimeZone);
 
@@ -36,7 +44,7 @@ public class OracleDbProvider implements Closeable {
     public void close() {
         try {
             this.connection.close();
-        } catch (SQLException exception) {
+        } catch (Exception exception) {
             logger.error("Could not close Oracle database connection. \n" +
                     "Message: " + exception.getMessage());
         }
