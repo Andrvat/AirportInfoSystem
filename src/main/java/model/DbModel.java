@@ -14,8 +14,8 @@ public class DbModel {
     }
 
     private void findAllEntitiesClasses() {
-        Reflections reflections = new Reflections("entities", new SubTypesScanner(false));
-        Set<Class<?>> classesSet = new HashSet<>(reflections.getSubTypesOf(Object.class));
+        var reflections = new Reflections("entities", new SubTypesScanner(false));
+        var classesSet = new HashSet<>(reflections.getSubTypesOf(Object.class));
         for (var c : classesSet) {
             DbTable annotation = c.getAnnotation(DbTable.class);
             if (!Objects.isNull(annotation)) {

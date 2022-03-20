@@ -18,7 +18,7 @@ public class InsertDataButton extends JButton {
                 return;
             }
             String selectedTableName = (String) tableViewer.getComboBox().getSelectedItem();
-            List<String> columnsNames = controllerManager.getColumnsNamesByName(selectedTableName);
+            List<String> columnsNames = controllerManager.getTableColumnNames(selectedTableName);
 
             JPanel insertDataPanel = new JPanel(new GridLayout(0, 1));
             Map<JLabel, JTextField> inputForms = new HashMap<>();

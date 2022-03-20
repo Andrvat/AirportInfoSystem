@@ -9,12 +9,12 @@ import view.listenedButtons.RowsCounterButton;
 import javax.swing.*;
 import java.awt.*;
 
-public class MainMenu extends JPanel {
+public class LoginMenu extends JPanel {
 
     private final ControllerManager controllerManager;
     private final JFrame parentDisplay;
 
-    public MainMenu(ControllerManager controllerManager, JFrame parentDisplay) {
+    public LoginMenu(ControllerManager controllerManager, JFrame parentDisplay) {
         this.parentDisplay = parentDisplay;
         this.controllerManager = controllerManager;
 
@@ -29,16 +29,8 @@ public class MainMenu extends JPanel {
 
         JPanel menuButtons = new JPanel(new GridBagLayout());
 
-        JButton disconnectButton = new DisconnectButton(this.controllerManager, parentDisplay);
-        menuButtons.add(disconnectButton, gridBagConstraints);
-        menuButtons.add(new JLabel(" "), gridBagConstraints);
-
-        JButton rowsCounterButton = new RowsCounterButton(this.controllerManager);
-        menuButtons.add(rowsCounterButton, gridBagConstraints);
-        menuButtons.add(new JLabel(" "), gridBagConstraints);
-
-        JButton insertDataButton = new InsertDataButton(this.controllerManager);
-        menuButtons.add(insertDataButton, gridBagConstraints);
+        JButton loginFormButton = new LoginFormButton(this.controllerManager, parentDisplay);
+        menuButtons.add(loginFormButton, gridBagConstraints);
         menuButtons.add(new JLabel(" "), gridBagConstraints);
 
         gridBagConstraints.weighty = 1;

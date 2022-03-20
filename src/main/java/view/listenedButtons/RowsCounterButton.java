@@ -4,7 +4,6 @@ import controller.ControllerManager;
 import view.utilities.ChooseTableViewer;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class RowsCounterButton extends JButton {
     public RowsCounterButton(ControllerManager controllerManager) {
@@ -15,7 +14,7 @@ public class RowsCounterButton extends JButton {
             if (result == JOptionPane.OK_OPTION) {
                 try {
                     String selectedTableName = (String) tableViewer.getComboBox().getSelectedItem();
-                    int amount = controllerManager.getRowsNumberByName(selectedTableName);
+                    int amount = controllerManager.getTableRowsNumber(selectedTableName);
                     JOptionPane.showMessageDialog(null, "Table <" + selectedTableName + "> contains " + amount + " rows");
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage());

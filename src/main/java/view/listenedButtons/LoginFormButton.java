@@ -2,13 +2,14 @@ package view.listenedButtons;
 
 import controller.ControllerManager;
 import dbConnection.OracleDbProvider;
+import view.MainDisplay;
 
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 
 public class LoginFormButton extends JButton {
-    public LoginFormButton(ControllerManager controllerManager) {
+    public LoginFormButton(ControllerManager controllerManager, JFrame display) {
         this.setText("Login database");
         this.addActionListener(event -> {
 
@@ -40,6 +41,9 @@ public class LoginFormButton extends JButton {
                 provider.setUserLogin(username.getText());
                 provider.setUserPassword(String.valueOf(password.getPassword()));
                 provider.registerDbProvider();
+
+                display.setVisible(false);
+                new MainDisplay(controllerManager);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e.getMessage());
             }

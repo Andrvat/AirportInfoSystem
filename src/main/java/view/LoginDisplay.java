@@ -5,13 +5,14 @@ import view.utilities.DisplaysManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.DataBufferUShort;
 
-public class MainDisplay extends JFrame {
+public class LoginDisplay extends JFrame {
 
-    private final MainMenu mainMenu;
+    private final LoginMenu mainMenu;
 
-    public MainDisplay(ControllerManager controllerManager) {
-        this.mainMenu = new MainMenu(controllerManager, this);
+    public LoginDisplay(ControllerManager controllerManager) {
+        this.mainMenu = new LoginMenu(controllerManager, this);
 
         this.setSize(new Dimension(DisplaysManager.SCREEN_WIDTH, DisplaysManager.SCREEN_HEIGHT));
         this.setTitle(DisplaysManager.TITLE);
@@ -23,14 +24,14 @@ public class MainDisplay extends JFrame {
         contentPane.setLayout(springLayout);
 
         JLabel menuLabel = new JLabel() {{
-            setText("MAIN MENU");
+            setText("LOGIN MENU");
             setFont(DisplaysManager.LABELS_DEFAULT_FONT);
         }};
         contentPane.add(menuLabel);
         contentPane.add(this.mainMenu);
 
         springLayout.putConstraint(SpringLayout.WEST, menuLabel, DisplaysManager.LAYOUT_SIDE_PAD, SpringLayout.WEST, contentPane);
-        springLayout.putConstraint(SpringLayout.WEST, this.mainMenu, DisplaysManager.LAYOUT_SIDE_PAD - 10, SpringLayout.WEST, contentPane);
+        springLayout.putConstraint(SpringLayout.WEST, this.mainMenu, DisplaysManager.LAYOUT_SIDE_PAD, SpringLayout.WEST, contentPane);
         springLayout.putConstraint(SpringLayout.NORTH, menuLabel, DisplaysManager.LAYOUT_NORTH_PAD, SpringLayout.NORTH, contentPane);
         springLayout.putConstraint(SpringLayout.NORTH, this.mainMenu, DisplaysManager.LAYOUT_COMPONENTS_PAD, SpringLayout.NORTH, menuLabel);
 

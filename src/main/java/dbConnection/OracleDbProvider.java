@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.TimeZone;
 
 public class OracleDbProvider implements Closeable {
-    private static final Logger logger = LogManager.getLogger(OracleDbProvider.class);
-
     private static final String DB_TIME_ZONE = "Asia/Novosibirsk";
 
     private String dbUrl;
@@ -37,23 +35,18 @@ public class OracleDbProvider implements Closeable {
 
         DriverManager.registerDriver(new OracleDriver());
         this.connection = DriverManager.getConnection(this.dbUrl, this.userLogin, this.userPassword);
-        logger.info("Driver manager successfully connected to " + this.dbUrl + " via user " + this.userLogin);
     }
 
     @Override
     public void close() {
         try {
             this.connection.close();
-        } catch (Exception exception) {
-            logger.error("Could not close Oracle database connection. \n" +
-                    "Message: " + exception.getMessage());
+        } catch (Exception ignored) {
         }
     }
 
     public Statement getCreatedStatement() throws SQLException {
-        Statement statement = this.connection.createStatement();
-        logger.debug("New statement " + statement + " was successfully created");
-        return statement;
+        return this.connection.createStatement();
     }
 
     public ResultSet getStringsQueryResultSet(String query, List<String> parameters) throws SQLException {
@@ -62,6 +55,7 @@ public class OracleDbProvider implements Closeable {
             preparedStatement.setString(i + 1, parameters.get(i));
         }
         boolean hasResult = preparedStatement.execute();
+        // TODO: is needed throw new action if statement is not accompanied by return result?
         if (!hasResult) {
             throw new SQLSyntaxErrorException("Query " + query + " has no result");
         }

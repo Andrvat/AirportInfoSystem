@@ -3,6 +3,7 @@ import dbConnection.OracleDbProvider;
 import model.DbModel;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import view.LoginDisplay;
 import view.MainDisplay;
 
 import java.awt.*;
@@ -24,7 +25,7 @@ public class Main {
                     .provider(provider)
                     .model(model)
                     .build();
-            new MainDisplay(controllerManager);
+            new LoginDisplay(controllerManager);
         } catch (Exception exception) {
             logger.error(exception.getMessage());
             exception.printStackTrace();
