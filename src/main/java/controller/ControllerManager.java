@@ -10,6 +10,8 @@ import model.DbModel;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 @Builder
@@ -65,5 +67,15 @@ public class ControllerManager {
                 .getConstructor()
                 .newInstance();
         return component.getRowsNumber(this.provider);
+    }
+
+    public String[][] getAllRowsValues(String tableName) throws Exception {
+        AbstractComponent component = (AbstractComponent) this.model.getEntityClassByKey(tableName)
+                .getConstructor()
+                .newInstance();
+        if (component instanceof Ticket ticket) {
+            return ticket.getAllRows(this.provider);
+        }
+        return null;
     }
 }

@@ -25,4 +25,6 @@ public abstract class AbstractComponent {
     }
 
     public abstract void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException;
+
+    public abstract String[][] getAllRows(OracleDbProvider provider) throws SQLException;
 }

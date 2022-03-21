@@ -1,10 +1,7 @@
 package view;
 
 import controller.ControllerManager;
-import view.listenedButtons.DisconnectButton;
-import view.listenedButtons.InsertDataButton;
-import view.listenedButtons.LoginFormButton;
-import view.listenedButtons.RowsCounterButton;
+import view.listenedButtons.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,6 +36,10 @@ public class MainMenu extends JPanel {
 
         JButton insertDataButton = new InsertDataButton(this.controllerManager);
         menuButtons.add(insertDataButton, gridBagConstraints);
+        menuButtons.add(new JLabel(" "), gridBagConstraints);
+
+        JButton viewAllRowsButton = new ViewAllRowsButton(this.controllerManager);
+        menuButtons.add(viewAllRowsButton, gridBagConstraints);
         menuButtons.add(new JLabel(" "), gridBagConstraints);
 
         gridBagConstraints.weighty = 1;

@@ -8,8 +8,12 @@ import dbConnection.OracleDbProvider;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @DbTable(name = "TICKET")
 public class Ticket extends AbstractComponent {
@@ -131,5 +135,28 @@ public class Ticket extends AbstractComponent {
 
         Statement statement = provider.getCreatedStatement();
         statement.execute(query.toString());
+    }
+
+    @Override
+    public String[][] getAllRows(OracleDbProvider provider) throws SQLException {
+        String query = "SELECT * FROM " + Ticket.class.getAnnotation(DbTable.class).name();
+        ResultSet resultSet = provider.getStringsQueryResultSet(query, Collections.emptyList());
+        List<String[]> allRows = new ArrayList<>();
+        while (resultSet.next()) {
+            int id = resultSet.getInt(1);
+            String firstName = resultSet.getString(2);
+            String lastName = resultSet.getString(3);
+            String patronymic = resultSet.getString(4);
+            int seatNumber = resultSet.getInt(5);
+            List<String> row = new ArrayList<>() {{
+                add(String.valueOf(id));
+                add(firstName);
+                add(lastName);
+                add(patronymic);
+                add(String.valueOf(seatNumber));
+            }};
+            allRows.add(row.toArray(new String[0]));
+        }
+        return allRows.toArray(new String[0][]);
     }
 }

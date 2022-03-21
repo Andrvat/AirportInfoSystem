@@ -42,8 +42,8 @@ public class LoginFormButton extends JButton {
                 provider.setUserPassword(String.valueOf(password.getPassword()));
                 provider.registerDbProvider();
 
-                SchemaVerifier verifier = new SchemaVerifier(controllerManager);
-                verifier.verifySchema();
+//                SchemaVerifier verifier = new SchemaVerifier(controllerManager);
+//                verifier.verifySchema();
 
                 display.setVisible(false);
                 new MainDisplay(controllerManager);
