@@ -10,4 +10,7 @@ CREATE TABLE Employee (
     ChildrenNumber INT NOT NULL,
     DepartmentId INT NOT NULL,
     CrewId INT,
-    constraint Employee_PK PRIMARY KEY (Id))
+    CONSTRAINT Employee_PK PRIMARY KEY (Id),
+    CONSTRAINT Employee_fk0 FOREIGN KEY (DepartmentId) REFERENCES Department(Id),
+    CONSTRAINT Employee_fk1 FOREIGN KEY (CrewId) REFERENCES Crew(Id)
+)

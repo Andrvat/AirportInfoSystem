@@ -12,10 +12,9 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class SchemaVerifier {
-    private final List<String> alters = new ArrayList<>();
-    private final List<String> creates = new ArrayList<>();
-    private final List<String> sequences = new ArrayList<>();
-    private final List<String> triggers = new ArrayList<>();
+    private final List<String> createdTableNames = new ArrayList<>();
+    private final List<String> createdSequenceNames = new ArrayList<>();
+    private final List<String> createdTriggerNames = new ArrayList<>();
 
     private final ControllerManager controllerManager;
 
@@ -29,27 +28,63 @@ public class SchemaVerifier {
         String tableNamesQuery = "SELECT TABLE_NAME FROM USER_TABLES";
         ResultSet resultSet = provider.getStringsQueryResultSet(tableNamesQuery, Collections.emptyList());
         while (resultSet.next()) {
-            this.creates.add(resultSet.getString(1));
+            this.createdTableNames.add(resultSet.getString(1));
         }
-        List<String> schemaTableQueriesFilenames = this.getSchemaTableQueriesFilenames();
+        List<String> schemaTableQueriesFilenames = this.getSchemaQueriesFilenames(
+                "src/main/resources/sql/tables/creating");
         for (var tableQueryFilename : schemaTableQueriesFilenames) {
             String tableName = tableQueryFilename.substring(0, tableQueryFilename.length() - 4).toUpperCase(Locale.ROOT);
-            if (!creates.contains(tableName)) {
-                String creatingScriptsPath = "src/main/resources/sql/tables/creating/";
-                String sqlQuery = Files.readString(Paths.get(creatingScriptsPath + tableQueryFilename))
+            String queriesPath = "src/main/resources/sql/tables/creating/";
+            if (!this.createdTableNames.contains(tableName)) {
+                String sqlQuery = Files.readString(Paths.get(queriesPath + tableQueryFilename))
                         .replaceAll("\n", " ");
                 provider.getCreatedStatement().execute(sqlQuery);
+                this.createdTableNames.add(tableName);
             }
         }
 
+        String sequenceNamesQuery = "SELECT SEQUENCE_NAME FROM ALL_SEQUENCES";
+        resultSet = provider.getStringsQueryResultSet(sequenceNamesQuery, Collections.emptyList());
+        while (resultSet.next()) {
+            this.createdSequenceNames.add(resultSet.getString(1));
+        }
+        List<String> schemaSequenceQueriesFilenames = this.getSchemaQueriesFilenames(
+                "src/main/resources/sql/tables/sequences");
+        for (var sequenceQueryFilename : schemaSequenceQueriesFilenames) {
+            String sequenceName = sequenceQueryFilename.substring(0, sequenceQueryFilename.length() - 4).toUpperCase(Locale.ROOT);
+            String queriesPath = "src/main/resources/sql/tables/sequences/";
+            if (!this.createdSequenceNames.contains(sequenceName)) {
+                String sqlQuery = Files.readString(Paths.get(queriesPath + sequenceQueryFilename))
+                        .replaceAll("\n", " ");
+                provider.getCreatedStatement().execute(sqlQuery);
+                this.createdSequenceNames.add(sequenceName);
+            }
+        }
 
-        String triggerNamesQuery = "SELECT TRIGGER_NAME FROM ALL_TRIGGERS WHERE TABLE_NAME = ?";
+        // TODO: make a query for special table by its name
+        String triggersNamesQuery = "SELECT TRIGGER_NAME FROM ALL_TRIGGERS";
+        resultSet = provider.getStringsQueryResultSet(triggersNamesQuery, Collections.emptyList());
+        while (resultSet.next()) {
+            this.createdTriggerNames.add(resultSet.getString(1));
+        }
+        List<String> schemaTriggerQueriesFilenames = this.getSchemaQueriesFilenames(
+                "src/main/resources/sql/tables/triggers");
+        for (var triggerQueryFilename : schemaTriggerQueriesFilenames) {
+            String triggerName = triggerQueryFilename.substring(0, triggerQueryFilename.length() - 4).toUpperCase(Locale.ROOT);
+            String queriesPath = "src/main/resources/sql/tables/triggers/";
+            if (!this.createdTriggerNames.contains(triggerName)) {
+                String sqlQuery = Files.readString(Paths.get(queriesPath + triggerQueryFilename))
+                        .replaceAll("\n", " ");
+                provider.getCreatedStatement().execute(sqlQuery);
+                this.createdTriggerNames.add(triggerName);
+            }
+        }
 
     }
 
-    private List<String> getSchemaTableQueriesFilenames() {
+    private List<String> getSchemaQueriesFilenames(String path) {
         List<String> verifiedFileNames = new ArrayList<>();
-        File folder = new File("src/main/resources/sql/tables/creating");
+        File folder = new File(path);
         File[] filesList = folder.listFiles();
         for (int i = 0; i < Objects.requireNonNull(filesList).length; ++i) {
             if (filesList[i].isFile()) {
