@@ -22,7 +22,7 @@ public class SchemaVerifier {
         this.controllerManager = controllerManager;
     }
 
-    public void verify() throws SQLException, IOException {
+    public void verifySchema() throws SQLException, IOException {
         OracleDbProvider provider = this.controllerManager.getProvider();
 
         String tableNamesQuery = "SELECT TABLE_NAME FROM USER_TABLES";
@@ -61,7 +61,6 @@ public class SchemaVerifier {
             }
         }
 
-        // TODO: make a query for special table by its name
         String triggersNamesQuery = "SELECT TRIGGER_NAME FROM ALL_TRIGGERS";
         resultSet = provider.getStringsQueryResultSet(triggersNamesQuery, Collections.emptyList());
         while (resultSet.next()) {
@@ -79,6 +78,7 @@ public class SchemaVerifier {
                 this.createdTriggerNames.add(triggerName);
             }
         }
+
 
     }
 

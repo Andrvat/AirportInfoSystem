@@ -1,1 +1,1 @@
-CREATE sequence Employee_Id_SEQ
+CREATE sequence EMPLOYEE_ID_SEQ

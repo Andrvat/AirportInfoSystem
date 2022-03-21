@@ -7,7 +7,6 @@ import view.MainDisplay;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.SQLException;
 
 public class LoginFormButton extends JButton {
     public LoginFormButton(ControllerManager controllerManager, JFrame display) {
@@ -44,7 +43,7 @@ public class LoginFormButton extends JButton {
                 provider.registerDbProvider();
 
                 SchemaVerifier verifier = new SchemaVerifier(controllerManager);
-                verifier.verify();
+                verifier.verifySchema();
 
                 display.setVisible(false);
                 new MainDisplay(controllerManager);
