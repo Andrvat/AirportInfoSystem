@@ -44,6 +44,7 @@ public class SchemaVerifier {
 
 
         String triggerNamesQuery = "SELECT TRIGGER_NAME FROM ALL_TRIGGERS WHERE TABLE_NAME = ?";
+
     }
 
     private List<String> getSchemaTableQueriesFilenames() {
