@@ -100,9 +100,7 @@ public class Ticket extends AbstractComponent {
                 .append(" (");
         for (Field field : Ticket.class.getDeclaredFields()) {
             Annotation[] annotations = field.getDeclaredAnnotations();
-            if (annotations.length == 0) {
-                System.err.println("Field is not a db column");
-            } else {
+            if (annotations.length != 0) {
                 Annotation annotation = annotations[0];
                 if (annotation instanceof DbColumnNumber columnNumber) {
                     query.append(columnNumber.name());
@@ -116,19 +114,17 @@ public class Ticket extends AbstractComponent {
         query.append(") VALUES (");
         for (Field field : Ticket.class.getDeclaredFields()) {
             Annotation[] annotations = field.getDeclaredAnnotations();
-            if (annotations.length == 0) {
-                System.err.println("Field is not a db column");
-                continue;
+            if (annotations.length != 0) {
+                field.setAccessible(true);
+                Object value = field.get(this);
+                Annotation annotation = annotations[0];
+                if (annotation instanceof DbColumnNumber) {
+                    query.append(value);
+                } else if (annotation instanceof DbColumnVarchar) {
+                    query.append("'").append(value).append("'");
+                }
+                query.append(", ");
             }
-            field.setAccessible(true);
-            Object value = field.get(this);
-            Annotation annotation = annotations[0];
-            if (annotation instanceof DbColumnNumber) {
-                query.append(value);
-            } else if (annotation instanceof DbColumnVarchar) {
-                query.append("'").append(value).append("'");
-            }
-            query.append(", ");
         }
         query.delete(query.length() - 2, query.length());
         query.append(")");

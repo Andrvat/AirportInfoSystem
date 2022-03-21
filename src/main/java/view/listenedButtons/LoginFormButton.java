@@ -2,6 +2,7 @@ package view.listenedButtons;
 
 import controller.ControllerManager;
 import dbConnection.OracleDbProvider;
+import sql.SchemaVerifier;
 import view.MainDisplay;
 
 import javax.swing.*;
@@ -41,6 +42,9 @@ public class LoginFormButton extends JButton {
                 provider.setUserLogin(username.getText());
                 provider.setUserPassword(String.valueOf(password.getPassword()));
                 provider.registerDbProvider();
+
+                SchemaVerifier verifier = new SchemaVerifier(controllerManager);
+                verifier.verify();
 
                 display.setVisible(false);
                 new MainDisplay(controllerManager);

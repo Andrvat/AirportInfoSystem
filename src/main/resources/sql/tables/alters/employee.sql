@@ -1,0 +1,2 @@
+ALTER TABLE Employee ADD CONSTRAINT Employee_fk0 FOREIGN KEY (DepartmentId) REFERENCES Department(Id)
+ALTER TABLE Employee ADD CONSTRAINT Employee_fk1 FOREIGN KEY (CrewId) REFERENCES Crew(Id)
