@@ -1,17 +1,19 @@
 package controller;
 
+import annotations.DbColumnBoolean;
 import annotations.DbColumnNumber;
 import annotations.DbColumnVarchar;
 import dbConnection.OracleDbProvider;
 import entities.AbstractComponent;
+import entities.Passenger;
 import entities.Ticket;
 import lombok.Builder;
 import model.DbModel;
+import view.utilities.TableColumnInfo;
+import view.utilities.TableColumnRequestOption;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
 @Builder
@@ -24,17 +26,31 @@ public class ControllerManager {
         return provider;
     }
 
-    public List<String> getTableColumnNames(String tableName) {
+    public List<TableColumnInfo> getTableColumnInfos(String tableName, TableColumnRequestOption option) {
         Class<?> componentClass = this.model.getEntityClassByKey(tableName);
-        List<String> columnNames = new ArrayList<>();
+        List<TableColumnInfo> columnNames = new ArrayList<>();
         for (Field field : componentClass.getDeclaredFields()) {
             Annotation[] annotations = field.getDeclaredAnnotations();
             if (annotations.length != 0) {
                 Annotation annotation = annotations[0];
                 if (annotation instanceof DbColumnNumber dbColumnNumber) {
-                    columnNames.add(dbColumnNumber.name());
+                    if (field.getName().startsWith("id") && TableColumnRequestOption.INSERT.equals(option)) {
+                        continue;
+                    }
+                    columnNames.add(TableColumnInfo.builder()
+                            .name(dbColumnNumber.name())
+                            .typeValue("number")
+                            .build());
                 } else if (annotation instanceof DbColumnVarchar dbColumnVarchar) {
-                    columnNames.add(dbColumnVarchar.name());
+                    columnNames.add(TableColumnInfo.builder()
+                            .name(dbColumnVarchar.name())
+                            .typeValue("varchar")
+                            .build());
+                } else if (annotation instanceof DbColumnBoolean dbColumnBoolean) {
+                    columnNames.add(TableColumnInfo.builder()
+                            .name(dbColumnBoolean.name())
+                            .typeValue("boolean")
+                            .build());
                 }
             }
         }
@@ -54,6 +70,16 @@ public class ControllerManager {
             ticket.setSeatNumber(Integer.valueOf(keyValues.get(Ticket.getSeatNumberAnnotationName())));
 
             ticket.saveValues(this.provider);
+        } else if (component instanceof Passenger) {
+            Passenger passenger = new Passenger();
+            passenger.setSurname(keyValues.get(Passenger.getSurnameAnnotationName()));
+            passenger.setName(keyValues.get(Passenger.getPassengerNameAnnotationName()));
+            passenger.setPatronymic(keyValues.get(Passenger.getPatronymicAnnotationName()));
+            passenger.setPassportNumber(Integer.valueOf(keyValues.get(Passenger.getPassportAnnotationName())));
+            passenger.setInternationalPassportNumber(Integer.valueOf(keyValues.get(Passenger.getInternationalPassportAnnotationName())));
+            passenger.setCustomControlPassed("Y".equals(keyValues.get(Passenger.getCustomControlAnnotationName())));
+
+            passenger.saveValues(this.provider);
         }
     }
 
@@ -75,6 +101,8 @@ public class ControllerManager {
                 .newInstance();
         if (component instanceof Ticket ticket) {
             return ticket.getAllRows(this.provider);
+        } else if (component instanceof Passenger passenger) {
+            return passenger.getAllRows(this.provider);
         }
         return null;
     }

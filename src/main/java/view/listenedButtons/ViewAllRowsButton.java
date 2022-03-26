@@ -2,13 +2,14 @@ package view.listenedButtons;
 
 import controller.ControllerManager;
 import view.utilities.ChooseTableViewer;
-import view.utilities.DisplaysManager;
+import view.utilities.TableColumnInfo;
+import view.utilities.TableColumnRequestOption;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ViewAllRowsButton extends JButton {
     public ViewAllRowsButton(ControllerManager controllerManager) {
@@ -21,7 +22,13 @@ public class ViewAllRowsButton extends JButton {
             }
             String selectedTableName = (String) tableViewer.getComboBox().getSelectedItem();
             try {
-                String[] columnNames = controllerManager.getTableColumnNames(selectedTableName).toArray(new String[0]);
+                List<TableColumnInfo> columnInfos = controllerManager.getTableColumnInfos(
+                        selectedTableName, TableColumnRequestOption.VIEW);
+                List<String> columnNamesList = new ArrayList<>();
+                for (TableColumnInfo info : columnInfos) {
+                    columnNamesList.add(info.getName().replaceAll("_", " "));
+                }
+                String[] columnNames = columnNamesList.toArray(new String[0]);
                 String[][] allRows = controllerManager.getAllRowsValues(selectedTableName);
 
                 JFrame tableDisplay = new JFrame("View all rows");

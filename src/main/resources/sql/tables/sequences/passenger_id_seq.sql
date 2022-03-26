@@ -1,0 +1,1 @@
+CREATE sequence PASSENGER_ID_SEQ

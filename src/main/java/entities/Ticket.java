@@ -143,13 +143,13 @@ public class Ticket extends AbstractComponent {
         ResultSet resultSet = provider.getStringsQueryResultSet(query, Collections.emptyList());
         List<String[]> allRows = new ArrayList<>();
         while (resultSet.next()) {
-            int id = resultSet.getInt(1);
-            String firstName = resultSet.getString(2);
-            String lastName = resultSet.getString(3);
-            String patronymic = resultSet.getString(4);
-            int seatNumber = resultSet.getInt(5);
+            this.idTicket = resultSet.getInt(1);
+            this.firstName = resultSet.getString(2);
+            this.lastName = resultSet.getString(3);
+            this.patronymic = resultSet.getString(4);
+            this.seatNumber = resultSet.getInt(5);
             List<String> row = new ArrayList<>() {{
-                add(String.valueOf(id));
+                add(String.valueOf(idTicket));
                 add(firstName);
                 add(lastName);
                 add(patronymic);

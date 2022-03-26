@@ -2,6 +2,8 @@ package view.listenedButtons;
 
 import controller.ControllerManager;
 import view.utilities.ChooseTableViewer;
+import view.utilities.TableColumnInfo;
+import view.utilities.TableColumnRequestOption;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,12 +20,19 @@ public class InsertDataButton extends JButton {
                 return;
             }
             String selectedTableName = (String) tableViewer.getComboBox().getSelectedItem();
-            List<String> columnsNames = controllerManager.getTableColumnNames(selectedTableName);
+            List<TableColumnInfo> columnsInfos = controllerManager.getTableColumnInfos(
+                    selectedTableName, TableColumnRequestOption.INSERT);
 
             JPanel insertDataPanel = new JPanel(new GridLayout(0, 1));
-            Map<JLabel, JTextField> inputForms = new HashMap<>();
-            for (var name : columnsNames) {
-                inputForms.put(new JLabel(name.replaceAll("_", " ")), new JTextField(""));
+            Map<JLabel, JComponent> inputForms = new HashMap<>();
+            for (var columnInfo : columnsInfos) {
+                JComponent component;
+                if ("boolean".equals(columnInfo.getTypeValue())) {
+                    component = new JCheckBox("");
+                } else {
+                    component = new JTextField("");
+                }
+                inputForms.put(new JLabel(columnInfo.getName().replaceAll("_", " ")), component);
             }
             for (var entry : inputForms.entrySet()) {
                 insertDataPanel.add(entry.getKey());
@@ -39,10 +48,15 @@ public class InsertDataButton extends JButton {
             Map<String, String> enteredValues = new HashMap<>();
             for (var entry : inputForms.entrySet()) {
                 String fieldName = entry.getKey().getText().replaceAll(" ", "_");
-                String input = entry.getValue().getText();
-                if ("".equals(input)) {
-                    JOptionPane.showMessageDialog(null, "Empty field " + fieldName);
-                    return;
+                String input = null;
+                if (entry.getValue() instanceof JTextField textField) {
+                    input = textField.getText();
+                    if ("".equals(input)) {
+                        JOptionPane.showMessageDialog(null, "Empty field " + fieldName);
+                        return;
+                    }
+                } else if (entry.getValue() instanceof JCheckBox checkBox) {
+                    input = (checkBox.isSelected()) ? "Y" : "N";
                 }
                 enteredValues.put(fieldName, input);
             }
