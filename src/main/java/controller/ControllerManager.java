@@ -83,6 +83,23 @@ public class ControllerManager {
         }
     }
 
+    public void deleteTableRowById(String tableName, String idValue) throws Exception {
+        AbstractComponent component = (AbstractComponent) this.model.getEntityClassByKey(tableName)
+                .getConstructor()
+                .newInstance();
+        if (component instanceof Ticket) {
+            Ticket ticket = new Ticket();
+            ticket.setIdTicket(Integer.valueOf(idValue));
+
+            ticket.deleteRowById(this.provider);
+        } else if (component instanceof Passenger) {
+            Passenger passenger = new Passenger();
+            passenger.setIdPassenger(Integer.valueOf(idValue));
+
+            passenger.deleteRowById(this.provider);
+        }
+    }
+
     public String[] getTableNames() {
         HashMap<String, Class<?>> entitiesClasses = this.model.getEntitiesClasses();
         return entitiesClasses.keySet().toArray(new String[0]);

@@ -42,6 +42,10 @@ public class MainMenu extends JPanel {
         menuButtons.add(viewAllRowsButton, gridBagConstraints);
         menuButtons.add(new JLabel(" "), gridBagConstraints);
 
+        JButton deleteByIdButton = new DeleteRowByIdButton(this.controllerManager);
+        menuButtons.add(deleteByIdButton, gridBagConstraints);
+        menuButtons.add(new JLabel(" "), gridBagConstraints);
+
         gridBagConstraints.weighty = 1;
         this.add(menuButtons, gridBagConstraints);
     }

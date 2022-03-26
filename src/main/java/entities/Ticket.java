@@ -159,4 +159,11 @@ public class Ticket extends AbstractComponent {
         }
         return allRows.toArray(new String[0][]);
     }
+
+    @Override
+    public void deleteRowById(OracleDbProvider provider) throws NoSuchFieldException, SQLException {
+        String query = "DELETE FROM " + Ticket.class.getAnnotation(DbTable.class).name()
+                + " WHERE " + Ticket.getIdTicketAnnotationName() + " = ?";
+        provider.getStringsQueryResultSet(query, Collections.singletonList(String.valueOf(this.idTicket)));
+    }
 }

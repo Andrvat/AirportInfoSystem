@@ -52,11 +52,7 @@ public class OracleDbProvider implements Closeable {
         for (int i = 0; i < parameters.size(); ++i) {
             preparedStatement.setString(i + 1, parameters.get(i));
         }
-        boolean hasResult = preparedStatement.execute();
-        // TODO: is needed throw new action if statement is not accompanied by return result?
-        if (!hasResult) {
-            throw new SQLSyntaxErrorException("Query " + query + " has no result");
-        }
+        preparedStatement.execute();
         return preparedStatement.getResultSet();
     }
 }
