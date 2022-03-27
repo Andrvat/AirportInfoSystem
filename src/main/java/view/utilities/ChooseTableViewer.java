@@ -1,7 +1,5 @@
 package view.utilities;
 
-import controller.ControllerManager;
-
 import javax.swing.*;
 import java.awt.*;
 

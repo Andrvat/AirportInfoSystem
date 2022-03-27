@@ -207,4 +207,51 @@ public class Passenger extends AbstractComponent {
                 + " WHERE " + Passenger.getIdPassengerAnnotationName() + " = ";
         provider.getStringsQueryResultSet(query, Collections.singletonList(String.valueOf(this.idPassenger)));
     }
+
+    @Override
+    public void updateRow(OracleDbProvider provider) throws SQLException, IllegalAccessException, NoSuchFieldException {
+        StringBuilder query = new StringBuilder()
+                .append("UPDATE ")
+                .append(this.getTableName())
+                .append(" SET ");
+
+        for (Field field : Passenger.class.getDeclaredFields()) {
+            Annotation[] annotations = field.getDeclaredAnnotations();
+            if (annotations.length != 0) {
+                field.setAccessible(true);
+                Object value = field.get(this);
+                Annotation annotation = annotations[0];
+                if (annotation instanceof DbColumnNumber dbColumnNumber) {
+                    if (field.getName().startsWith("id")) {
+                        continue;
+                    }
+                    query.append(dbColumnNumber.name())
+                            .append(" = ")
+                            .append(value);
+                } else if (annotation instanceof DbColumnVarchar dbColumnVarchar) {
+                    query.append(dbColumnVarchar.name())
+                            .append(" = ")
+                            .append("'")
+                            .append(value)
+                            .append("'");
+                } else if (annotation instanceof DbColumnBoolean dbColumnBoolean) {
+                    query.append(dbColumnBoolean.name())
+                            .append(" = ")
+                            .append("'")
+                            .append(((Boolean) value) ? "Y" : "N")
+                            .append("'");
+                }
+                query.append(", ");
+            }
+        }
+
+        query.delete(query.length() - 2, query.length());
+        query.append(" WHERE ")
+                .append(Passenger.getIdPassengerAnnotationName())
+                .append(" = ")
+                .append(this.idPassenger);
+
+        Statement statement = provider.getCreatedStatement();
+        statement.execute(query.toString());
+    }
 }

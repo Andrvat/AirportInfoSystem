@@ -1,10 +1,6 @@
 package view.listenedButtons;
 
 import controller.ControllerManager;
-import dbConnection.OracleDbProvider;
-import sql.SchemaVerifier;
-import view.LoginDisplay;
-import view.MainDisplay;
 import view.utilities.ChooseTableViewer;
 
 import javax.swing.*;

@@ -11,6 +11,7 @@ import lombok.Builder;
 import model.DbModel;
 import view.utilities.TableColumnInfo;
 import view.utilities.TableColumnRequestOption;
+import view.utilities.TableRecordBuilder;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -62,24 +63,26 @@ public class ControllerManager {
                 .getConstructor()
                 .newInstance();
         if (component instanceof Ticket) {
-            Ticket ticket = new Ticket();
-            ticket.setIdTicket(Integer.valueOf(keyValues.get(Ticket.getIdTicketAnnotationName())));
-            ticket.setFirstName(keyValues.get(Ticket.getFirstNameAnnotationName()));
-            ticket.setLastName(keyValues.get(Ticket.getLastNameAnnotationName()));
-            ticket.setPatronymic(keyValues.get(Ticket.getPatronymicAnnotationName()));
-            ticket.setSeatNumber(Integer.valueOf(keyValues.get(Ticket.getSeatNumberAnnotationName())));
-
+            Ticket ticket = TableRecordBuilder.buildTicket(keyValues);
             ticket.saveValues(this.provider);
         } else if (component instanceof Passenger) {
-            Passenger passenger = new Passenger();
-            passenger.setSurname(keyValues.get(Passenger.getSurnameAnnotationName()));
-            passenger.setName(keyValues.get(Passenger.getPassengerNameAnnotationName()));
-            passenger.setPatronymic(keyValues.get(Passenger.getPatronymicAnnotationName()));
-            passenger.setPassportNumber(Integer.valueOf(keyValues.get(Passenger.getPassportAnnotationName())));
-            passenger.setInternationalPassportNumber(Integer.valueOf(keyValues.get(Passenger.getInternationalPassportAnnotationName())));
-            passenger.setCustomControlPassed("Y".equals(keyValues.get(Passenger.getCustomControlAnnotationName())));
-
+            Passenger passenger = TableRecordBuilder.buildPassenger(keyValues);
             passenger.saveValues(this.provider);
+        }
+    }
+
+    public void updateTableRecordById(String tableName, Map<String, String> keyValues) throws Exception {
+        AbstractComponent component = (AbstractComponent) this.model.getEntityClassByKey(tableName)
+                .getConstructor()
+                .newInstance();
+        if (component instanceof Ticket) {
+            Ticket ticket = TableRecordBuilder.buildTicket(keyValues);
+            ticket.setIdTicket(Integer.valueOf(keyValues.get(Ticket.getIdTicketAnnotationName())));
+            ticket.updateRow(this.provider);
+        } else if (component instanceof Passenger) {
+            Passenger passenger = TableRecordBuilder.buildPassenger(keyValues);
+            passenger.setIdPassenger(Integer.valueOf(keyValues.get(Passenger.getIdPassengerAnnotationName())));
+            passenger.updateRow(this.provider);
         }
     }
 

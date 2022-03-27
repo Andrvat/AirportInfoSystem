@@ -166,4 +166,9 @@ public class Ticket extends AbstractComponent {
                 + " WHERE " + Ticket.getIdTicketAnnotationName() + " = ?";
         provider.getStringsQueryResultSet(query, Collections.singletonList(String.valueOf(this.idTicket)));
     }
+
+    @Override
+    public void updateRow(OracleDbProvider provider) throws SQLException, IllegalAccessException, NoSuchFieldException {
+        // TODO:
+    }
 }

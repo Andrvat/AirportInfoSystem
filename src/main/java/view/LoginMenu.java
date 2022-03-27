@@ -11,12 +11,7 @@ import java.awt.*;
 
 public class LoginMenu extends JPanel {
 
-    private final ControllerManager controllerManager;
-    private final JFrame parentDisplay;
-
     public LoginMenu(ControllerManager controllerManager, JFrame parentDisplay) {
-        this.parentDisplay = parentDisplay;
-        this.controllerManager = controllerManager;
 
         this.setLayout(new GridBagLayout());
 
@@ -29,7 +24,7 @@ public class LoginMenu extends JPanel {
 
         JPanel menuButtons = new JPanel(new GridBagLayout());
 
-        JButton loginFormButton = new LoginFormButton(this.controllerManager, parentDisplay);
+        JButton loginFormButton = new LoginFormButton(controllerManager, parentDisplay);
         menuButtons.add(loginFormButton, gridBagConstraints);
         menuButtons.add(new JLabel(" "), gridBagConstraints);
 

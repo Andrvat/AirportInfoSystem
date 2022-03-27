@@ -1,6 +1,7 @@
 package view.listenedButtons;
 
 import controller.ControllerManager;
+import view.TableObjectViewForm;
 import view.utilities.ChooseTableViewer;
 import view.utilities.TableColumnInfo;
 import view.utilities.TableColumnRequestOption;
@@ -8,6 +9,8 @@ import view.utilities.TableColumnRequestOption;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +38,20 @@ public class ViewAllRowsButton extends JButton {
 
                 JTable tableView = new JTable(allRows, columnNames);
                 JScrollPane scrollPane = new JScrollPane(tableView);
+
+                tableView.setEnabled(false);
+                tableView.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (e.getClickCount() == 2) {
+                            int row = tableView.rowAtPoint(e.getPoint());
+                            if (row >= 0) {
+                                String[] objectValues = allRows[row];
+                                new TableObjectViewForm(controllerManager, selectedTableName, columnNames, objectValues);
+                            }
+                        }
+                    }
+                });
 
                 tableDisplay.getContentPane().add(scrollPane);
                 tableDisplay.setPreferredSize(new Dimension(600, 300));
