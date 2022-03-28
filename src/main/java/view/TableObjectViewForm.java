@@ -2,6 +2,7 @@ package view;
 
 import controller.ControllerManager;
 import jdk.net.UnixDomainPrincipal;
+import view.listenedButtons.DeleteRowByIdButton;
 import view.listenedButtons.UpdateRowButton;
 
 import javax.swing.*;
@@ -32,13 +33,14 @@ public class TableObjectViewForm extends JFrame {
             columnLabels.add(new JLabel("<HTML><span style='font-size:10px'>" + columns[i] + "</span></HTML>"));
         }
 
-        JButton deleteRowButton = new JButton("Delete");
+        Map.Entry<String, String> primaryKey = new AbstractMap.SimpleEntry<>(columns[0], values[0]);
+        JButton deleteRowButton = new DeleteRowByIdButton(controllerManager, tableName,
+                primaryKey.getValue(), this);
         JButton updateRowButton = new UpdateRowButton(
                 controllerManager, tableName,
                 IntStream.range(0, Arrays.asList(columns).size()).boxed()
                         .collect(Collectors.toMap(Arrays.asList(columns)::get, Arrays.asList(values)::get)),
-                new AbstractMap.SimpleEntry<>(columns[0], values[0]),
-                this);
+                primaryKey, this);
 
         JPanel fields = new JPanel(new GridBagLayout());
 

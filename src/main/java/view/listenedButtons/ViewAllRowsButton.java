@@ -7,7 +7,6 @@ import view.utilities.TableColumnInfo;
 import view.utilities.TableColumnRequestOption;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
