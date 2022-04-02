@@ -5,5 +5,6 @@ CREATE TABLE PILOT
     professional_aptitude CHAR(1) CHECK (professional_aptitude IN ('N', 'Y')) NOT NULL,
     flight_hours          INT                                                 NOT NULL,
     eng_level_id          INT                                                 NOT NULL,
-    constraint PILOT_PK PRIMARY KEY (pilot_id)
+    constraint PILOT_PK PRIMARY KEY (pilot_id),
+    constraint check_pilot_flight_hours CHECK ( flight_hours >= 0)
 )
