@@ -1,0 +1,1 @@
+CREATE sequence SPECIALTY_ID_SEQ

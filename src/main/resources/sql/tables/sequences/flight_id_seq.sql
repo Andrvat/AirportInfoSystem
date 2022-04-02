@@ -1,0 +1,1 @@
+CREATE sequence FLIGHT_FLIGHT_ID_SEQ
