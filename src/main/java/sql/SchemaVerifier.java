@@ -79,6 +79,8 @@ public class SchemaVerifier {
             }
         }
 
+        // TODO: single responsibility for each code block (make corresponding methods in current class)
+        // TODO: check alters folder for schema tables
 
     }
 
