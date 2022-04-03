@@ -2,14 +2,16 @@ package entities;
 
 import annotations.*;
 import dbConnection.OracleDbProvider;
+import model.support.TimeCalendar;
 
+import java.awt.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.sql.Time;
+import java.util.*;
 import java.util.List;
 
 @DbTable(name = "PASSENGER")
@@ -34,6 +36,9 @@ public class Passenger extends AbstractComponent {
 
     @DbColumnBoolean(name = "custom_control", constrains = @DbConstrains())
     private Boolean isCustomControlPassed;
+
+    @DbColumnDate(name = "birth_date", constrains = @DbConstrains(isAllowedNull = false))
+    private TimeCalendar birthDate;
 
     public Passenger() {
         super(Passenger.class.getAnnotation(DbTable.class).name());
@@ -95,6 +100,14 @@ public class Passenger extends AbstractComponent {
         isCustomControlPassed = customControlPassed;
     }
 
+    public TimeCalendar getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(TimeCalendar birthDate) {
+        this.birthDate = birthDate;
+    }
+
     public static String getIdPassengerAnnotationName() throws NoSuchFieldException {
         return Passenger.class.getDeclaredField("idPassenger").getAnnotation(DbColumnNumber.class).name();
     }
@@ -123,6 +136,9 @@ public class Passenger extends AbstractComponent {
         return Passenger.class.getDeclaredField("isCustomControlPassed").getAnnotation(DbColumnBoolean.class).name();
     }
 
+    public static String getBirthDateAnnotationName() throws NoSuchFieldException {
+        return Passenger.class.getDeclaredField("birthDate").getAnnotation(DbColumnDate.class).name();
+    }
 
     @Override
     public void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException {
@@ -143,6 +159,8 @@ public class Passenger extends AbstractComponent {
                     query.append(columnVarchar.name());
                 } else if (annotation instanceof DbColumnBoolean columnBoolean) {
                     query.append(columnBoolean.name());
+                } else if (annotation instanceof DbColumnDate columnDate) {
+                    query.append(columnDate.name());
                 }
                 query.append(", ");
             }
@@ -164,6 +182,8 @@ public class Passenger extends AbstractComponent {
                     query.append("'").append(value).append("'");
                 } else if (annotation instanceof DbColumnBoolean) {
                     query.append("'").append(((Boolean) value) ? "Y" : "N").append("'");
+                } else if (annotation instanceof DbColumnDate) {
+                    query.append(((TimeCalendar) value).toSqlStringDate());
                 }
                 query.append(", ");
             }
@@ -188,6 +208,7 @@ public class Passenger extends AbstractComponent {
             this.passportNumber = resultSet.getInt(5);
             this.internationalPassportNumber = resultSet.getInt(6);
             this.isCustomControlPassed = "Y".equals(resultSet.getString(7));
+            this.birthDate = new TimeCalendar(resultSet.getDate(8));
             List<String> row = new ArrayList<>() {{
                 add(String.valueOf(idPassenger));
                 add(surname);
@@ -196,6 +217,7 @@ public class Passenger extends AbstractComponent {
                 add(String.valueOf(passportNumber));
                 add(String.valueOf(internationalPassportNumber));
                 add(String.valueOf(isCustomControlPassed));
+                add(birthDate.toString());
             }};
             allRows.add(row.toArray(new String[0]));
         }
@@ -240,6 +262,9 @@ public class Passenger extends AbstractComponent {
                             .append("'")
                             .append(((Boolean) value) ? "Y" : "N")
                             .append("'");
+                } else if (annotation instanceof DbColumnDate dbColumnDate) {
+                    query.append(dbColumnDate.name())
+                            .append(((TimeCalendar) value).toSqlStringDate());
                 }
                 query.append(", ");
             }

@@ -1,6 +1,10 @@
 package view.listenedButtons;
 
 import controller.ControllerManager;
+import model.support.TimeCalendar;
+import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
+import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
+import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import view.utilities.ChooseTableViewer;
 import view.utilities.TableColumnInfo;
 import view.utilities.TableColumnRequestOption;
@@ -24,19 +28,20 @@ public class InsertDataButton extends JButton {
                     selectedTableName, TableColumnRequestOption.INSERT);
 
             JPanel insertDataPanel = new JPanel(new GridLayout(0, 1));
+
             Map<JLabel, JComponent> inputForms = new HashMap<>();
             for (var columnInfo : columnsInfos) {
-                JComponent component;
+                String columnName = columnInfo.getName().replaceAll("_", " ");
                 if ("boolean".equals(columnInfo.getTypeValue())) {
-                    component = new JCheckBox("");
+                    inputForms.put(new JLabel(columnName), new JCheckBox(""));
                 } else {
-                    component = new JTextField("");
+                    inputForms.put(new JLabel(columnName), new JTextField(""));
                 }
-                inputForms.put(new JLabel(columnInfo.getName().replaceAll("_", " ")), component);
             }
             for (var entry : inputForms.entrySet()) {
                 insertDataPanel.add(entry.getKey());
                 insertDataPanel.add(entry.getValue());
+
             }
 
             int result = JOptionPane.showConfirmDialog(null, insertDataPanel, this.getText(),

@@ -1,6 +1,7 @@
 package controller;
 
 import annotations.DbColumnBoolean;
+import annotations.DbColumnDate;
 import annotations.DbColumnNumber;
 import annotations.DbColumnVarchar;
 import dbConnection.OracleDbProvider;
@@ -51,6 +52,11 @@ public class ControllerManager {
                     columnNames.add(TableColumnInfo.builder()
                             .name(dbColumnBoolean.name())
                             .typeValue("boolean")
+                            .build());
+                } else if (annotation instanceof DbColumnDate dbColumnDate) {
+                    columnNames.add(TableColumnInfo.builder()
+                            .name(dbColumnDate.name())
+                            .typeValue("date")
                             .build());
                 }
             }

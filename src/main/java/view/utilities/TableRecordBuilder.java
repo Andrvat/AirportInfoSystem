@@ -2,11 +2,13 @@ package view.utilities;
 
 import entities.Passenger;
 import entities.Ticket;
+import model.support.TimeCalendar;
 
+import java.text.ParseException;
 import java.util.Map;
 
 public class TableRecordBuilder {
-    public static Passenger buildPassenger(Map<String, String> keyValues) throws NoSuchFieldException {
+    public static Passenger buildPassenger(Map<String, String> keyValues) throws NoSuchFieldException, ParseException {
         Passenger passenger = new Passenger();
         passenger.setSurname(keyValues.get(Passenger.getSurnameAnnotationName()));
         passenger.setName(keyValues.get(Passenger.getPassengerNameAnnotationName()));
@@ -14,7 +16,7 @@ public class TableRecordBuilder {
         passenger.setPassportNumber(Integer.valueOf(keyValues.get(Passenger.getPassportAnnotationName())));
         passenger.setInternationalPassportNumber(Integer.valueOf(keyValues.get(Passenger.getInternationalPassportAnnotationName())));
         passenger.setCustomControlPassed("Y".equals(keyValues.get(Passenger.getCustomControlAnnotationName())));
-
+        passenger.setBirthDate(new TimeCalendar(keyValues.get(Passenger.getBirthDateAnnotationName())));
         return passenger;
     }
 

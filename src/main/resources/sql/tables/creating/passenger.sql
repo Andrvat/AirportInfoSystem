@@ -7,6 +7,7 @@ CREATE TABLE PASSENGER
     passport               INT UNIQUE         NOT NULL,
     international_passport INT UNIQUE,
     custom_control         CHAR(1) CHECK (custom_control IN ('N', 'Y')),
+    birth_date             DATE               NOT NULL,
     constraint PASSENGER_PK PRIMARY KEY (passenger_id),
     constraint check_passenger_passport CHECK ( passport > 0),
     constraint check_passenger_international_passport CHECK ( international_passport > 0)
