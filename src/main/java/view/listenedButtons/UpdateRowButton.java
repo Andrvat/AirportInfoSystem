@@ -2,6 +2,7 @@ package view.listenedButtons;
 
 import controller.ControllerManager;
 import javassist.compiler.ast.Pair;
+import model.support.TimeCalendar;
 import view.utilities.ChooseTableViewer;
 import view.utilities.TableColumnInfo;
 import view.utilities.TableColumnRequestOption;
@@ -37,6 +38,12 @@ public class UpdateRowButton extends JButton {
                 updateDataPanel.add(entry.getValue());
             }
 
+            JLabel caution = new JLabel("<html><center>" +
+                    "When filling in values of the \"DATE\" type, use the format" +
+                    "<br><br>" +
+                    TimeCalendar.JAVA_DATE_FORMAT);
+            caution.setHorizontalAlignment(SwingConstants.CENTER);
+            JOptionPane.showMessageDialog(null, caution, "Caution", JOptionPane.INFORMATION_MESSAGE);
             int result = JOptionPane.showConfirmDialog(null, updateDataPanel, this.getText(),
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (result != JOptionPane.OK_OPTION) {

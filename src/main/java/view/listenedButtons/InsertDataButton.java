@@ -44,6 +44,12 @@ public class InsertDataButton extends JButton {
 
             }
 
+            JLabel caution = new JLabel("<html><center>" +
+                    "When filling in values of the \"DATE\" type, use the format" +
+                    "<br><br>" +
+                    TimeCalendar.JAVA_DATE_FORMAT);
+            caution.setHorizontalAlignment(SwingConstants.CENTER);
+            JOptionPane.showMessageDialog(null, caution, "Caution", JOptionPane.INFORMATION_MESSAGE);
             int result = JOptionPane.showConfirmDialog(null, insertDataPanel, this.getText(),
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (result != JOptionPane.OK_OPTION) {
