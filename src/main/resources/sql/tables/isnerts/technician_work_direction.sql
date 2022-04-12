@@ -1,0 +1,4 @@
+INSERT ALL
+    INTO TECHNICIAN_WORK_DIRECTION (direction_name) VALUES ('Mechanics')
+    INTO TECHNICIAN_WORK_DIRECTION (direction_name) VALUES ('Electronics')
+SELECT 1 FROM DUAL;

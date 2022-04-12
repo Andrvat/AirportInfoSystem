@@ -31,10 +31,10 @@ public class SchemaVerifier {
             this.createdTableNames.add(resultSet.getString(1));
         }
         List<String> schemaTableQueriesFilenames = this.getSchemaQueriesFilenames(
-                "src/main/resources/sql/tables/creating");
+                "src/main/resources/sql/tables/creates");
         for (var tableQueryFilename : schemaTableQueriesFilenames) {
             String tableName = tableQueryFilename.substring(0, tableQueryFilename.length() - 4).toUpperCase(Locale.ROOT);
-            String queriesPath = "src/main/resources/sql/tables/creating/";
+            String queriesPath = "src/main/resources/sql/tables/creates/";
             if (!this.createdTableNames.contains(tableName)) {
                 String sqlQuery = Files.readString(Paths.get(queriesPath + tableQueryFilename))
                         .replaceAll("\n", " ");
