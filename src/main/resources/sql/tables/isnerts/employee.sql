@@ -58,4 +58,13 @@ INSERT ALL
         VALUES ('Antonova', 'Tatyana', 'Dmitrievna', 'N', TO_DATE('2001/10/04', 'yyyy/mm/dd'), 2, TO_DATE('2019/08/22', 'yyyy/mm/dd'), 25000, 0, 1, NULL, 7)
     INTO EMPLOYEE (surname, name, patronymic, sex, birth_date, work_experience, employment_date, salary, children_number, department_id, crew_id, specialty_id)
         VALUES ('Pronina', 'Valeria', 'Ruslanovna', 'N', TO_DATE('1990/03/10', 'yyyy/mm/dd'), 5, TO_DATE('2015/05/17', 'yyyy/mm/dd'), 29500, 0, 1, NULL, 7)
+    -- Service persons
+    INTO EMPLOYEE (surname, name, patronymic, sex, birth_date, work_experience, employment_date, salary, children_number, department_id, crew_id, specialty_id)
+    VALUES ('Pegasova', 'Ekaterina', 'Olegovna', 'N', TO_DATE('2000/05/04', 'yyyy/mm/dd'), 5, TO_DATE('2013/07/02', 'yyyy/mm/dd'), 30000, 1, 4, 9, 8)
+    INTO EMPLOYEE (surname, name, patronymic, sex, birth_date, work_experience, employment_date, salary, children_number, department_id, crew_id, specialty_id)
+    VALUES ('Palchikova', 'Polina', 'Alexandrovna', 'N', TO_DATE('1999/06/11', 'yyyy/mm/dd'), 7, TO_DATE('2014/04/10', 'yyyy/mm/dd'), 29000, 4, 4, 9, 8)
+    INTO EMPLOYEE (surname, name, patronymic, sex, birth_date, work_experience, employment_date, salary, children_number, department_id, crew_id, specialty_id)
+    VALUES ('Romanova', 'Daria', 'Andreevna', 'N', TO_DATE('1990/11/10', 'yyyy/mm/dd'), 11, TO_DATE('2013/10/19', 'yyyy/mm/dd'), 31200, 6, 4, 10, 8)
+    INTO EMPLOYEE (surname, name, patronymic, sex, birth_date, work_experience, employment_date, salary, children_number, department_id, crew_id, specialty_id)
+    VALUES ('Pauls', 'Anna', 'Ruslanovna', 'N', TO_DATE('1979/04/15', 'yyyy/mm/dd'), 12, TO_DATE('2013/06/05', 'yyyy/mm/dd'), 29000, 2, 4, 10, 8)
 SELECT 1 FROM DUAL;
