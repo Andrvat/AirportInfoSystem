@@ -9,4 +9,4 @@ CREATE TABLE AIRPLANE_MAINTENANCE_HISTORY
     fuel_filled_amount   FLOAT                                              NOT NULL,
     constraint AIRPLANE_MAINTENANCE_HISTORY_PK PRIMARY KEY (record_id),
     constraint check_airplane_fuel_filled_amount CHECK ( fuel_filled_amount >= 0)
-)
+);

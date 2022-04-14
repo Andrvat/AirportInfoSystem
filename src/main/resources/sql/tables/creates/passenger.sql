@@ -9,4 +9,4 @@ CREATE TABLE PASSENGER
     custom_control         CHAR(1) CHECK (custom_control IN ('N', 'Y')),
     birth_date             DATE                      NOT NULL,
     constraint PASSENGER_PK PRIMARY KEY (passenger_id)
-)
+);

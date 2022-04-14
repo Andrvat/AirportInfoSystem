@@ -17,4 +17,4 @@ CREATE TABLE EMPLOYEE
     constraint check_employee_work_experience CHECK ( work_experience >= 0),
     constraint check_employee_salary CHECK ( salary >= 0),
     constraint check_employee_children_number CHECK ( children_number >= 0)
-)
+);

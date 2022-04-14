@@ -8,4 +8,4 @@ CREATE TABLE TICKET
     constraint TICKET_PK PRIMARY KEY (departure_id, seat),
     constraint check_ticket_seat CHECK ( seat > 0),
     constraint check_bag_max_capacity CHECK ( bag_max_capacity >= 0)
-)
+);

@@ -12,4 +12,4 @@ CREATE TABLE FLIGHT
     constraint FLIGHT_PK PRIMARY KEY (flight_id),
     constraint check_flight_ticket_price CHECK ( ticket_price >= 0),
     constraint check_flight_min_passengers_number CHECK ( min_passengers_number >= 0)
-)
+);

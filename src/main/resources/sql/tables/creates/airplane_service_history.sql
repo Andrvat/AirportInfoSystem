@@ -6,4 +6,4 @@ CREATE TABLE AIRPLANE_SERVICE_HISTORY
     products_stock_refilling CHAR(1) CHECK (products_stock_refilling IN ('N', 'Y')) NOT NULL,
     service_date             DATE                                                   NOT NULL,
     constraint AIRPLANE_SERVICE_HISTORY_PK PRIMARY KEY (record_id)
-)
+);

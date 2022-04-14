@@ -7,4 +7,4 @@ CREATE TABLE TICKET_STATUS_HISTORY
     record_formation_date DATE NOT NULL,
     constraint TICKET_STATUS_HISTORY_PK PRIMARY KEY (record_id),
     constraint check_ticket_status_history_seat CHECK ( seat > 0)
-)
+);

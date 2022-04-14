@@ -8,4 +8,4 @@ CREATE TABLE LOCALITY
     constraint LOCALITY_PK PRIMARY KEY (locality_id),
     constraint check_locality_time_zone CHECK ( time_zone BETWEEN -12 AND 12)
 
-)
+);
