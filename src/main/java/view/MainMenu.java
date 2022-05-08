@@ -32,8 +32,8 @@ public class MainMenu extends JPanel {
         menuButtons.add(insertDataButton, gridBagConstraints);
         menuButtons.add(new JLabel(" "), gridBagConstraints);
 
-        JButton viewAllRowsButton = new ViewAllRowsButton(controllerManager);
-        menuButtons.add(viewAllRowsButton, gridBagConstraints);
+        JButton manageTablesButton = new ManageTablesButton(controllerManager);
+        menuButtons.add(manageTablesButton, gridBagConstraints);
         menuButtons.add(new JLabel(" "), gridBagConstraints);
 
         gridBagConstraints.weighty = 1;

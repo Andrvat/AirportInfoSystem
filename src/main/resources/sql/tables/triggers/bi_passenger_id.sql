@@ -1,7 +1,7 @@
-CREATE trigger BI_PASSENGER_PASSENGER_ID
+CREATE trigger BI_PASSENGER_ID
     before insert
     on PASSENGER
     for each row
 begin
-    select PASSENGER_PASSENGER_ID_SEQ.nextval into :NEW.passenger_id from dual;
+    select PASSENGER_ID_SEQ.nextval into :NEW.passenger_id from dual;
 end

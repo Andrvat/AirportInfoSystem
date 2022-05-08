@@ -1,4 +1,4 @@
-CREATE TABLE SPECIALTY
+CREATE TABLE SPECIALIZATION
 (
     specialty_id   INT                       NOT NULL,
     specialty_name VARCHAR2(255 CHAR) UNIQUE NOT NULL,

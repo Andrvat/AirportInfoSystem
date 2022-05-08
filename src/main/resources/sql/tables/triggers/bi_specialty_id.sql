@@ -1,7 +1,7 @@
-CREATE trigger BI_SPECIALTY_SPECIALTY_ID
+CREATE trigger BI_SPECIALTY_ID
     before insert
-    on SPECIALTY
+    on SPECIALIZATION
     for each row
 begin
-    select SPECIALTY_SPECIALTY_ID_SEQ.nextval into :NEW.specialty_id from dual;
+    select SPECIALTY_ID_SEQ.nextval into :NEW.specialty_id from dual;
 end

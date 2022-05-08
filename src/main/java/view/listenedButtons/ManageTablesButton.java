@@ -13,9 +13,9 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewAllRowsButton extends JButton {
-    public ViewAllRowsButton(ControllerManager controllerManager) {
-        this.setText("View all rows");
+public class ManageTablesButton extends JButton {
+    public ManageTablesButton(ControllerManager controllerManager) {
+        this.setText("Manage tables");
         this.addActionListener(event -> {
             ChooseTableViewer tableViewer = new ChooseTableViewer(controllerManager.getTableNames());
             int choosingResult = tableViewer.showChoosingTableView();

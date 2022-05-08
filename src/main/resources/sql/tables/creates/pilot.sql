@@ -6,5 +6,5 @@ CREATE TABLE PILOT
     flight_hours          INT                                                 NOT NULL,
     eng_level_id          VARCHAR(2 CHAR)                                     NOT NULL,
     constraint PILOT_PK PRIMARY KEY (pilot_id),
-    constraint check_pilot_flight_hours CHECK ( flight_hours >= 0)
+    constraint CHECK_PILOT_FLIGHT_HOURS CHECK ( flight_hours >= 0)
 );
