@@ -4,4 +4,4 @@ CREATE trigger BI_MAINTENANCE_TYPE_ID
     for each row
 begin
     select MAINTENANCE_TYPE_ID_SEQ.nextval into :NEW.maintenance_type_id from dual;
-end
+end;

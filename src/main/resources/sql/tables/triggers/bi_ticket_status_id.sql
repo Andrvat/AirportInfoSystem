@@ -4,4 +4,4 @@ CREATE trigger BI_TICKET_STATUS_ID
     for each row
 begin
     select TICKET_STATUS_ID_SEQ.nextval into :NEW.ticket_status_id from dual;
-end
+end;

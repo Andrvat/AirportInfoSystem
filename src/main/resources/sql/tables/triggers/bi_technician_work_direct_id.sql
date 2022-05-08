@@ -4,4 +4,4 @@ CREATE trigger BI_TECHNICIAN_WORK_DIRECT_ID
     for each row
 begin
     select TECHNICIAN_WORK_DIRECT_ID_SEQ.nextval into :NEW.work_direction_id from dual;
-end
+end;

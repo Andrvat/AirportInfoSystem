@@ -12,9 +12,19 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class SchemaVerifier {
+
+    private enum ObjectTypes {
+        ALTER,
+        CREATE,
+        INSERT,
+        SEQUENCE,
+        TRIGGER
+    }
+
     private final List<String> createdTableNames = new ArrayList<>();
     private final List<String> createdSequenceNames = new ArrayList<>();
     private final List<String> createdTriggerNames = new ArrayList<>();
+    private final Map<String, String> createdConstrainsNames = new HashMap<>();
 
     private final ControllerManager controllerManager;
 
@@ -24,64 +34,114 @@ public class SchemaVerifier {
 
     public void verifySchema() throws SQLException, IOException {
         OracleDbProvider provider = this.controllerManager.getProvider();
+        this.verifyTables(provider);
+        provider.commitChanges();
+        this.verifyConstraints(provider);
+        provider.commitChanges();
+        this.verifySequences(provider);
+        provider.commitChanges();
+        this.verifyTriggers(provider);
+        provider.commitChanges();
+    }
 
-        String tableNamesQuery = "SELECT TABLE_NAME FROM USER_TABLES";
-        ResultSet resultSet = provider.getStringsQueryResultSet(tableNamesQuery, Collections.emptyList());
-        while (resultSet.next()) {
-            this.createdTableNames.add(resultSet.getString(1));
-        }
-        List<String> schemaTableQueriesFilenames = this.getSchemaQueriesFilenames(
-                "src/main/resources/sql/tables/creates");
-        for (var tableQueryFilename : schemaTableQueriesFilenames) {
-            String tableName = tableQueryFilename.substring(0, tableQueryFilename.length() - 4).toUpperCase(Locale.ROOT);
-            String queriesPath = "src/main/resources/sql/tables/creates/";
-            if (!this.createdTableNames.contains(tableName)) {
-                String sqlQuery = Files.readString(Paths.get(queriesPath + tableQueryFilename))
-                        .replaceAll("\n", " ");
-                provider.getCreatedStatement().execute(sqlQuery);
-                this.createdTableNames.add(tableName);
+    private void verifyTables(OracleDbProvider provider) throws SQLException, IOException {
+        this.verifyDatabaseObjects(provider,
+                "SELECT TABLE_NAME FROM USER_TABLES",
+                this.createdTableNames,
+                "src/main/resources/sql/tables/creates",
+                ObjectTypes.CREATE);
+    }
+
+    private void verifySequences(OracleDbProvider provider) throws SQLException, IOException {
+        this.verifyDatabaseObjects(provider,
+                "SELECT SEQUENCE_NAME FROM USER_SEQUENCES",
+                this.createdSequenceNames,
+                "src/main/resources/sql/tables/sequences",
+                ObjectTypes.SEQUENCE);
+    }
+
+    private void verifyTriggers(OracleDbProvider provider) throws SQLException, IOException {
+        this.verifyDatabaseObjects(provider,
+                "SELECT TRIGGER_NAME FROM USER_TRIGGERS",
+                this.createdTriggerNames,
+                "src/main/resources/sql/tables/triggers",
+                ObjectTypes.TRIGGER);
+    }
+
+    private void verifyConstraints(OracleDbProvider provider) throws SQLException, IOException {
+        for (String name : this.createdTableNames) {
+            ResultSet resultSet = provider.getStringsQueryResultSet(
+                    "SELECT CONSTRAINT_NAME " +
+                            "FROM USER_CONS_COLUMNS " +
+                            "WHERE TABLE_NAME = " + "'" + name + "'",
+                    Collections.emptyList());
+            while (resultSet.next()) {
+                String constraint = resultSet.getString(1);
+                this.createdConstrainsNames.put(constraint, name);
             }
         }
 
-        String sequenceNamesQuery = "SELECT SEQUENCE_NAME FROM ALL_SEQUENCES";
-        resultSet = provider.getStringsQueryResultSet(sequenceNamesQuery, Collections.emptyList());
-        while (resultSet.next()) {
-            this.createdSequenceNames.add(resultSet.getString(1));
-        }
-        List<String> schemaSequenceQueriesFilenames = this.getSchemaQueriesFilenames(
-                "src/main/resources/sql/tables/sequences");
-        for (var sequenceQueryFilename : schemaSequenceQueriesFilenames) {
-            String sequenceName = sequenceQueryFilename.substring(0, sequenceQueryFilename.length() - 4).toUpperCase(Locale.ROOT);
-            String queriesPath = "src/main/resources/sql/tables/sequences/";
-            if (!this.createdSequenceNames.contains(sequenceName)) {
-                String sqlQuery = Files.readString(Paths.get(queriesPath + sequenceQueryFilename))
-                        .replaceAll("\n", " ");
-                provider.getCreatedStatement().execute(sqlQuery);
-                this.createdSequenceNames.add(sequenceName);
+        Map<String, String> requiredConstraintsNames = new HashMap<>();
+        String sourcePath = "src/main/resources/sql/tables/alters";
+        List<String> schemaQueriesFilenames = this.getSchemaQueriesFilenames(sourcePath);
+        for (var queryFilename : schemaQueriesFilenames) {
+            String queriesPath = sourcePath + "/";
+            String sqlQuery = Files.readString(Paths.get(queriesPath + queryFilename))
+                    .replaceAll("\n", " ")
+                    .trim().replaceAll(" +", " ");
+            var allQueryWords = new LinkedList<>(Arrays.asList(sqlQuery.split(" ")));
+            int matchPosition = allQueryWords.indexOf("CONSTRAINT");
+            while (matchPosition != -1) {
+                requiredConstraintsNames.put(allQueryWords.get(matchPosition + 1).toUpperCase(Locale.ROOT), queryFilename);
+                allQueryWords.remove(matchPosition);
+                matchPosition = allQueryWords.indexOf("CONSTRAINT");
             }
         }
 
-        String triggersNamesQuery = "SELECT TRIGGER_NAME FROM ALL_TRIGGERS";
-        resultSet = provider.getStringsQueryResultSet(triggersNamesQuery, Collections.emptyList());
-        while (resultSet.next()) {
-            this.createdTriggerNames.add(resultSet.getString(1));
-        }
-        List<String> schemaTriggerQueriesFilenames = this.getSchemaQueriesFilenames(
-                "src/main/resources/sql/tables/triggers");
-        for (var triggerQueryFilename : schemaTriggerQueriesFilenames) {
-            String triggerName = triggerQueryFilename.substring(0, triggerQueryFilename.length() - 4).toUpperCase(Locale.ROOT);
-            String queriesPath = "src/main/resources/sql/tables/triggers/";
-            if (!this.createdTriggerNames.contains(triggerName)) {
-                String sqlQuery = Files.readString(Paths.get(queriesPath + triggerQueryFilename))
+        for (var constraintName : requiredConstraintsNames.entrySet()) {
+            String queriesPath = sourcePath + "/";
+            String name = constraintName.getKey();
+            String table = constraintName.getValue();
+            if (!this.createdConstrainsNames.containsKey(name)) {
+                String sqlQuery = Files.readString(Paths.get(queriesPath + table))
                         .replaceAll("\n", " ");
-                provider.getCreatedStatement().execute(sqlQuery);
-                this.createdTriggerNames.add(triggerName);
+                var queries = sqlQuery.split(";");
+                for (var query : queries) {
+                    if (query.contains(name)) {
+                        if (query.charAt(query.length() - 1) == ';') {
+                            query = query.substring(0, query.length() - 1);
+                        }
+                        provider.getCreatedStatement().execute(query.trim().replaceAll(" +", " "));
+                        this.createdConstrainsNames.put(name, table.substring(table.length() - 4).toUpperCase(Locale.ROOT));
+                    }
+                }
             }
         }
+    }
 
-        // TODO: single responsibility for each code block (make corresponding methods in current class)
-        // TODO: check alters folder for schema tables
-
+    private void verifyDatabaseObjects(OracleDbProvider provider,
+                                       String knowQuery,
+                                       List<String> createdObjects,
+                                       String sourcePath,
+                                       ObjectTypes type) throws SQLException, IOException {
+        ResultSet resultSet = provider.getStringsQueryResultSet(knowQuery, Collections.emptyList());
+        while (resultSet.next()) {
+            createdObjects.add(resultSet.getString(1));
+        }
+        List<String> schemaQueriesFilenames = this.getSchemaQueriesFilenames(sourcePath);
+        for (var queryFilename : schemaQueriesFilenames) {
+            String objectName = queryFilename.substring(0, queryFilename.length() - 4).toUpperCase(Locale.ROOT);
+            String queriesPath = sourcePath + "/";
+            if (!createdObjects.contains(objectName)) {
+                String sqlQuery = Files.readString(Paths.get(queriesPath + queryFilename))
+                        .replaceAll("\n", " ").trim().replaceAll(" +", " ");
+                if (sqlQuery.charAt(sqlQuery.length() - 1) == ';' && !type.equals(ObjectTypes.TRIGGER)) {
+                    sqlQuery = sqlQuery.substring(0, sqlQuery.length() - 1);
+                }
+                provider.getCreatedStatement().execute(sqlQuery);
+                createdObjects.add(objectName);
+            }
+        }
     }
 
     private List<String> getSchemaQueriesFilenames(String path) {

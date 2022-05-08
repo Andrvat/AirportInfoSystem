@@ -33,6 +33,11 @@ public class OracleDbProvider implements Closeable {
 
         DriverManager.registerDriver(new OracleDriver());
         this.connection = DriverManager.getConnection(this.dbUrl, this.userLogin, this.userPassword);
+        this.connection.setAutoCommit(false); // TODO: ATTENTION!!!
+    }
+
+    public void commitChanges() throws SQLException {
+        this.connection.commit();
     }
 
     @Override

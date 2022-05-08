@@ -4,4 +4,4 @@ CREATE trigger BI_AIRLINE_ID
     for each row
 begin
     select AIRLINE_ID_SEQ.nextval into :NEW.airline_id from dual;
-end
+end;
