@@ -8,6 +8,7 @@ import dbConnection.OracleDbProvider;
 import org.apache.log4j.chainsaw.Main;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
 @DbTable(name = "MAINTENANCE_TYPE")
 public class MaintenanceType extends AbstractComponent {
@@ -62,6 +63,9 @@ public class MaintenanceType extends AbstractComponent {
 
     @Override
     public void updateRow(OracleDbProvider provider) throws SQLException, IllegalAccessException, NoSuchFieldException {
-
+        AbstractComponent.updateTo(MaintenanceType.class, this, provider, this.getTableName(),
+                new HashMap<>() {{
+                    put(MaintenanceType.getIdMaintenanceTypeAnnotationName(), String.valueOf(idMaintenanceType));
+                }});
     }
 }

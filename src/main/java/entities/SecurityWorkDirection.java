@@ -7,6 +7,7 @@ import annotations.DbTable;
 import dbConnection.OracleDbProvider;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
 @DbTable(name = "SECURITY_WORK_DIRECTION")
 public class SecurityWorkDirection extends AbstractComponent {
@@ -61,6 +62,9 @@ public class SecurityWorkDirection extends AbstractComponent {
 
     @Override
     public void updateRow(OracleDbProvider provider) throws SQLException, IllegalAccessException, NoSuchFieldException {
-
+        AbstractComponent.updateTo(SecurityWorkDirection.class, this, provider, this.getTableName(),
+                new HashMap<>() {{
+                    put(SecurityOfficer.getIdSecurityOfficerAnnotationName(), String.valueOf(idWorkDirection));
+                }});
     }
 }

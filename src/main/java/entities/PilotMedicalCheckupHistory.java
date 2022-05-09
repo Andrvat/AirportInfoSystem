@@ -5,13 +5,14 @@ import dbConnection.OracleDbProvider;
 import model.support.TimeCalendar;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
-@DbTable(name = "PILOT_MEDICAL_CHECKUP_HISTORY")
+@DbTable(name = "PILOT_MEDICAL_CHECKUP_HISTORY", pkNumber = 2)
 public class PilotMedicalCheckupHistory extends AbstractComponent {
     @DbColumnNumber(name = "pilot_id", constrains = @DbConstrains(isPrimaryKey = true, isAllowedNull = false))
     private Integer idPilot;
 
-    @DbColumnDate(name = "medical_checkup_date", constrains = @DbConstrains(isAllowedNull = false))
+    @DbColumnDate(name = "medical_checkup_date", constrains = @DbConstrains(isPrimaryKey = true, isAllowedNull = false))
     private TimeCalendar medicalCheckupDate;
 
     @DbColumnBoolean(name = "medical_checkup_result", constrains = @DbConstrains(isAllowedNull = false))
@@ -74,6 +75,10 @@ public class PilotMedicalCheckupHistory extends AbstractComponent {
 
     @Override
     public void updateRow(OracleDbProvider provider) throws SQLException, IllegalAccessException, NoSuchFieldException {
-
+        AbstractComponent.updateTo(PilotMedicalCheckupHistory.class, this, provider, this.getTableName(),
+                new HashMap<>() {{
+                    put(PilotMedicalCheckupHistory.getIdPilotAnnotationName(), String.valueOf(idPilot));
+                    put(PilotMedicalCheckupHistory.getMedicalCheckupDateAnnotationName(), String.valueOf(medicalCheckupDate));
+                }});
     }
 }

@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collections;
+import java.util.Map;
 
 public abstract class AbstractComponent {
     private final String tableName;
@@ -90,6 +91,63 @@ public abstract class AbstractComponent {
         query.delete(query.length() - 2, query.length());
         query.append(")");
 
+        Statement statement = provider.getCreatedStatement();
+        statement.execute(query.toString());
+    }
+
+
+    public static <T> void updateTo(Class<T> classType, T instance, OracleDbProvider provider,
+                                    String tableName, Map<String, String> primaryKey) throws SQLException, IllegalAccessException {
+        StringBuilder query = new StringBuilder()
+                .append("UPDATE ")
+                .append(tableName)
+                .append(" SET ");
+        for (Field field : classType.getDeclaredFields()) {
+            Annotation[] annotations = field.getDeclaredAnnotations();
+            if (annotations.length != 0) {
+                field.setAccessible(true);
+                Object value = field.get(instance);
+                Annotation annotation = annotations[0];
+                if (annotation instanceof DbColumnNumber dbColumnNumber) {
+                    if (field.getName().startsWith("id")) {
+                        continue;
+                    }
+                    query.append(dbColumnNumber.name())
+                            .append(" = ")
+                            .append(value);
+                } else if (annotation instanceof DbColumnVarchar dbColumnVarchar) {
+                    query.append(dbColumnVarchar.name())
+                            .append(" = ")
+                            .append("'")
+                            .append(value)
+                            .append("'");
+                } else if (annotation instanceof DbColumnBoolean dbColumnBoolean) {
+                    query.append(dbColumnBoolean.name())
+                            .append(" = ")
+                            .append("'")
+                            .append(((Boolean) value) ? "Y" : "N")
+                            .append("'");
+                } else if (annotation instanceof DbColumnDate dbColumnDate) {
+                    query.append(dbColumnDate.name())
+                            .append(" = ")
+                            .append(((TimeCalendar) value).toSqlStringDate());
+                }
+                query.append(", ");
+            }
+        }
+
+        query.delete(query.length() - 2, query.length());
+        query.append(" WHERE ");
+        int keysNumber = 0;
+        for (var entry : primaryKey.entrySet()) {
+            query.append(entry.getKey())
+                    .append(" = ")
+                    .append(entry.getValue());
+            keysNumber++;
+            if (keysNumber != primaryKey.size()) {
+                query.append(" AND ");
+            }
+        }
         Statement statement = provider.getCreatedStatement();
         statement.execute(query.toString());
     }

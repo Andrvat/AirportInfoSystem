@@ -4,6 +4,7 @@ import annotations.*;
 import dbConnection.OracleDbProvider;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
 @DbTable(name = "LOCATION")
 public class Location extends AbstractComponent {
@@ -103,6 +104,9 @@ public class Location extends AbstractComponent {
 
     @Override
     public void updateRow(OracleDbProvider provider) throws SQLException, IllegalAccessException, NoSuchFieldException {
-
+        AbstractComponent.updateTo(Location.class, this, provider, this.getTableName(),
+                new HashMap<>() {{
+                    put(Location.getIdLocationAnnotationName(), String.valueOf(idLocation));
+                }});
     }
 }

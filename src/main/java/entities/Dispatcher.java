@@ -6,6 +6,7 @@ import annotations.DbTable;
 import dbConnection.OracleDbProvider;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
 @DbTable(name = "DISPATCHER")
 public class Dispatcher extends AbstractComponent {
@@ -60,6 +61,9 @@ public class Dispatcher extends AbstractComponent {
 
     @Override
     public void updateRow(OracleDbProvider provider) throws SQLException, IllegalAccessException, NoSuchFieldException {
-
+        AbstractComponent.updateTo(Dispatcher.class, this, provider, this.getTableName(),
+                new HashMap<>() {{
+                    put(Dispatcher.getIdDispatcherAnnotationName(), String.valueOf(idDispatcher));
+                }});
     }
 }

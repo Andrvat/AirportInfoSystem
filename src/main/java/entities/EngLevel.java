@@ -6,6 +6,8 @@ import annotations.DbTable;
 import dbConnection.OracleDbProvider;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+
 @DbTable(name = "ENG_LEVEL")
 public class EngLevel extends AbstractComponent {
     @DbColumnVarchar(name = "eng_level_id", constrains = @DbConstrains(isPrimaryKey = true, isAllowedNull = false))
@@ -44,6 +46,9 @@ public class EngLevel extends AbstractComponent {
 
     @Override
     public void updateRow(OracleDbProvider provider) throws SQLException, IllegalAccessException, NoSuchFieldException {
-
+        AbstractComponent.updateTo(EngLevel.class, this, provider, this.getTableName(),
+                new HashMap<>() {{
+                    put(EngLevel.getIdEngLevelAnnotationName(), String.valueOf(idEngLevel));
+                }});
     }
 }

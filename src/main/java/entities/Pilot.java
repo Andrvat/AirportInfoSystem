@@ -5,6 +5,7 @@ import dbConnection.OracleDbProvider;
 import model.support.TimeCalendar;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
 @DbTable(name = "PILOT")
 public class Pilot extends AbstractComponent {
@@ -104,6 +105,9 @@ public class Pilot extends AbstractComponent {
 
     @Override
     public void updateRow(OracleDbProvider provider) throws SQLException, IllegalAccessException, NoSuchFieldException {
-
+        AbstractComponent.updateTo(Pilot.class, this, provider, this.getTableName(),
+                new HashMap<>() {{
+                    put(Pilot.getIdPilotAnnotationName(), String.valueOf(idPilot));
+                }});
     }
 }

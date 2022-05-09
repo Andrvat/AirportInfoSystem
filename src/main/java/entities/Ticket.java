@@ -11,10 +11,7 @@ import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @DbTable(name = "TICKET", pkNumber = 2)
 public class Ticket extends AbstractComponent {
@@ -124,6 +121,10 @@ public class Ticket extends AbstractComponent {
 
     @Override
     public void updateRow(OracleDbProvider provider) throws SQLException, IllegalAccessException, NoSuchFieldException {
-        // TODO:
+        AbstractComponent.updateTo(Ticket.class, this, provider, this.getTableName(),
+                new HashMap<>() {{
+                    put(Ticket.getDepartureIdAnnotationName(), String.valueOf(departureId));
+                    put(Ticket.getSeatAnnotationName(), String.valueOf(seat));
+                }});
     }
 }

@@ -8,6 +8,7 @@ import dbConnection.OracleDbProvider;
 import model.support.TimeCalendar;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
 @DbTable(name = "DEPARTURE_STATUS_HISTORY")
 public class DepartureStatusHistory extends AbstractComponent {
@@ -92,6 +93,9 @@ public class DepartureStatusHistory extends AbstractComponent {
 
     @Override
     public void updateRow(OracleDbProvider provider) throws SQLException, IllegalAccessException, NoSuchFieldException {
-
+        AbstractComponent.updateTo(DepartureStatusHistory.class, this, provider, this.getTableName(),
+                new HashMap<>() {{
+                    put(DepartureStatusHistory.getIdRecordAnnotationName(), String.valueOf(idRecord));
+                }});
     }
 }

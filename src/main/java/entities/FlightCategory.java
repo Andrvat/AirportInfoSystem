@@ -7,6 +7,7 @@ import annotations.DbTable;
 import dbConnection.OracleDbProvider;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
 @DbTable(name = "FLIGHT_CATEGORY")
 public class FlightCategory extends AbstractComponent {
@@ -61,6 +62,9 @@ public class FlightCategory extends AbstractComponent {
 
     @Override
     public void updateRow(OracleDbProvider provider) throws SQLException, IllegalAccessException, NoSuchFieldException {
-
+        AbstractComponent.updateTo(FlightCategory.class, this, provider, this.getTableName(),
+                new HashMap<>() {{
+                    put(FlightCategory.getIdFlightCategoryAnnotationName(), String.valueOf(idFlightCategory));
+                }});
     }
 }
