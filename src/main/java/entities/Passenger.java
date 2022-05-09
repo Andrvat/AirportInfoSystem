@@ -26,7 +26,7 @@ public class Passenger extends AbstractComponent {
     @DbColumnVarchar(name = "patronymic", value = 255)
     private String patronymic;
 
-    @DbColumnBoolean(name = "sex")
+    @DbColumnBoolean(name = "sex", constrains = @DbConstrains(isAllowedNull = false))
     private Boolean sex;
     @DbColumnDate(name = "birth_date", constrains = @DbConstrains(isAllowedNull = false))
     private TimeCalendar birthDate;

@@ -15,7 +15,7 @@ public class DeleteRowByIdButton extends JButton {
                 parentView.setVisible(false);
                 String resultMessage = "";
                 try {
-                    controllerManager.deleteTableRowById(tableName, primaryKey);
+                    controllerManager.deleteRowByPrimaryKey(tableName, primaryKey);
                     resultMessage = "Record was successfully deleted";
                 } catch (Exception exception) {
                     resultMessage = exception.getMessage();

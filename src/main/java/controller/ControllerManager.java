@@ -93,7 +93,7 @@ public class ControllerManager {
         this.provider.commitChanges();
     }
 
-    public void deleteTableRowById(String tableName, Map<String, String> primaryKey) throws Exception {
+    public void deleteRowByPrimaryKey(String tableName, Map<String, String> primaryKey) throws Exception {
         AbstractComponent component = (AbstractComponent) this.model.getEntityClassByKey(tableName)
                 .getConstructor()
                 .newInstance();
