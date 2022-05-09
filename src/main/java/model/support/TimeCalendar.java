@@ -35,7 +35,7 @@ public class TimeCalendar {
     @Override
     public String toString() {
         return this.calendar.get(Calendar.YEAR) + "-" +
-                this.calendar.get(Calendar.MONTH) + "-" +
+                (this.calendar.get(Calendar.MONTH) + 1) + "-" +
                 this.calendar.get(Calendar.DAY_OF_MONTH) + " " +
                 this.calendar.get(Calendar.HOUR_OF_DAY) + ":" +
                 this.calendar.get(Calendar.MINUTE) + ":" +

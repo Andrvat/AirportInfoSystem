@@ -9,6 +9,6 @@ CREATE TABLE PASSENGER
     passport               VARCHAR2(20 CHAR) UNIQUE          NOT NULL,
     international_passport VARCHAR2(20 CHAR) UNIQUE,
     custom_control         CHAR(1) CHECK (custom_control IN ('N', 'Y')),
-    cargo                  CHAR(1 CHAR) CHECK (cargo IN ('N', 'Y')),
+    cargo                  CHAR(1) CHECK (cargo IN ('N', 'Y')),
     constraint PASSENGER_PK PRIMARY KEY (passenger_id)
 );

@@ -75,6 +75,7 @@ public class ControllerManager {
             Passenger passenger = TableRecordBuilder.buildPassenger(keyValues);
             passenger.saveValues(this.provider);
         }
+        this.provider.commitChanges();
     }
 
     public void updateTableRecordById(String tableName, Map<String, String> keyValues) throws Exception {
@@ -83,29 +84,30 @@ public class ControllerManager {
                 .newInstance();
         if (component instanceof Ticket) {
             Ticket ticket = TableRecordBuilder.buildTicket(keyValues);
-            ticket.setIdTicket(Integer.valueOf(keyValues.get(Ticket.getIdTicketAnnotationName())));
             ticket.updateRow(this.provider);
         } else if (component instanceof Passenger) {
             Passenger passenger = TableRecordBuilder.buildPassenger(keyValues);
             passenger.setIdPassenger(Integer.valueOf(keyValues.get(Passenger.getIdPassengerAnnotationName())));
             passenger.updateRow(this.provider);
         }
+        this.provider.commitChanges();
     }
 
-    public void deleteTableRowById(String tableName, String idValue) throws Exception {
+    public void deleteTableRowById(String tableName, Map<String, String> primaryKey) throws Exception {
         AbstractComponent component = (AbstractComponent) this.model.getEntityClassByKey(tableName)
                 .getConstructor()
                 .newInstance();
         if (component instanceof Ticket) {
             Ticket ticket = new Ticket();
-            ticket.setIdTicket(Integer.valueOf(idValue));
+            ticket.setDepartureId(Integer.valueOf(primaryKey.get(Ticket.getDepartureIdAnnotationName())));
+            ticket.setSeat(Integer.valueOf(primaryKey.get(Ticket.getSeatAnnotationName())));
 
-            ticket.deleteRowById(this.provider);
+            ticket.deleteRowByPrimaryKey(this.provider);
         } else if (component instanceof Passenger) {
             Passenger passenger = new Passenger();
-            passenger.setIdPassenger(Integer.valueOf(idValue));
+            passenger.setIdPassenger(Integer.valueOf(primaryKey.get(Passenger.getIdPassengerAnnotationName())));
 
-            passenger.deleteRowById(this.provider);
+            passenger.deleteRowByPrimaryKey(this.provider);
         }
     }
 

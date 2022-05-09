@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class UpdateRowButton extends JButton {
     public UpdateRowButton(ControllerManager controllerManager, String tableName,
-                           Map<String, String> existingValues, Map.Entry<String, String> primaryKey, JFrame parentView) {
+                           Map<String, String> existingValues, Map<String, String> primaryKey, JFrame parentView) {
         this.setText("Update");
         this.addActionListener(event -> {
             List<TableColumnInfo> columnsInfos = controllerManager.getTableColumnInfos(
@@ -51,8 +51,7 @@ public class UpdateRowButton extends JButton {
             }
 
             parentView.setVisible(false);
-            Map<String, String> enteredValues = new HashMap<>();
-            enteredValues.put(primaryKey.getKey(), primaryKey.getValue());
+            Map<String, String> enteredValues = new HashMap<>(primaryKey);
             for (var entry : inputForms.entrySet()) {
                 String fieldName = entry.getKey().getText().replaceAll(" ", "_");
                 String input = null;

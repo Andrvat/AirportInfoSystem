@@ -12,89 +12,76 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@DbTable(name = "TICKET")
+@DbTable(name = "TICKET", pkNumber = 2)
 public class Ticket extends AbstractComponent {
-    @DbColumnNumber(name = "ID_TICKET", constrains = @DbConstrains(isPrimaryKey = true, isAllowedNull = false))
-    private Integer idTicket;
+    @DbColumnNumber(name = "departure_id", constrains = @DbConstrains(isPrimaryKey = true, isAllowedNull = false))
+    private Integer departureId;
 
-    @DbColumnVarchar(name = "FIRST_NAME", value = 50, constrains = @DbConstrains(isAllowedNull = false))
-    private String firstName;
+    @DbColumnNumber(name = "seat", constrains = @DbConstrains(isPrimaryKey = true, isAllowedNull = false))
+    private Integer seat;
 
-    @DbColumnVarchar(name = "LAST_NAME", value = 50, constrains = @DbConstrains(isAllowedNull = false))
-    private String lastName;
+    @DbColumnNumber(name = "ticket_status_id", constrains = @DbConstrains(isAllowedNull = false))
+    private Integer ticketStatusId;
 
-    @DbColumnVarchar(name = "PATRONYMIC", value = 50, constrains = @DbConstrains(isAllowedNull = false))
-    private String patronymic;
-
-    @DbColumnNumber(name = "SEAT_NUMBER", constrains = @DbConstrains(isAllowedNull = false))
-    private Integer seatNumber;
+    @DbColumnNumber(name = "bag_max_capacity")
+    private Integer bagMaxCapacity;
 
     public Ticket() {
         super(Ticket.class.getAnnotation(DbTable.class).name());
     }
 
-    public Integer getIdTicket() {
-        return idTicket;
+    public Integer getDepartureId() {
+        return departureId;
     }
 
-    public void setIdTicket(Integer idTicket) {
-        this.idTicket = idTicket;
+    public void setDepartureId(Integer departureId) {
+        this.departureId = departureId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public Integer getSeat() {
+        return seat;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setSeat(Integer seat) {
+        this.seat = seat;
     }
 
-    public String getLastName() {
-        return lastName;
+    public Integer getTicketStatusId() {
+        return ticketStatusId;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setTicketStatusId(Integer ticketStatusId) {
+        this.ticketStatusId = ticketStatusId;
     }
 
-    public String getPatronymic() {
-        return patronymic;
+    public Integer getBagMaxCapacity() {
+        return bagMaxCapacity;
     }
 
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
+    public void setBagMaxCapacity(Integer bagMaxCapacity) {
+        this.bagMaxCapacity = bagMaxCapacity;
     }
 
-    public Integer getSeatNumber() {
-        return seatNumber;
+    public static String getDepartureIdAnnotationName() throws NoSuchFieldException {
+        return Ticket.class.getDeclaredField("departureId").getAnnotation(DbColumnNumber.class).name();
     }
 
-    public void setSeatNumber(Integer seatNumber) {
-        this.seatNumber = seatNumber;
+    public static String getSeatAnnotationName() throws NoSuchFieldException {
+        return Ticket.class.getDeclaredField("seat").getAnnotation(DbColumnNumber.class).name();
     }
 
-    public static String getIdTicketAnnotationName() throws NoSuchFieldException {
-        return Ticket.class.getDeclaredField("idTicket").getAnnotation(DbColumnNumber.class).name();
+    public static String getTicketStatusIdAnnotationName() throws NoSuchFieldException {
+        return Ticket.class.getDeclaredField("ticketStatusId").getAnnotation(DbColumnNumber.class).name();
     }
 
-    public static String getFirstNameAnnotationName() throws NoSuchFieldException {
-        return Ticket.class.getDeclaredField("firstName").getAnnotation(DbColumnVarchar.class).name();
+    public static String getBagMaxCapacityAnnotationName() throws NoSuchFieldException {
+        return Ticket.class.getDeclaredField("bagMaxCapacity").getAnnotation(DbColumnNumber.class).name();
     }
 
-    public static String getLastNameAnnotationName() throws NoSuchFieldException {
-        return Ticket.class.getDeclaredField("lastName").getAnnotation(DbColumnVarchar.class).name();
-    }
-
-    public static String getPatronymicAnnotationName() throws NoSuchFieldException {
-        return Ticket.class.getDeclaredField("patronymic").getAnnotation(DbColumnVarchar.class).name();
-    }
-
-    public static String getSeatNumberAnnotationName() throws NoSuchFieldException {
-        return Ticket.class.getDeclaredField("seatNumber").getAnnotation(DbColumnNumber.class).name();
-    }
 
     @Override
     public void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException {
@@ -143,17 +130,15 @@ public class Ticket extends AbstractComponent {
         ResultSet resultSet = provider.getStringsQueryResultSet(query, Collections.emptyList());
         List<String[]> allRows = new ArrayList<>();
         while (resultSet.next()) {
-            this.idTicket = resultSet.getInt(1);
-            this.firstName = resultSet.getString(2);
-            this.lastName = resultSet.getString(3);
-            this.patronymic = resultSet.getString(4);
-            this.seatNumber = resultSet.getInt(5);
+            this.departureId = resultSet.getInt(1);
+            this.seat = resultSet.getInt(2);
+            this.ticketStatusId = resultSet.getInt(3);
+            this.bagMaxCapacity = resultSet.getInt(4);
             List<String> row = new ArrayList<>() {{
-                add(String.valueOf(idTicket));
-                add(firstName);
-                add(lastName);
-                add(patronymic);
-                add(String.valueOf(seatNumber));
+                add(String.valueOf(departureId));
+                add(String.valueOf(seat));
+                add(String.valueOf(ticketStatusId));
+                add(String.valueOf(bagMaxCapacity));
             }};
             allRows.add(row.toArray(new String[0]));
         }
@@ -161,10 +146,16 @@ public class Ticket extends AbstractComponent {
     }
 
     @Override
-    public void deleteRowById(OracleDbProvider provider) throws NoSuchFieldException, SQLException {
-        String query = "DELETE FROM " + Ticket.class.getAnnotation(DbTable.class).name()
-                + " WHERE " + Ticket.getIdTicketAnnotationName() + " = ?";
-        provider.getStringsQueryResultSet(query, Collections.singletonList(String.valueOf(this.idTicket)));
+    public void deleteRowByPrimaryKey(OracleDbProvider provider) throws NoSuchFieldException, SQLException {
+        String query =
+                "DELETE FROM " + Ticket.class.getAnnotation(DbTable.class).name()
+                        + " WHERE " + Ticket.getDepartureIdAnnotationName() + " = ?" +
+                        " AND " +
+                        Ticket.getSeatAnnotationName() + " = ?";
+        provider.getStringsQueryResultSet(query, new ArrayList<>(Arrays.asList(
+                String.valueOf(this.departureId),
+                String.valueOf(this.seat)
+        )));
     }
 
     @Override

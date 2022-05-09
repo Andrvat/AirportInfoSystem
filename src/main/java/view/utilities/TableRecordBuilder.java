@@ -11,23 +11,23 @@ public class TableRecordBuilder {
     public static Passenger buildPassenger(Map<String, String> keyValues) throws NoSuchFieldException, ParseException {
         Passenger passenger = new Passenger();
         passenger.setSurname(keyValues.get(Passenger.getSurnameAnnotationName()));
-        passenger.setName(keyValues.get(Passenger.getPassengerNameAnnotationName()));
+        passenger.setName(keyValues.get(Passenger.getNameAnnotationName()));
         passenger.setPatronymic(keyValues.get(Passenger.getPatronymicAnnotationName()));
-        passenger.setPassportNumber(Integer.valueOf(keyValues.get(Passenger.getPassportAnnotationName())));
-        passenger.setInternationalPassportNumber(Integer.valueOf(keyValues.get(Passenger.getInternationalPassportAnnotationName())));
-        passenger.setCustomControlPassed("Y".equals(keyValues.get(Passenger.getCustomControlAnnotationName())));
+        passenger.setSex("Y".equals(keyValues.get(Passenger.getSexAnnotationName())));
         passenger.setBirthDate(new TimeCalendar(keyValues.get(Passenger.getBirthDateAnnotationName())));
+        passenger.setPassport(keyValues.get(Passenger.getPassportAnnotationName()));
+        passenger.setInternationalPassport(keyValues.get(Passenger.getInternationalPassportAnnotationName()));
+        passenger.setCustomControlPassed("Y".equals(keyValues.get(Passenger.getCustomControlAnnotationName())));
+        passenger.setHavingCargo("Y".equals(keyValues.get(Passenger.getHavingCargoAnnotationName())));
         return passenger;
     }
 
     public static Ticket buildTicket(Map<String, String> keyValues) throws NoSuchFieldException {
         Ticket ticket = new Ticket();
-        ticket.setIdTicket(Integer.valueOf(keyValues.get(Ticket.getIdTicketAnnotationName())));
-        ticket.setFirstName(keyValues.get(Ticket.getFirstNameAnnotationName()));
-        ticket.setLastName(keyValues.get(Ticket.getLastNameAnnotationName()));
-        ticket.setPatronymic(keyValues.get(Ticket.getPatronymicAnnotationName()));
-        ticket.setSeatNumber(Integer.valueOf(keyValues.get(Ticket.getSeatNumberAnnotationName())));
-
+        ticket.setDepartureId(Integer.valueOf(keyValues.get(Ticket.getDepartureIdAnnotationName())));
+        ticket.setSeat(Integer.valueOf(keyValues.get(Ticket.getSeatAnnotationName())));
+        ticket.setTicketStatusId(Integer.valueOf(keyValues.get(Ticket.getTicketStatusIdAnnotationName())));
+        ticket.setBagMaxCapacity(Integer.valueOf(keyValues.get(Ticket.getBagMaxCapacityAnnotationName())));
         return ticket;
     }
 }

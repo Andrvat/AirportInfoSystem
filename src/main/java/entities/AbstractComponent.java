@@ -28,7 +28,7 @@ public abstract class AbstractComponent {
 
     public abstract String[][] getAllRows(OracleDbProvider provider) throws SQLException;
 
-    public abstract void deleteRowById(OracleDbProvider provider) throws NoSuchFieldException, SQLException;
+    public abstract void deleteRowByPrimaryKey(OracleDbProvider provider) throws NoSuchFieldException, SQLException;
 
     public abstract void updateRow(OracleDbProvider provider) throws SQLException, IllegalAccessException, NoSuchFieldException;
 }

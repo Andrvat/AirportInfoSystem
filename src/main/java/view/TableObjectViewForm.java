@@ -1,6 +1,9 @@
 package view;
 
+import annotations.DbTable;
 import controller.ControllerManager;
+import converters.TitlesConverter;
+import entities.Passenger;
 import jdk.net.UnixDomainPrincipal;
 import view.listenedButtons.DeleteRowByIdButton;
 import view.listenedButtons.UpdateRowButton;
@@ -8,16 +11,15 @@ import view.listenedButtons.UpdateRowButton;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.font.TextAttribute;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class TableObjectViewForm extends JFrame {
-    public TableObjectViewForm(ControllerManager controllerManager, String tableName, String[] columns, String[] values) {
-        this.setSize(new Dimension(400, 600));
+    public TableObjectViewForm(ControllerManager controllerManager, String tableName,
+                               String[] columns, String[] values)
+            throws ClassNotFoundException {
+        this.setSize(new Dimension(400, 700));
         this.setTitle("View object form");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -33,9 +35,13 @@ public class TableObjectViewForm extends JFrame {
             columnLabels.add(new JLabel("<HTML><span style='font-size:10px'>" + columns[i] + "</span></HTML>"));
         }
 
-        Map.Entry<String, String> primaryKey = new AbstractMap.SimpleEntry<>(columns[0], values[0]);
-        JButton deleteRowButton = new DeleteRowByIdButton(controllerManager, tableName,
-                primaryKey.getValue(), this);
+        int pkNumber = Class.forName("entities." + TitlesConverter.makeTitleFrom(tableName))
+                .getAnnotation(DbTable.class).pkNumber();
+        Map<String, String> primaryKey = new HashMap<>();
+        for (int i = 0; i < pkNumber; ++i) {
+            primaryKey.put(columns[i].replaceAll(" ", "_"), values[i]);
+        }
+        JButton deleteRowButton = new DeleteRowByIdButton(controllerManager, tableName, primaryKey, this);
         JButton updateRowButton = new UpdateRowButton(
                 controllerManager, tableName,
                 IntStream.range(0, Arrays.asList(columns).size()).boxed()

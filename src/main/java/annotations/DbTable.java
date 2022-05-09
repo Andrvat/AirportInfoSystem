@@ -9,4 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DbTable {
     String name() default "";
+
+    int pkNumber() default 1;
 }

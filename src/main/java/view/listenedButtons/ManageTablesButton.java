@@ -46,7 +46,11 @@ public class ManageTablesButton extends JButton {
                             int row = tableView.rowAtPoint(e.getPoint());
                             if (row >= 0) {
                                 String[] objectValues = allRows[row];
-                                new TableObjectViewForm(controllerManager, selectedTableName, columnNames, objectValues);
+                                try {
+                                    new TableObjectViewForm(controllerManager, selectedTableName, columnNames, objectValues);
+                                } catch (ClassNotFoundException ex) {
+                                    throw new RuntimeException(ex);
+                                }
                             }
                         }
                     }
