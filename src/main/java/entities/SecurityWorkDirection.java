@@ -46,7 +46,7 @@ public class SecurityWorkDirection extends AbstractComponent {
 
     @Override
     public void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException {
-
+        AbstractComponent.saveTo(SecurityWorkDirection.class, this, provider, this.getTableName());
     }
 
     @Override

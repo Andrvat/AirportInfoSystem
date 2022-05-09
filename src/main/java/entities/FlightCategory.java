@@ -46,7 +46,7 @@ public class FlightCategory extends AbstractComponent {
 
     @Override
     public void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException {
-
+        AbstractComponent.saveTo(FlightCategory.class, this, provider, this.getTableName());
     }
 
     @Override

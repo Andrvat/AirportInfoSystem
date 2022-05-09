@@ -45,7 +45,7 @@ public class Dispatcher extends AbstractComponent {
 
     @Override
     public void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException {
-
+        AbstractComponent.saveTo(Dispatcher.class, this, provider, this.getTableName());
     }
 
     @Override

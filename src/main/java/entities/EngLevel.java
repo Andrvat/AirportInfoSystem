@@ -29,7 +29,7 @@ public class EngLevel extends AbstractComponent {
 
     @Override
     public void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException {
-
+        AbstractComponent.saveTo(EngLevel.class, this, provider, this.getTableName());
     }
 
     @Override

@@ -46,7 +46,7 @@ public class Director extends AbstractComponent {
 
     @Override
     public void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException {
-
+        AbstractComponent.saveTo(Director.class, this, provider, this.getTableName());
     }
 
     @Override

@@ -89,7 +89,7 @@ public class Pilot extends AbstractComponent {
 
     @Override
     public void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException {
-
+        AbstractComponent.saveTo(Pilot.class, this, provider, this.getTableName());
     }
 
     @Override

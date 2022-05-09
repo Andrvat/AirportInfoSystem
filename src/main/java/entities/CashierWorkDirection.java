@@ -46,7 +46,7 @@ public class CashierWorkDirection extends AbstractComponent {
 
     @Override
     public void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException {
-
+        AbstractComponent.saveTo(CashierWorkDirection.class, this, provider, this.getTableName());
     }
 
     @Override

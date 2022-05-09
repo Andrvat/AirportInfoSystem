@@ -46,7 +46,7 @@ public class TicketStatus extends AbstractComponent {
 
     @Override
     public void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException {
-
+        AbstractComponent.saveTo(TicketStatus.class, this, provider, this.getTableName());
     }
 
     @Override

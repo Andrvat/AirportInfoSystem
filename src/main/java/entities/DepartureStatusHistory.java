@@ -77,7 +77,7 @@ public class DepartureStatusHistory extends AbstractComponent {
 
     @Override
     public void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException {
-
+        AbstractComponent.saveTo(DepartureStatusHistory.class, this, provider, this.getTableName());
     }
 
     @Override

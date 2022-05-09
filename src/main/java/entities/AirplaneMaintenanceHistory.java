@@ -63,7 +63,7 @@ public class AirplaneMaintenanceHistory extends AbstractComponent {
 
     @Override
     public void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException {
-
+        AbstractComponent.saveTo(AirplaneMaintenanceHistory.class, this, provider, this.getTableName());
     }
 
     @Override

@@ -46,7 +46,7 @@ public class Specialization extends AbstractComponent {
 
     @Override
     public void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException {
-
+        AbstractComponent.saveTo(Specialization.class, this, provider, this.getTableName());
     }
 
     @Override

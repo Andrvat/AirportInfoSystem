@@ -45,7 +45,7 @@ public class Operator extends AbstractComponent {
 
     @Override
     public void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException {
-
+        AbstractComponent.saveTo(Operator.class, this, provider, this.getTableName());
     }
 
     @Override

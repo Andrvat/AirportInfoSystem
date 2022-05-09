@@ -30,7 +30,7 @@ public class Crew extends AbstractComponent {
 
     @Override
     public void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException {
-
+        AbstractComponent.saveTo(Crew.class, this, provider, this.getTableName());
     }
 
     @Override
