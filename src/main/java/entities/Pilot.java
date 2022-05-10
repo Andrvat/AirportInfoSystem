@@ -100,7 +100,11 @@ public class Pilot extends AbstractComponent {
 
     @Override
     public void deleteRowByPrimaryKey(OracleDbProvider provider) throws NoSuchFieldException, SQLException {
+        AbstractComponent.deleteFrom(this.getTableName(), provider,
+                new HashMap<>() {{
+                    put(Pilot.getIdPilotAnnotationName(), String.valueOf(idPilot));
 
+                }});
     }
 
     @Override

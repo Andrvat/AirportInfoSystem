@@ -206,9 +206,10 @@ public class Passenger extends AbstractComponent {
     }
 
     public void deleteRowByPrimaryKey(OracleDbProvider provider) throws NoSuchFieldException, SQLException {
-        String query = "DELETE FROM " + Passenger.class.getAnnotation(DbTable.class).name()
-                + " WHERE " + Passenger.getIdPassengerAnnotationName() + " = ?";
-        provider.getStringsQueryResultSet(query, Collections.singletonList(String.valueOf(this.idPassenger)));
+        AbstractComponent.deleteFrom(this.getTableName(), provider,
+                new HashMap<>() {{
+                    put(Passenger.getIdPassengerAnnotationName(), String.valueOf(idPassenger));
+                }});
     }
 
     @Override

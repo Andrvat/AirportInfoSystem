@@ -88,7 +88,11 @@ public class DepartureStatusHistory extends AbstractComponent {
 
     @Override
     public void deleteRowByPrimaryKey(OracleDbProvider provider) throws NoSuchFieldException, SQLException {
+        AbstractComponent.deleteFrom(this.getTableName(), provider,
+                new HashMap<>() {{
+                    put(DepartureStatusHistory.getIdRecordAnnotationName(), String.valueOf(idRecord));
 
+                }});
     }
 
     @Override

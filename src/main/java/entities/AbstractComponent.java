@@ -1,9 +1,6 @@
 package entities;
 
-import annotations.DbColumnBoolean;
-import annotations.DbColumnDate;
-import annotations.DbColumnNumber;
-import annotations.DbColumnVarchar;
+import annotations.*;
 import dbConnection.OracleDbProvider;
 import model.support.TimeCalendar;
 
@@ -12,8 +9,11 @@ import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public abstract class AbstractComponent {
     private final String tableName;
@@ -150,5 +150,24 @@ public abstract class AbstractComponent {
         }
         Statement statement = provider.getCreatedStatement();
         statement.execute(query.toString());
+    }
+
+    public static <T> void deleteFrom(String tableName, OracleDbProvider provider,
+                                      Map<String, String> primaryKey) throws SQLException {
+        StringBuilder query = new StringBuilder();
+        query.append("DELETE FROM ")
+                .append(tableName)
+                .append(" WHERE ");
+        int keysNumber = 0;
+        for (var entry : primaryKey.entrySet()) {
+            query.append(entry.getKey())
+                    .append(" = ?");
+            keysNumber++;
+            if (keysNumber != primaryKey.size()) {
+                query.append(" AND ");
+            }
+        }
+        List<String> primaryKeyValues = new ArrayList<>(primaryKey.values().stream().toList());
+        provider.getStringsQueryResultSet(query.toString(), primaryKeyValues);
     }
 }

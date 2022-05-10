@@ -118,7 +118,10 @@ public class TicketStatusHistory extends AbstractComponent {
 
     @Override
     public void deleteRowByPrimaryKey(OracleDbProvider provider) throws NoSuchFieldException, SQLException {
-
+        AbstractComponent.deleteFrom(this.getTableName(), provider,
+                new HashMap<>() {{
+                    put(TicketStatusHistory.getIdRecordAnnotationName(), String.valueOf(idRecord));
+                }});
     }
 
     @Override

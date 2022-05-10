@@ -57,7 +57,10 @@ public class Airline extends AbstractComponent {
 
     @Override
     public void deleteRowByPrimaryKey(OracleDbProvider provider) throws NoSuchFieldException, SQLException {
-
+        AbstractComponent.deleteFrom(this.getTableName(), provider,
+                new HashMap<>() {{
+                    put(Airline.getIdAirlineAnnotationName(), String.valueOf(idAirline));
+                }});
     }
 
     @Override

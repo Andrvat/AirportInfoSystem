@@ -56,7 +56,11 @@ public class Cashier extends AbstractComponent {
 
     @Override
     public void deleteRowByPrimaryKey(OracleDbProvider provider) throws NoSuchFieldException, SQLException {
+        AbstractComponent.deleteFrom(this.getTableName(), provider,
+                new HashMap<>() {{
+                    put(Cashier.getIdCashierAnnotationName(), String.valueOf(idCashier));
 
+                }});
     }
 
     @Override

@@ -72,7 +72,11 @@ public class Department extends AbstractComponent {
 
     @Override
     public void deleteRowByPrimaryKey(OracleDbProvider provider) throws NoSuchFieldException, SQLException {
+        AbstractComponent.deleteFrom(this.getTableName(), provider,
+                new HashMap<>() {{
+                    put(Department.getIdDepartmentAnnotationName(), String.valueOf(idDepartment));
 
+                }});
     }
 
     @Override

@@ -235,7 +235,11 @@ public class Employee extends AbstractComponent {
 
     @Override
     public void deleteRowByPrimaryKey(OracleDbProvider provider) throws NoSuchFieldException, SQLException {
+        AbstractComponent.deleteFrom(this.getTableName(), provider,
+                new HashMap<>() {{
+                    put(Employee.getIdEmployeeAnnotationName(), String.valueOf(idEmployee));
 
+                }});
     }
 
     @Override
