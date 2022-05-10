@@ -41,11 +41,14 @@ public class TableObjectViewForm extends JFrame {
         for (int i = 0; i < pkNumber; ++i) {
             primaryKey.put(columns[i].replaceAll(" ", "_"), values[i]);
         }
+        Map<String, String> existingValues = new HashMap<>();
+        for (int i = 0; i < columns.length; ++i) {
+            existingValues.put(columns[i], values[i]);
+        }
         JButton deleteRowButton = new DeleteRowByIdButton(controllerManager, tableName, primaryKey, this);
         JButton updateRowButton = new UpdateRowButton(
                 controllerManager, tableName,
-                IntStream.range(0, Arrays.asList(columns).size()).boxed()
-                        .collect(Collectors.toMap(Arrays.asList(columns)::get, Arrays.asList(values)::get)),
+                existingValues,
                 primaryKey, this);
 
         JPanel fields = new JPanel(new GridBagLayout());

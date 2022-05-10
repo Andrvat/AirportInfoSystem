@@ -173,36 +173,8 @@ public class Passenger extends AbstractComponent {
     }
 
     @Override
-    public String[][] getAllRows(OracleDbProvider provider) throws SQLException {
-        String query = "SELECT * FROM " + Passenger.class.getAnnotation(DbTable.class).name();
-        ResultSet resultSet = provider.getStringsQueryResultSet(query, Collections.emptyList());
-        List<String[]> allRows = new ArrayList<>();
-        while (resultSet.next()) {
-            this.idPassenger = resultSet.getInt(1);
-            this.surname = resultSet.getString(2);
-            this.name = resultSet.getString(3);
-            this.patronymic = resultSet.getString(4);
-            this.sex = "Y".equals(resultSet.getString(5));
-            this.birthDate = new TimeCalendar(resultSet.getDate(6));
-            this.passport = resultSet.getString(7);
-            this.internationalPassport = resultSet.getString(8);
-            this.isCustomControlPassed = "Y".equals(resultSet.getString(9));
-            this.isHavingCargo = "Y".equals(resultSet.getString(10));
-            List<String> row = new ArrayList<>() {{
-                add(String.valueOf(idPassenger));
-                add(surname);
-                add(name);
-                add(patronymic);
-                add(String.valueOf(sex));
-                add(birthDate.toString());
-                add(passport);
-                add(internationalPassport);
-                add(String.valueOf(isCustomControlPassed));
-                add(String.valueOf(isHavingCargo));
-            }};
-            allRows.add(row.toArray(new String[0]));
-        }
-        return allRows.toArray(new String[0][]);
+    public String[][] getAllRows(OracleDbProvider provider) throws SQLException, IllegalAccessException {
+        return AbstractComponent.getAllFrom(Passenger.class, this, provider, this.getTableName());
     }
 
     public void deleteRowByPrimaryKey(OracleDbProvider provider) throws NoSuchFieldException, SQLException {

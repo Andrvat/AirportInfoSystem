@@ -112,8 +112,8 @@ public class TicketStatusHistory extends AbstractComponent {
     }
 
     @Override
-    public String[][] getAllRows(OracleDbProvider provider) throws SQLException {
-        return new String[0][];
+    public String[][] getAllRows(OracleDbProvider provider) throws SQLException, IllegalAccessException {
+        return AbstractComponent.getAllFrom(TicketStatusHistory.class, this, provider, this.getTableName());
     }
 
     @Override

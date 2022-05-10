@@ -2,9 +2,6 @@ package view.listenedButtons;
 
 import controller.ControllerManager;
 import model.support.TimeCalendar;
-import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
-import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
-import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import view.utilities.ChooseTableViewer;
 import view.utilities.TableColumnInfo;
 import view.utilities.TableColumnRequestOption;
@@ -62,10 +59,6 @@ public class InsertDataButton extends JButton {
                 String input = null;
                 if (entry.getValue() instanceof JTextField textField) {
                     input = textField.getText();
-                    if ("".equals(input)) {
-                        JOptionPane.showMessageDialog(null, "Empty field " + fieldName);
-                        return;
-                    }
                 } else if (entry.getValue() instanceof JCheckBox checkBox) {
                     input = (checkBox.isSelected()) ? "Y" : "N";
                 }
@@ -74,7 +67,7 @@ public class InsertDataButton extends JButton {
 
             String resultMessage = "";
             try {
-                controllerManager.insertValueIntoTable(selectedTableName, enteredValues);
+                controllerManager.insertValuesInto(selectedTableName, enteredValues);
                 resultMessage = "Data was successfully inserted";
             } catch (Exception exception) {
                 resultMessage = exception.getMessage();

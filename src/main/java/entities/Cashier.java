@@ -50,8 +50,8 @@ public class Cashier extends AbstractComponent {
     }
 
     @Override
-    public String[][] getAllRows(OracleDbProvider provider) throws SQLException {
-        return new String[0][];
+    public String[][] getAllRows(OracleDbProvider provider) throws SQLException, IllegalAccessException {
+        return AbstractComponent.getAllFrom(Cashier.class, this, provider, this.getTableName());
     }
 
     @Override

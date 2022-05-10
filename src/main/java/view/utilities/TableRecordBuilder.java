@@ -1,33 +1,53 @@
 package view.utilities;
 
+import annotations.DbColumnBoolean;
+import annotations.DbColumnDate;
+import annotations.DbColumnNumber;
+import annotations.DbColumnVarchar;
+import entities.AbstractComponent;
 import entities.Passenger;
 import entities.Ticket;
 import model.support.TimeCalendar;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.Map;
 
 public class TableRecordBuilder {
-    public static Passenger buildPassenger(Map<String, String> keyValues) throws NoSuchFieldException, ParseException {
-        Passenger passenger = new Passenger();
-        passenger.setSurname(keyValues.get(Passenger.getSurnameAnnotationName()));
-        passenger.setName(keyValues.get(Passenger.getNameAnnotationName()));
-        passenger.setPatronymic(keyValues.get(Passenger.getPatronymicAnnotationName()));
-        passenger.setSex("Y".equals(keyValues.get(Passenger.getSexAnnotationName())));
-        passenger.setBirthDate(new TimeCalendar(keyValues.get(Passenger.getBirthDateAnnotationName())));
-        passenger.setPassport(keyValues.get(Passenger.getPassportAnnotationName()));
-        passenger.setInternationalPassport(keyValues.get(Passenger.getInternationalPassportAnnotationName()));
-        passenger.setCustomControlPassed("Y".equals(keyValues.get(Passenger.getCustomControlAnnotationName())));
-        passenger.setHavingCargo("Y".equals(keyValues.get(Passenger.getHavingCargoAnnotationName())));
-        return passenger;
-    }
-
-    public static Ticket buildTicket(Map<String, String> keyValues) throws NoSuchFieldException {
-        Ticket ticket = new Ticket();
-        ticket.setDepartureId(Integer.valueOf(keyValues.get(Ticket.getDepartureIdAnnotationName())));
-        ticket.setSeat(Integer.valueOf(keyValues.get(Ticket.getSeatAnnotationName())));
-        ticket.setTicketStatusId(Integer.valueOf(keyValues.get(Ticket.getTicketStatusIdAnnotationName())));
-        ticket.setBagMaxCapacity(Integer.valueOf(keyValues.get(Ticket.getBagMaxCapacityAnnotationName())));
-        return ticket;
+    public static void buildByValues(AbstractComponent instance, Map<String, String> keyValues)
+            throws IllegalAccessException, ParseException {
+        for (var entry : keyValues.entrySet()) {
+            String annotationName = entry.getKey();
+            String value = entry.getValue();
+            for (Field field : instance.getClass().getDeclaredFields()) {
+                Annotation[] annotations = field.getDeclaredAnnotations();
+                if (annotations.length != 0) {
+                    field.setAccessible(true);
+                    Annotation annotation = annotations[0];
+                    if (annotation instanceof DbColumnNumber dbColumnNumber) {
+                        if (annotationName.equals(dbColumnNumber.name())) {
+                            if (field.getType() == Integer.class) {
+                                field.set(instance, Integer.valueOf(value));
+                            } else if (field.getType() == Float.class) {
+                                field.set(instance, Float.valueOf(value));
+                            }
+                        }
+                    } else if (annotation instanceof DbColumnVarchar dbColumnVarchar) {
+                        if (annotationName.equals(dbColumnVarchar.name())) {
+                            field.set(instance, value);
+                        }
+                    } else if (annotation instanceof DbColumnBoolean dbColumnBoolean) {
+                        if (annotationName.equals(dbColumnBoolean.name())) {
+                            field.set(instance, "Y".equals(value));
+                        }
+                    } else if (annotation instanceof DbColumnDate dbColumnDate) {
+                        if (annotationName.equals(dbColumnDate.name())) {
+                            field.set(instance, new TimeCalendar(value));
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -64,17 +64,12 @@ public class ControllerManager {
         return columnNames;
     }
 
-    public void insertValueIntoTable(String tableName, Map<String, String> keyValues) throws Exception {
+    public void insertValuesInto(String tableName, Map<String, String> keyValues) throws Exception {
         AbstractComponent component = (AbstractComponent) this.model.getEntityClassByKey(tableName)
                 .getConstructor()
                 .newInstance();
-        if (component instanceof Ticket) {
-            Ticket ticket = TableRecordBuilder.buildTicket(keyValues);
-            ticket.saveValues(this.provider);
-        } else if (component instanceof Passenger) {
-            Passenger passenger = TableRecordBuilder.buildPassenger(keyValues);
-            passenger.saveValues(this.provider);
-        }
+        TableRecordBuilder.buildByValues(component, keyValues);
+        component.saveValues(this.provider);
         this.provider.commitChanges();
     }
 
@@ -82,14 +77,8 @@ public class ControllerManager {
         AbstractComponent component = (AbstractComponent) this.model.getEntityClassByKey(tableName)
                 .getConstructor()
                 .newInstance();
-        if (component instanceof Ticket) {
-            Ticket ticket = TableRecordBuilder.buildTicket(keyValues);
-            ticket.updateRow(this.provider);
-        } else if (component instanceof Passenger) {
-            Passenger passenger = TableRecordBuilder.buildPassenger(keyValues);
-            passenger.setIdPassenger(Integer.valueOf(keyValues.get(Passenger.getIdPassengerAnnotationName())));
-            passenger.updateRow(this.provider);
-        }
+        TableRecordBuilder.buildByValues(component, keyValues);
+        component.updateRow(this.provider);
         this.provider.commitChanges();
     }
 
@@ -97,18 +86,8 @@ public class ControllerManager {
         AbstractComponent component = (AbstractComponent) this.model.getEntityClassByKey(tableName)
                 .getConstructor()
                 .newInstance();
-        if (component instanceof Ticket) {
-            Ticket ticket = new Ticket();
-            ticket.setDepartureId(Integer.valueOf(primaryKey.get(Ticket.getDepartureIdAnnotationName())));
-            ticket.setSeat(Integer.valueOf(primaryKey.get(Ticket.getSeatAnnotationName())));
-
-            ticket.deleteRowByPrimaryKey(this.provider);
-        } else if (component instanceof Passenger) {
-            Passenger passenger = new Passenger();
-            passenger.setIdPassenger(Integer.valueOf(primaryKey.get(Passenger.getIdPassengerAnnotationName())));
-
-            passenger.deleteRowByPrimaryKey(this.provider);
-        }
+        TableRecordBuilder.buildByValues(component, primaryKey);
+        component.deleteRowByPrimaryKey(this.provider);
     }
 
     public String[] getTableNames() {
@@ -127,11 +106,6 @@ public class ControllerManager {
         AbstractComponent component = (AbstractComponent) this.model.getEntityClassByKey(tableName)
                 .getConstructor()
                 .newInstance();
-        if (component instanceof Ticket ticket) {
-            return ticket.getAllRows(this.provider);
-        } else if (component instanceof Passenger passenger) {
-            return passenger.getAllRows(this.provider);
-        }
-        return null;
+        return component.getAllRows(this.provider);
     }
 }

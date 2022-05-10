@@ -35,8 +35,8 @@ public class Crew extends AbstractComponent {
     }
 
     @Override
-    public String[][] getAllRows(OracleDbProvider provider) throws SQLException {
-        return new String[0][];
+    public String[][] getAllRows(OracleDbProvider provider) throws SQLException, IllegalAccessException {
+        return AbstractComponent.getAllFrom(Crew.class, this, provider, this.getTableName());
     }
 
     @Override

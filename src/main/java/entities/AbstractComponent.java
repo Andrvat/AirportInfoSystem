@@ -9,10 +9,12 @@ import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.stream.Collectors;
 
 public abstract class AbstractComponent {
@@ -35,7 +37,7 @@ public abstract class AbstractComponent {
 
     public abstract void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException;
 
-    public abstract String[][] getAllRows(OracleDbProvider provider) throws SQLException;
+    public abstract String[][] getAllRows(OracleDbProvider provider) throws SQLException, IllegalAccessException;
 
     public abstract void deleteRowByPrimaryKey(OracleDbProvider provider) throws NoSuchFieldException, SQLException;
 
@@ -152,8 +154,8 @@ public abstract class AbstractComponent {
         statement.execute(query.toString());
     }
 
-    public static <T> void deleteFrom(String tableName, OracleDbProvider provider,
-                                      Map<String, String> primaryKey) throws SQLException {
+    public static void deleteFrom(String tableName, OracleDbProvider provider,
+                                  Map<String, String> primaryKey) throws SQLException {
         StringBuilder query = new StringBuilder();
         query.append("DELETE FROM ")
                 .append(tableName)
@@ -169,5 +171,54 @@ public abstract class AbstractComponent {
         }
         List<String> primaryKeyValues = new ArrayList<>(primaryKey.values().stream().toList());
         provider.getStringsQueryResultSet(query.toString(), primaryKeyValues);
+    }
+
+    public static <T> String[][] getAllFrom(Class<T> classType, T instance, OracleDbProvider provider,
+                                            String tableName) throws SQLException, IllegalAccessException {
+        String query = "SELECT * FROM " + tableName;
+        ResultSet resultSet = provider.getStringsQueryResultSet(query, Collections.emptyList());
+        List<String[]> allRows = new ArrayList<>();
+        while (resultSet.next()) {
+            int valueIndex = 1;
+            for (Field field : classType.getDeclaredFields()) {
+                Annotation[] annotations = field.getDeclaredAnnotations();
+                if (annotations.length != 0) {
+                    field.setAccessible(true);
+                    if (field.getType() == Integer.class) {
+                        field.set(instance, resultSet.getInt(valueIndex));
+                    } else if (field.getType() == String.class) {
+                        field.set(instance, resultSet.getString(valueIndex));
+                    } else if (field.getType() == Boolean.class) {
+                        field.set(instance, "Y".equals(resultSet.getString(valueIndex)));
+                    } else if (field.getType() == TimeCalendar.class) {
+                        field.set(instance, new TimeCalendar(resultSet.getDate(valueIndex)));
+                    } else if (field.getType() == Float.class) {
+                        field.set(instance, resultSet.getFloat(valueIndex));
+                    }
+                    valueIndex++;
+                }
+            }
+            List<String> row = new ArrayList<>();
+            for (Field field : classType.getDeclaredFields()) {
+                Annotation[] annotations = field.getDeclaredAnnotations();
+                if (annotations.length != 0) {
+                    field.setAccessible(true);
+                    Object value = field.get(instance);
+                    if (field.getType() == Integer.class) {
+                        row.add(String.valueOf(value));
+                    } else if (field.getType() == String.class) {
+                        row.add((String) value);
+                    } else if (field.getType() == Boolean.class) {
+                        row.add(String.valueOf(value));
+                    } else if (field.getType() == TimeCalendar.class) {
+                        row.add(value.toString());
+                    } else if (field.getType() == Float.class) {
+                        row.add(String.valueOf(value));
+                    }
+                }
+            }
+            allRows.add(row.toArray(new String[0]));
+        }
+        return allRows.toArray(new String[0][]);
     }
 }

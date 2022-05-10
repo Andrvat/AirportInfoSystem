@@ -86,24 +86,8 @@ public class Ticket extends AbstractComponent {
     }
 
     @Override
-    public String[][] getAllRows(OracleDbProvider provider) throws SQLException {
-        String query = "SELECT * FROM " + Ticket.class.getAnnotation(DbTable.class).name();
-        ResultSet resultSet = provider.getStringsQueryResultSet(query, Collections.emptyList());
-        List<String[]> allRows = new ArrayList<>();
-        while (resultSet.next()) {
-            this.departureId = resultSet.getInt(1);
-            this.seat = resultSet.getInt(2);
-            this.ticketStatusId = resultSet.getInt(3);
-            this.bagMaxCapacity = resultSet.getInt(4);
-            List<String> row = new ArrayList<>() {{
-                add(String.valueOf(departureId));
-                add(String.valueOf(seat));
-                add(String.valueOf(ticketStatusId));
-                add(String.valueOf(bagMaxCapacity));
-            }};
-            allRows.add(row.toArray(new String[0]));
-        }
-        return allRows.toArray(new String[0][]);
+    public String[][] getAllRows(OracleDbProvider provider) throws SQLException, IllegalAccessException {
+        return AbstractComponent.getAllFrom(Ticket.class, this, provider, this.getTableName());
     }
 
     @Override

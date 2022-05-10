@@ -229,8 +229,8 @@ public class Employee extends AbstractComponent {
     }
 
     @Override
-    public String[][] getAllRows(OracleDbProvider provider) throws SQLException {
-        return new String[0][];
+    public String[][] getAllRows(OracleDbProvider provider) throws SQLException, IllegalAccessException {
+        return AbstractComponent.getAllFrom(Employee.class, this, provider, this.getTableName());
     }
 
     @Override

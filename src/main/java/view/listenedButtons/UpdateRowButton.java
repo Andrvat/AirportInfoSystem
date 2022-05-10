@@ -57,10 +57,6 @@ public class UpdateRowButton extends JButton {
                 String input = null;
                 if (entry.getValue() instanceof JTextField textField) {
                     input = textField.getText();
-                    if ("".equals(input)) {
-                        JOptionPane.showMessageDialog(null, "Empty field " + fieldName);
-                        return;
-                    }
                 } else if (entry.getValue() instanceof JCheckBox checkBox) {
                     input = (checkBox.isSelected()) ? "Y" : "N";
                 }
