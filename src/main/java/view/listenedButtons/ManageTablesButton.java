@@ -2,7 +2,7 @@ package view.listenedButtons;
 
 import controller.ControllerManager;
 import view.TableObjectViewForm;
-import view.utilities.ChooseTableViewer;
+import view.utilities.ChooseOptionViewer;
 import view.utilities.TableColumnInfo;
 import view.utilities.TableColumnRequestOption;
 
@@ -17,8 +17,8 @@ public class ManageTablesButton extends JButton {
     public ManageTablesButton(ControllerManager controllerManager) {
         this.setText("Manage tables");
         this.addActionListener(event -> {
-            ChooseTableViewer tableViewer = new ChooseTableViewer(controllerManager.getTableNames());
-            int choosingResult = tableViewer.showChoosingTableView();
+            ChooseOptionViewer tableViewer = new ChooseOptionViewer(controllerManager.getTableNames(), "Choose the table");
+            int choosingResult = tableViewer.showView();
             if (choosingResult != JOptionPane.OK_OPTION) {
                 return;
             }

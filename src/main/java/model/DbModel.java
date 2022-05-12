@@ -1,6 +1,7 @@
 package model;
 
 import annotations.DbTable;
+import dbConnection.OracleDbProvider;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 

@@ -15,6 +15,16 @@ public class OracleDbProvider implements Closeable {
     private String userPassword;
     private Connection connection;
 
+    private String role;
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
     public void setDbUrl(String dbUrl) {
         this.dbUrl = dbUrl;
     }

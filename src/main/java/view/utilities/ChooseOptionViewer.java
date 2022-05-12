@@ -3,17 +3,19 @@ package view.utilities;
 import javax.swing.*;
 import java.awt.*;
 
-public class ChooseTableViewer {
+public class ChooseOptionViewer {
     private final JComboBox<String> comboBox;
+    private final String viewerName;
 
-    public ChooseTableViewer(String[] items) {
+    public ChooseOptionViewer(String[] items, String name) {
+        this.viewerName = name;
         this.comboBox = new JComboBox<>(items);
     }
 
-    public int showChoosingTableView() {
+    public int showView() {
         JPanel comboPanel = new JPanel(new GridLayout(0, 1));
         comboPanel.add(comboBox);
-        return JOptionPane.showConfirmDialog(null, comboPanel, "Choose the table",
+        return JOptionPane.showConfirmDialog(null, comboPanel, this.viewerName,
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
     }
 

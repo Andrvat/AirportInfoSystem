@@ -2,7 +2,7 @@ package view.listenedButtons;
 
 import controller.ControllerManager;
 import model.support.TimeCalendar;
-import view.utilities.ChooseTableViewer;
+import view.utilities.ChooseOptionViewer;
 import view.utilities.TableColumnInfo;
 import view.utilities.TableColumnRequestOption;
 
@@ -15,8 +15,8 @@ public class InsertDataButton extends JButton {
     public InsertDataButton(ControllerManager controllerManager) {
         this.setText("Insert new values");
         this.addActionListener(event -> {
-            ChooseTableViewer tableViewer = new ChooseTableViewer(controllerManager.getTableNames());
-            int choosingResult = tableViewer.showChoosingTableView();
+            ChooseOptionViewer tableViewer = new ChooseOptionViewer(controllerManager.getTableNames(), "Choose the table");
+            int choosingResult = tableViewer.showView();
             if (choosingResult != JOptionPane.OK_OPTION) {
                 return;
             }

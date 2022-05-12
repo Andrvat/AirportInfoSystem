@@ -16,6 +16,8 @@ import view.utilities.TableRecordBuilder;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 
 @Builder
@@ -107,5 +109,11 @@ public class ControllerManager {
                 .getConstructor()
                 .newInstance();
         return component.getAllRows(this.provider);
+    }
+
+    public void registerNewAccount(String login, String password, String role) throws SQLException {
+        Statement statement = this.provider.getCreatedStatement();
+        statement.execute("INSERT INTO APPLICATION_ACCOUNT (LOGIN, PASSWORD, ROLE) VALUES ('" + login + "', '" + password + "', '" + role + "')");
+        provider.commitChanges();
     }
 }

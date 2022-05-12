@@ -1,6 +1,7 @@
 package view;
 
 import controller.ControllerManager;
+import model.ApplicationConstants;
 import view.listenedButtons.*;
 
 import javax.swing.*;
@@ -35,6 +36,12 @@ public class MainMenu extends JPanel {
         JButton manageTablesButton = new ManageTablesButton(controllerManager);
         menuButtons.add(manageTablesButton, gridBagConstraints);
         menuButtons.add(new JLabel(" "), gridBagConstraints);
+
+        if (ApplicationConstants.ADMIN.equals(controllerManager.getProvider().getRole())) {
+            JButton newAccountButton = new AddNewAccountButton(controllerManager);
+            menuButtons.add(newAccountButton, gridBagConstraints);
+            menuButtons.add(new JLabel(" "), gridBagConstraints);
+        }
 
         gridBagConstraints.weighty = 1;
         this.add(menuButtons, gridBagConstraints);

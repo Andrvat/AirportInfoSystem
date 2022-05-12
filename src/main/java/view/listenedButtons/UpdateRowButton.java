@@ -1,9 +1,7 @@
 package view.listenedButtons;
 
 import controller.ControllerManager;
-import javassist.compiler.ast.Pair;
 import model.support.TimeCalendar;
-import view.utilities.ChooseTableViewer;
 import view.utilities.TableColumnInfo;
 import view.utilities.TableColumnRequestOption;
 

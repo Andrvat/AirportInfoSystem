@@ -2,6 +2,7 @@ package sql;
 
 import controller.ControllerManager;
 import dbConnection.OracleDbProvider;
+import oracle.net.jdbc.nl.InvalidSyntaxException;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,8 +29,29 @@ public class SchemaVerifier {
 
     private final ControllerManager controllerManager;
 
-    public SchemaVerifier(ControllerManager controllerManager) {
+    private final String accountLogin;
+    private final String accountPassword;
+
+    public SchemaVerifier(ControllerManager controllerManager, String accountLogin, String accountPassword) {
         this.controllerManager = controllerManager;
+        this.accountLogin = accountLogin;
+        this.accountPassword = accountPassword;
+    }
+
+    public void verifyAccount() throws SQLException, InvalidSyntaxException {
+        OracleDbProvider provider = this.controllerManager.getProvider();
+        ResultSet resultSet = provider.getStringsQueryResultSet(
+                "SELECT COUNT(*) " +
+                        "FROM APPLICATION_ACCOUNT " +
+                        "WHERE LOGIN = '" + this.accountLogin + "' " +
+                        "AND PASSWORD = '" + this.accountPassword + "' " +
+                        "AND ROLE = '" + provider.getRole() + "'", Collections.emptyList());
+        while (resultSet.next()) {
+            int counter = resultSet.getInt(1);
+            if (counter == 0) {
+                throw new InvalidSyntaxException("Invalid role login or password");
+            }
+        }
     }
 
     public void verifySchema() throws SQLException, IOException {
