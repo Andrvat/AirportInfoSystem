@@ -3,6 +3,7 @@ package view;
 import controller.ControllerManager;
 import model.ApplicationConstants;
 import view.listenedButtons.*;
+import view.utilities.DisplaysManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,12 +22,14 @@ public class MainMenu extends JPanel {
 
         JPanel menuButtons = new JPanel(new GridBagLayout());
 
-        JButton disconnectButton = new DisconnectButton(controllerManager, parentDisplay);
-        menuButtons.add(disconnectButton, gridBagConstraints);
+        menuButtons.add(new JLabel() {{
+            setText("  MAIN MENU");
+            setFont(DisplaysManager.LABELS_DEFAULT_FONT);
+        }}, gridBagConstraints);
         menuButtons.add(new JLabel(" "), gridBagConstraints);
 
-        JButton rowsCounterButton = new RowsCounterButton(controllerManager);
-        menuButtons.add(rowsCounterButton, gridBagConstraints);
+        JButton disconnectButton = new DisconnectButton(controllerManager, parentDisplay);
+        menuButtons.add(disconnectButton, gridBagConstraints);
         menuButtons.add(new JLabel(" "), gridBagConstraints);
 
         JButton insertDataButton = new InsertDataButton(controllerManager);

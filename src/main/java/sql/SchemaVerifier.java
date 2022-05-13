@@ -49,7 +49,7 @@ public class SchemaVerifier {
         while (resultSet.next()) {
             int counter = resultSet.getInt(1);
             if (counter == 0) {
-                throw new InvalidSyntaxException("Invalid role login or password");
+                throw new InvalidSyntaxException(this.getClass().getName() + ": invalid role login or password");
             }
         }
     }

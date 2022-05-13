@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class LoginFormButton extends JButton {
     public LoginFormButton(ControllerManager controllerManager, JFrame display) {
-        this.setText("Login database");
+        this.setText("Connect to database");
         this.addActionListener(event -> {
 
             JPanel panel = new JPanel(new BorderLayout(5, 5));
@@ -32,7 +32,7 @@ public class LoginFormButton extends JButton {
             controlPanel.add(password);
             panel.add(controlPanel, BorderLayout.CENTER);
 
-            int result = JOptionPane.showConfirmDialog(this, panel, "Login form", JOptionPane.OK_CANCEL_OPTION);
+            int result = JOptionPane.showConfirmDialog(this, panel, "Connection", JOptionPane.OK_CANCEL_OPTION);
             if (result != JOptionPane.OK_OPTION) {
                 return;
             }

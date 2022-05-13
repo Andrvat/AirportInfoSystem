@@ -1,10 +1,7 @@
 package view;
 
 import controller.ControllerManager;
-import view.listenedButtons.DisconnectButton;
-import view.listenedButtons.InsertDataButton;
 import view.listenedButtons.LoginFormButton;
-import view.listenedButtons.RowsCounterButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +14,6 @@ public class LoginMenu extends JPanel {
 
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
-        gridBagConstraints.anchor = GridBagConstraints.NORTH;
 
         gridBagConstraints.anchor = GridBagConstraints.CENTER;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
