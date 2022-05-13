@@ -2,9 +2,9 @@ package sql;
 
 import controller.ControllerManager;
 import dbConnection.OracleDbProvider;
+import model.support.FilesManager;
 import oracle.net.jdbc.nl.InvalidSyntaxException;
 
-import javax.swing.plaf.nimbus.State;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -34,7 +34,8 @@ public class SchemaVerifier {
     private final String accountLogin;
     private final String accountPassword;
 
-    public SchemaVerifier(ControllerManager controllerManager, String accountLogin, String accountPassword) {
+    public SchemaVerifier(ControllerManager controllerManager,
+                          String accountLogin, String accountPassword) {
         this.controllerManager = controllerManager;
         this.accountLogin = accountLogin;
         this.accountPassword = accountPassword;
@@ -131,7 +132,7 @@ public class SchemaVerifier {
 
         Map<String, String> requiredConstraintsNames = new HashMap<>();
         String sourcePath = "src/main/resources/sql/tables/alters";
-        List<String> schemaQueriesFilenames = this.getSchemaQueriesFilenames(sourcePath);
+        List<String> schemaQueriesFilenames = FilesManager.getQueriesFilenames(sourcePath);
         for (var queryFilename : schemaQueriesFilenames) {
             String queriesPath = sourcePath + "/";
             String sqlQuery = Files.readString(Paths.get(queriesPath + queryFilename))
@@ -176,7 +177,7 @@ public class SchemaVerifier {
         while (resultSet.next()) {
             createdObjects.add(resultSet.getString(1));
         }
-        List<String> schemaQueriesFilenames = this.getSchemaQueriesFilenames(sourcePath);
+        List<String> schemaQueriesFilenames = FilesManager.getQueriesFilenames(sourcePath);
         for (var queryFilename : schemaQueriesFilenames) {
             String objectName = queryFilename.substring(0, queryFilename.length() - 4).toUpperCase(Locale.ROOT);
             String queriesPath = sourcePath + "/";
@@ -190,17 +191,5 @@ public class SchemaVerifier {
                 createdObjects.add(objectName);
             }
         }
-    }
-
-    private List<String> getSchemaQueriesFilenames(String path) {
-        List<String> verifiedFileNames = new ArrayList<>();
-        File folder = new File(path);
-        File[] filesList = folder.listFiles();
-        for (int i = 0; i < Objects.requireNonNull(filesList).length; ++i) {
-            if (filesList[i].isFile()) {
-                verifiedFileNames.add(filesList[i].getName());
-            }
-        }
-        return verifiedFileNames;
     }
 }

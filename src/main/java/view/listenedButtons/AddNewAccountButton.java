@@ -12,7 +12,7 @@ public class AddNewAccountButton extends JButton {
         this.setText("Add new account");
         this.addActionListener(event -> {
             JPanel panel = new JPanel(new BorderLayout(5, 5));
-            panel.setPreferredSize(new Dimension(300, 80));
+            panel.setPreferredSize(new Dimension(300, 100));
 
             JPanel labelPanel = new JPanel(new GridLayout(0, 1, 5, 5));
             labelPanel.add(new JLabel("User", SwingConstants.RIGHT));
