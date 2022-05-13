@@ -18,5 +18,12 @@ INSERT ALL
     INTO FLIGHT_DAY (flight_id, week_day, departure_time) VALUES (9, 5, TO_DATE('10:11:00', 'hh24:mi:ss'))
     INTO FLIGHT_DAY (flight_id, week_day, departure_time) VALUES (9, 6, TO_DATE('16:58:00', 'hh24:mi:ss'))
     INTO FLIGHT_DAY (flight_id, week_day, departure_time) VALUES (9, 7, TO_DATE('16:49:00', 'hh24:mi:ss'))
-
+    INTO FLIGHT_DAY (flight_id, week_day, departure_time) VALUES (10, 2, TO_DATE('10:50:00', 'hh24:mi:ss'))
+    INTO FLIGHT_DAY (flight_id, week_day, departure_time) VALUES (10, 5, TO_DATE('09:48:00', 'hh24:mi:ss'))
+    INTO FLIGHT_DAY (flight_id, week_day, departure_time) VALUES (11, 2, TO_DATE('19:25:00', 'hh24:mi:ss'))
+    INTO FLIGHT_DAY (flight_id, week_day, departure_time) VALUES (12, 2, TO_DATE('04:10:00', 'hh24:mi:ss'))
+    INTO FLIGHT_DAY (flight_id, week_day, departure_time) VALUES (12, 6, TO_DATE('07:22:00', 'hh24:mi:ss'))
+    INTO FLIGHT_DAY (flight_id, week_day, departure_time) VALUES (13, 7, TO_DATE('16:10:00', 'hh24:mi:ss'))
+    INTO FLIGHT_DAY (flight_id, week_day, departure_time) VALUES (14, 1, TO_DATE('19:04:00', 'hh24:mi:ss'))
+    INTO FLIGHT_DAY (flight_id, week_day, departure_time) VALUES (14, 5, TO_DATE('04:56:00', 'hh24:mi:ss'))
 SELECt 1 FROM DUAL;

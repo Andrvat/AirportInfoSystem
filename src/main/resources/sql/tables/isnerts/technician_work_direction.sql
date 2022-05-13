@@ -1,4 +1,4 @@
 INSERT ALL
-    INTO TECHNICIAN_WORK_DIRECTION (direction_name) VALUES ('Mechanics')
-    INTO TECHNICIAN_WORK_DIRECTION (direction_name) VALUES ('Electronics')
+    INTO TECHNICIAN_WORK_DIRECTION (direction_name) VALUES ('Механика')
+    INTO TECHNICIAN_WORK_DIRECTION (direction_name) VALUES ('Электроника')
 SELECT 1 FROM DUAL;

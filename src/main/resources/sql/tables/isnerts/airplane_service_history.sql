@@ -1,9 +1,41 @@
-CREATE TABLE AIRPLANE_SERVICE_HISTORY
-(
-    record_id                INT                                                    NOT NULL,
-    airplane_id              INT                                                    NOT NULL,
-    salon_cleaning           CHAR(1) CHECK (salon_cleaning IN ('N', 'Y'))           NOT NULL,
-    products_stock_refilling CHAR(1) CHECK (products_stock_refilling IN ('N', 'Y')) NOT NULL,
-    service_date             DATE                                                   NOT NULL,
-    constraint AIRPLANE_SERVICE_HISTORY_PK PRIMARY KEY (record_id)
-)
+INSERT ALL
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (1, 'Y', 'Y', TO_DATE('2014/02/05', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (1, 'Y', 'Y', TO_DATE('2014/03/05', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (1, 'Y', 'Y', TO_DATE('2014/04/04', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (1, 'Y', 'Y', TO_DATE('2014/05/05', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (1, 'Y', 'Y', TO_DATE('2014/06/06', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (1, 'Y', 'Y', TO_DATE('2014/07/05', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (1, 'Y', 'Y', TO_DATE('2014/08/10', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (1, 'Y', 'Y', TO_DATE('2014/09/09', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (1, 'Y', 'Y', TO_DATE('2014/10/04', 'yyyy/mm/dd'))
+
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (2, 'Y', 'Y', TO_DATE('2015/08/11', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (2, 'Y', 'Y', TO_DATE('2015/09/10', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (2, 'Y', 'Y', TO_DATE('2015/10/09', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (2, 'Y', 'N', TO_DATE('2015/11/11', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (2, 'Y', 'Y', TO_DATE('2015/11/15', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (2, 'Y', 'Y', TO_DATE('2015/12/11', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (2, 'Y', 'Y', TO_DATE('2016/01/13', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (2, 'Y', 'Y', TO_DATE('2016/01/15', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (2, 'Y', 'Y', TO_DATE('2016/02/12', 'yyyy/mm/dd'))
+
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (3, 'Y', 'Y', TO_DATE('2015/01/09', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (3, 'Y', 'Y', TO_DATE('2015/01/21', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (3, 'Y', 'Y', TO_DATE('2015/02/04', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (3, 'Y', 'Y', TO_DATE('2015/02/25', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (3, 'Y', 'Y', TO_DATE('2015/03/11', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (3, 'N', 'Y', TO_DATE('2015/03/29', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (3, 'Y', 'Y', TO_DATE('2015/03/30', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (3, 'Y', 'Y', TO_DATE('2015/04/10', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (3, 'Y', 'Y', TO_DATE('2015/04/22', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (3, 'Y', 'Y', TO_DATE('2015/05/01', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (3, 'Y', 'Y', TO_DATE('2015/05/12', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (3, 'Y', 'Y', TO_DATE('2015/05/28', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (3, 'Y', 'Y', TO_DATE('2015/06/04', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (3, 'Y', 'Y', TO_DATE('2015/06/18', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (3, 'Y', 'Y', TO_DATE('2015/07/29', 'yyyy/mm/dd'))
+    
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (4, 'Y', 'Y', TO_DATE('2016/02/15', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (4, 'Y', 'Y', TO_DATE('2016/03/06', 'yyyy/mm/dd'))
+    INTO AIRPLANE_SERVICE_HISTORY (airplane_id, salon_cleaning, products_stock_refilling, service_date) VALUES (4, 'Y', 'Y', TO_DATE('2016/03/28', 'yyyy/mm/dd'))
+SELECT 1 FROM DUAL;

@@ -1,6 +1,6 @@
 INSERT ALL
-    INTO SECURITY_WORK_DIRECTION (direction_name) VALUES ('Information security')
-    INTO SECURITY_WORK_DIRECTION (direction_name) VALUES ('Fire safety')
-    INTO SECURITY_WORK_DIRECTION (direction_name) VALUES ('Transport security')
-    INTO SECURITY_WORK_DIRECTION (direction_name) VALUES ('Public safety')
+    INTO SECURITY_WORK_DIRECTION (direction_name) VALUES ('Информационная безопасность')
+    INTO SECURITY_WORK_DIRECTION (direction_name) VALUES ('Пожарная безопасность')
+    INTO SECURITY_WORK_DIRECTION (direction_name) VALUES ('Транспортная безопасность')
+    INTO SECURITY_WORK_DIRECTION (direction_name) VALUES ('Общественная безопасность')
 SELECT 1 FROM DUAL;

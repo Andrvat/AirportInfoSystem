@@ -1,10 +1,10 @@
 INSERT ALL
-    INTO DEPARTURE_STATUS (description, reason) VALUES ('Registration is underway', NULL)
-    INTO DEPARTURE_STATUS (description, reason) VALUES ('Boarding is underway', NULL)
-    INTO DEPARTURE_STATUS (description, reason) VALUES ('Boarding completed', NULL)
-    INTO DEPARTURE_STATUS (description, reason) VALUES ('Flew out', NULL)
-    INTO DEPARTURE_STATUS (description, reason) VALUES ('Cancelled', 'Bad weather conditions')
-    INTO DEPARTURE_STATUS (description, reason) VALUES ('Cancelled', 'Military conflict')
-    INTO DEPARTURE_STATUS (description, reason) VALUES ('Detained', 'Bad weather conditions')
-    INTO DEPARTURE_STATUS (description, reason) VALUES ('Detained', 'Overlap in the schedule')
+    INTO DEPARTURE_STATUS (description, reason) VALUES ('Идет регистрация', NULL)
+    INTO DEPARTURE_STATUS (description, reason) VALUES ('Идет посадка', NULL)
+    INTO DEPARTURE_STATUS (description, reason) VALUES ('Посадка завершена', NULL)
+    INTO DEPARTURE_STATUS (description, reason) VALUES ('Вылетел', NULL)
+    INTO DEPARTURE_STATUS (description, reason) VALUES ('Отменен', 'Плохие погодные условия')
+    INTO DEPARTURE_STATUS (description, reason) VALUES ('Отменен', 'Военный конфликт')
+    INTO DEPARTURE_STATUS (description, reason) VALUES ('Задержан', 'Плохие погодные условия')
+    INTO DEPARTURE_STATUS (description, reason) VALUES ('Задержан', 'Наложение в расписании')
 SELECT 1 FROM DUAL;
