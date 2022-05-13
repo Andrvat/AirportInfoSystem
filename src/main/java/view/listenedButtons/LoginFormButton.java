@@ -68,6 +68,7 @@ public class LoginFormButton extends JButton {
 
                 SchemaVerifier verifier = new SchemaVerifier(controllerManager, roleUsername.getText(),
                         String.valueOf(rolePassword.getPassword()));
+                verifier.verifyRoles();
                 verifier.verifyAccount();
                 verifier.verifySchema();
 

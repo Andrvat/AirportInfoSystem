@@ -4,12 +4,14 @@ import controller.ControllerManager;
 import dbConnection.OracleDbProvider;
 import oracle.net.jdbc.nl.InvalidSyntaxException;
 
+import javax.swing.plaf.nimbus.State;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 
 public class SchemaVerifier {
@@ -38,6 +40,26 @@ public class SchemaVerifier {
         this.accountPassword = accountPassword;
     }
 
+    public void verifyRoles() throws IOException, SQLException {
+        String sqlQuery = Files.readString(Paths.get("src/main/resources/sql/roles.sql"))
+                .replaceAll("\n", " ")
+                .trim().replaceAll(" +", " ");
+        var queries = sqlQuery.split(";");
+        OracleDbProvider provider = this.controllerManager.getProvider();
+        for (var query : queries) {
+            Statement statement = provider.getCreatedStatement();
+            if (query.contains("DROP ROLE")) {
+                try {
+                    statement.execute(query);
+                } catch (SQLException ignored) {
+                }
+            } else {
+                statement.execute(query);
+            }
+        }
+        provider.commitChanges();
+    }
+
     public void verifyAccount() throws SQLException, InvalidSyntaxException {
         OracleDbProvider provider = this.controllerManager.getProvider();
         ResultSet resultSet = provider.getStringsQueryResultSet(
@@ -50,6 +72,10 @@ public class SchemaVerifier {
             int counter = resultSet.getInt(1);
             if (counter == 0) {
                 throw new InvalidSyntaxException(this.getClass().getName() + ": invalid role login or password");
+            } else {
+                Statement statement = provider.getCreatedStatement();
+                statement.execute("SET ROLE c##" + provider.getRole().toLowerCase(Locale.ROOT));
+                provider.commitChanges();
             }
         }
     }

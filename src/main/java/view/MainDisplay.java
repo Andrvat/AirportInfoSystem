@@ -8,10 +8,8 @@ import java.awt.*;
 
 public class MainDisplay extends JFrame {
 
-    private final MainMenu mainMenu;
-
     public MainDisplay(ControllerManager controllerManager) {
-        this.mainMenu = new MainMenu(controllerManager, this);
+        MainMenu mainMenu = new MainMenu(controllerManager, this);
 
         this.setSize(new Dimension(DisplaysManager.SCREEN_WIDTH, DisplaysManager.SCREEN_HEIGHT));
         this.setTitle(DisplaysManager.TITLE);
@@ -21,7 +19,7 @@ public class MainDisplay extends JFrame {
         Container contentPane = this.getContentPane();
         contentPane.setLayout(new GridBagLayout());
 
-        contentPane.add(this.mainMenu);
+        contentPane.add(mainMenu);
 
         this.setLocationRelativeTo(null);
         this.setVisible(true);
