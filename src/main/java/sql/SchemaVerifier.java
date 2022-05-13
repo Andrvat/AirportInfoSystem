@@ -83,6 +83,8 @@ public class SchemaVerifier {
 
     public void verifySchema() throws SQLException, IOException {
         OracleDbProvider provider = this.controllerManager.getProvider();
+        provider.getCreatedStatement().execute("ALTER SESSION SET NLS_DATE_FORMAT = 'DD-MON-YYYY HH24:MI:SS'");
+        provider.commitChanges();
         this.verifyTables(provider);
         provider.commitChanges();
         this.verifyConstraints(provider);

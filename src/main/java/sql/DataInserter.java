@@ -6,8 +6,10 @@ import model.support.FilesManager;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DataInserter {
@@ -75,5 +77,15 @@ public class DataInserter {
             }
         }
         controllerManager.getProvider().commitChanges();
+    }
+
+    public void insertLastGenerationDate() throws SQLException {
+        ResultSet resultSet = this.controllerManager.getProvider().getStringsQueryResultSet(
+                "SELECT COUNT(*) FROM LAST_GENERATION_DATE", Collections.emptyList());
+        while (resultSet.next()) {
+            if (resultSet.getInt(1) == 0) {
+                this.controllerManager.getProvider().getCreatedStatement().execute("INSERT INTO LAST_GENERATION_DATE (LAST_DATE) VALUES (NULL)");
+            }
+        }
     }
 }
