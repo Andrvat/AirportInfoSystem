@@ -1,7 +1,7 @@
 INSERT ALL
-    INTO DEPARTMENT (department_name, director_id) VALUES ('Отдел эксплуатации наземных сооружений', 1)
-    INTO DEPARTMENT (department_name, director_id) VALUES ('Отдел инженерного обеспечения', 2)
-    INTO DEPARTMENT (department_name, director_id) VALUES ('Отдел управления воздушным движением', 3)
-    INTO DEPARTMENT (department_name, director_id) VALUES ('Отдел организации пассажирских перевозок', 4)
-    INTO DEPARTMENT (department_name, director_id) VALUES ('Отдел организации грузовых перевозок', 5)
+    INTO DEPARTMENT (department_name) VALUES ('Отдел эксплуатации наземных сооружений')
+    INTO DEPARTMENT (department_name) VALUES ('Отдел инженерного обеспечения')
+    INTO DEPARTMENT (department_name) VALUES ('Отдел управления воздушным движением')
+    INTO DEPARTMENT (department_name) VALUES ('Отдел организации пассажирских перевозок')
+    INTO DEPARTMENT (department_name) VALUES ('Отдел организации грузовых перевозок')
 SELECT 1 FROM DUAL;

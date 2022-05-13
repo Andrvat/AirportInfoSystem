@@ -17,9 +17,6 @@ public class Department extends AbstractComponent {
     @DbColumnVarchar(name = "department_name", value = 255, constrains = @DbConstrains(isAllowedNull = false))
     private String departmentName;
 
-    @DbColumnNumber(name = "director_id", constrains = @DbConstrains(isAllowedNull = false, isUnique = true))
-    private Integer directorId;
-
     public Department() {
         super(Department.class.getAnnotation(DbTable.class).name());
     }
@@ -52,13 +49,6 @@ public class Department extends AbstractComponent {
         this.departmentName = departmentName;
     }
 
-    public Integer getDirectorId() {
-        return directorId;
-    }
-
-    public void setDirectorId(Integer directorId) {
-        this.directorId = directorId;
-    }
 
     @Override
     public void saveValues(OracleDbProvider provider) throws IllegalAccessException, SQLException {

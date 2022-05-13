@@ -73,9 +73,9 @@ public class LoginFormButton extends JButton {
                 SchemaVerifier verifier = new SchemaVerifier(controllerManager,
                         roleUsername.getText(),
                         String.valueOf(rolePassword.getPassword()));
-                verifier.verifyRoles();
                 verifier.verifyAccount();
                 verifier.verifySchema();
+                verifier.verifyRoles();
                 if (testDataCheckBox.isSelected()) {
                     DataInserter inserter = new DataInserter(controllerManager);
                     inserter.insertTestData("src/main/resources/sql/tables/inserts");
