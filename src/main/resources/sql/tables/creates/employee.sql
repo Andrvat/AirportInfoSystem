@@ -5,7 +5,7 @@ CREATE TABLE EMPLOYEE
     name            VARCHAR2(255 CHAR) NOT NULL,
     patronymic      VARCHAR2(255 CHAR),
     sex             CHAR(1) CHECK (sex IN ('N', 'Y')) NOT NULL,
-    university      VARCHAR2(255 CHAR) DEFAULT 'no education',
+    university      VARCHAR2(255 CHAR) DEFAULT 'Без образования',
     birth_date      DATE                              NOT NULL,
     work_experience INT                               NOT NULL,
     employment_date DATE                              NOT NULL,
