@@ -66,6 +66,12 @@ public class OracleDbProvider implements Closeable {
         return this.connection.createStatement();
     }
 
+    public CallableStatement getCreatedCallableStatement(String query, Integer parameter) throws SQLException {
+        CallableStatement statement = this.connection.prepareCall(query);
+        statement.setInt(1, parameter);
+        return statement;
+    }
+
     public ResultSet getStringsQueryResultSet(String query, List<String> parameters) throws SQLException {
         PreparedStatement preparedStatement = this.connection.prepareStatement(query);
         for (int i = 0; i < parameters.size(); ++i) {

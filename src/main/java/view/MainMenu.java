@@ -23,7 +23,7 @@ public class MainMenu extends JPanel {
         JPanel menuButtons = new JPanel(new GridBagLayout());
 
         menuButtons.add(new JLabel() {{
-            setText("  MAIN MENU");
+            setText("    MAIN MENU");
             setFont(DisplaysManager.LABELS_DEFAULT_FONT);
         }}, gridBagConstraints);
         menuButtons.add(new JLabel(" "), gridBagConstraints);
@@ -43,6 +43,10 @@ public class MainMenu extends JPanel {
         if (ApplicationConstants.ADMIN.equals(controllerManager.getProvider().getRole())) {
             JButton newAccountButton = new AddNewAccountButton(controllerManager);
             menuButtons.add(newAccountButton, gridBagConstraints);
+            menuButtons.add(new JLabel(" "), gridBagConstraints);
+
+            JButton generateDeparturesButton = new GenerateDeparturesButton(controllerManager);
+            menuButtons.add(generateDeparturesButton, gridBagConstraints);
             menuButtons.add(new JLabel(" "), gridBagConstraints);
         }
 

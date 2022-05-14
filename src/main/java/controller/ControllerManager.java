@@ -16,6 +16,7 @@ import view.utilities.TableRecordBuilder;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
@@ -90,18 +91,12 @@ public class ControllerManager {
                 .newInstance();
         TableRecordBuilder.buildByValues(component, primaryKey);
         component.deleteRowByPrimaryKey(this.provider);
+        this.provider.commitChanges();
     }
 
     public String[] getTableNames() {
         HashMap<String, Class<?>> entitiesClasses = this.model.getEntitiesClasses();
         return entitiesClasses.keySet().toArray(new String[0]);
-    }
-
-    public int getTableRowsNumber(String tableName) throws Exception {
-        AbstractComponent component = (AbstractComponent) this.model.getEntityClassByKey(tableName)
-                .getConstructor()
-                .newInstance();
-        return component.getRowsNumber(this.provider);
     }
 
     public String[][] getAllRowsValues(String tableName) throws Exception {
@@ -114,6 +109,13 @@ public class ControllerManager {
     public void registerNewAccount(String login, String password, String role) throws SQLException {
         Statement statement = this.provider.getCreatedStatement();
         statement.execute("INSERT INTO APPLICATION_ACCOUNT (LOGIN, PASSWORD, ROLE) VALUES ('" + login + "', '" + password + "', '" + role + "')");
-        provider.commitChanges();
+        this.provider.commitChanges();
+    }
+
+    public void generateDepartures(Integer nextDays) throws SQLException {
+        CallableStatement statement = this.provider.getCreatedCallableStatement("{CALL generate_departures(?)}", nextDays);
+        statement.execute();
+        statement.close();
+        this.provider.commitChanges();
     }
 }
