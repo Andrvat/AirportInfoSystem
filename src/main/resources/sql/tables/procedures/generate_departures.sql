@@ -42,9 +42,3 @@ BEGIN
     END LOOP;
     CLOSE cur;
 END generate_departures;
-
--- Вызов:
--- BEGIN
---     generate_departures(7);
---     commit;
--- END;

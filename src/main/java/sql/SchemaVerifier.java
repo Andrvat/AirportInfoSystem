@@ -61,6 +61,15 @@ public class SchemaVerifier {
         provider.commitChanges();
     }
 
+    public void verifyProcedures() throws IOException, SQLException {
+        String sqlQuery = Files.readString(Paths.get("src/main/resources/sql/tables/procedures/generate_departures.sql"))
+                .replaceAll("\n", " ")
+                .trim().replaceAll(" +", " ");
+        OracleDbProvider provider = this.controllerManager.getProvider();
+        provider.getCreatedStatement().execute(sqlQuery);
+        provider.commitChanges();
+    }
+
     public void verifyAccount() throws SQLException, InvalidSyntaxException {
         OracleDbProvider provider = this.controllerManager.getProvider();
         ResultSet resultSet = provider.getStringsQueryResultSet(

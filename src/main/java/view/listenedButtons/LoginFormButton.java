@@ -76,6 +76,7 @@ public class LoginFormButton extends JButton {
                 verifier.verifyAccount();
                 verifier.verifySchema();
                 verifier.verifyRoles();
+                verifier.verifyProcedures();
                 DataInserter inserter = new DataInserter(controllerManager);
                 inserter.insertLastGenerationDate();
                 if (testDataCheckBox.isSelected()) {
