@@ -36,11 +36,14 @@ public class BuyTicketButton extends JButton {
             }
             String resultMessage = "";
             try {
-                Integer actionTypeCode = (buyImmediatelyCheckBox.isSelected())
+                Integer ticketStatusCode = (buyImmediatelyCheckBox.isSelected())
                         ? ApplicationConstants.TICKET_STATUSES.get("Выкуплен")
                         : ApplicationConstants.TICKET_STATUSES.get("Забронирован");
-                controllerManager.bookOrBuyTicket(passengerTextField.getText(),
-                        departureTextField.getText(), seatTextField.getText(), actionTypeCode);
+                controllerManager.changeTicketStatus(
+                        Integer.valueOf(passengerTextField.getText()),
+                        Integer.valueOf(departureTextField.getText()),
+                        Integer.valueOf(seatTextField.getText()),
+                        ticketStatusCode);
                 resultMessage = "Билет успешно забронирован/выкуплен!";
             } catch (Exception exception) {
                 resultMessage = exception.getMessage();

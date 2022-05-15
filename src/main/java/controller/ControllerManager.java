@@ -7,7 +7,6 @@ import annotations.DbColumnVarchar;
 import dbConnection.OracleDbProvider;
 import entities.AbstractComponent;
 import lombok.Builder;
-import model.ApplicationConstants;
 import model.DbModel;
 import view.utilities.TableColumnInfo;
 import view.utilities.TableColumnRequestOption;
@@ -111,10 +110,11 @@ public class ControllerManager {
         this.provider.commitChanges();
     }
 
-    public void bookOrBuyTicket(String passengerId, String departureId, String seat, Integer actionType) throws SQLException {
-        CallableStatement statement = this.provider.getCreatedCallableStatement("{CALL book_or_buy_ticket_by_id(?, ?, ?, ?)}",
-                new ArrayList<>(Arrays.asList(Integer.valueOf(passengerId), Integer.valueOf(departureId), Integer.valueOf(seat), actionType)));
+    public void changeTicketStatus(Integer passengerId, Integer departureId, Integer seat, Integer actionType) throws SQLException {
+        CallableStatement statement = this.provider.getCreatedCallableStatement("{CALL change_ticket_status_by_id(?, ?, ?, ?)}",
+                new ArrayList<>(Arrays.asList(passengerId, departureId, seat, actionType)));
         statement.execute();
+        System.out.println("Hi");
         statement.close();
         this.provider.commitChanges();
     }

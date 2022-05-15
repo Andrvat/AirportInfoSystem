@@ -7,8 +7,12 @@ import annotations.DbTable;
 import dbConnection.OracleDbProvider;
 import model.support.TimeCalendar;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 @DbTable(name = "TICKET_STATUS_HISTORY")
 public class TicketStatusHistory extends AbstractComponent {
@@ -104,6 +108,28 @@ public class TicketStatusHistory extends AbstractComponent {
 
     public void setPassengerId(Integer passengerId) {
         this.passengerId = passengerId;
+    }
+
+    public List<String[]> getBookedTicketsById(OracleDbProvider provider) throws SQLException {
+        List<String[]> answer = new ArrayList<>();
+        ResultSet resultSet = provider.getStringsQueryResultSet(
+                "SELECT record_id, departure_id, seat " +
+                        "FROM ( " +
+                        "SELECT record_id, departure_id, seat, status_set_date, ticket_status_id, passenger_id, " +
+                        "RANK() OVER (PARTITION BY departure_id, seat ORDER BY status_set_date DESC) status_set_date_rank " +
+                        "FROM TICKET_STATUS_HISTORY) " +
+                        "WHERE status_set_date_rank = 1 " +
+                        "AND ticket_status_id = 2 " +
+                        "AND passenger_id = ?", this.passengerId
+        );
+        while (resultSet.next()) {
+            answer.add(new String[]{
+                    String.valueOf(resultSet.getInt(1)),
+                    String.valueOf(resultSet.getInt(2)),
+                    String.valueOf(resultSet.getInt(3))
+            });
+        }
+        return answer;
     }
 
     @Override

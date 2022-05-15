@@ -9,7 +9,7 @@ public class ApplicationConstants {
     public static final String AIRLINE = "AIRLINE";
     public static final String AIRPORT_MANAGER = "AIRPORT_MANAGER";
 
-    public static Map<String, Integer> TICKET_STATUSES = new HashMap<>() {{
+    public static final Map<String, Integer> TICKET_STATUSES = new HashMap<>() {{
        put("В продаже", 1);
        put("Забронирован", 2);
        put("Выкуплен", 3);
