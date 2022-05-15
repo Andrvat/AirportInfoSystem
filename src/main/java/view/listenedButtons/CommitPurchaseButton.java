@@ -3,7 +3,6 @@ package view.listenedButtons;
 import controller.ControllerManager;
 import converters.TicketsFormConverter;
 import entities.Ticket;
-import entities.TicketStatus;
 import entities.TicketStatusHistory;
 import model.ApplicationConstants;
 
@@ -32,7 +31,8 @@ public class CommitPurchaseButton extends JButton {
             try {
                 TicketStatusHistory ticketStatusHistory = new TicketStatusHistory();
                 ticketStatusHistory.setPassengerId(Integer.valueOf(passengerTextField.getText()));
-                var bookedTickets = ticketStatusHistory.getBookedTicketsById(controllerManager.getProvider());
+                var bookedTickets = ticketStatusHistory.getSpecifiedTicketsById
+                        (controllerManager.getProvider(), ApplicationConstants.TICKET_STATUSES.get("Забронирован"));
                 if (bookedTickets.isEmpty()) {
                     JOptionPane.showMessageDialog(null,
                             "Вы: пассажир с ID = " + ticketStatusHistory.getPassengerId() + ", не имеете забронированных билетов");

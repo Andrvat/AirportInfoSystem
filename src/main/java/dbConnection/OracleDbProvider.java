@@ -93,9 +93,10 @@ public class OracleDbProvider implements Closeable {
         return preparedStatement.getResultSet();
     }
 
-    public ResultSet getStringsQueryResultSet(String query, Integer parameter) throws SQLException {
+    public ResultSet getStringsQueryResultSet(String query, Integer first, Integer second) throws SQLException {
         PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-        preparedStatement.setInt(1, parameter);
+        preparedStatement.setInt(1, first);
+        preparedStatement.setInt(2, second);
         preparedStatement.execute();
         return preparedStatement.getResultSet();
     }

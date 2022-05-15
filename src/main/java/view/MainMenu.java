@@ -59,6 +59,10 @@ public class MainMenu extends JPanel {
             JButton commitPurchaseButton = new CommitPurchaseButton(controllerManager);
             menuButtons.add(commitPurchaseButton, gridBagConstraints);
             menuButtons.add(new JLabel(" "), gridBagConstraints);
+
+            JButton cancelPurchaseButton = new CancelPurchaseButton(controllerManager);
+            menuButtons.add(cancelPurchaseButton, gridBagConstraints);
+            menuButtons.add(new JLabel(" "), gridBagConstraints);
         }
 
         gridBagConstraints.weighty = 1;

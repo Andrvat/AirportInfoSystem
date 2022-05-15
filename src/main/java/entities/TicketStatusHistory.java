@@ -110,7 +110,7 @@ public class TicketStatusHistory extends AbstractComponent {
         this.passengerId = passengerId;
     }
 
-    public List<String[]> getBookedTicketsById(OracleDbProvider provider) throws SQLException {
+    public List<String[]> getSpecifiedTicketsById(OracleDbProvider provider, Integer status) throws SQLException {
         List<String[]> answer = new ArrayList<>();
         ResultSet resultSet = provider.getStringsQueryResultSet(
                 "SELECT record_id, departure_id, seat " +
@@ -119,9 +119,8 @@ public class TicketStatusHistory extends AbstractComponent {
                         "RANK() OVER (PARTITION BY departure_id, seat ORDER BY status_set_date DESC) status_set_date_rank " +
                         "FROM TICKET_STATUS_HISTORY) " +
                         "WHERE status_set_date_rank = 1 " +
-                        "AND ticket_status_id = 2 " +
-                        "AND passenger_id = ?", this.passengerId
-        );
+                        "AND ticket_status_id = ? " +
+                        "AND passenger_id = ?", status, this.passengerId);
         while (resultSet.next()) {
             answer.add(new String[]{
                     String.valueOf(resultSet.getInt(1)),
