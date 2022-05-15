@@ -9,6 +9,7 @@ import entities.AbstractComponent;
 import entities.Passenger;
 import entities.Ticket;
 import lombok.Builder;
+import model.ApplicationConstants;
 import model.DbModel;
 import view.utilities.TableColumnInfo;
 import view.utilities.TableColumnRequestOption;
@@ -16,6 +17,7 @@ import view.utilities.TableRecordBuilder;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.net.Inet4Address;
 import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -109,6 +111,14 @@ public class ControllerManager {
     public void registerNewAccount(String login, String password, String role) throws SQLException {
         Statement statement = this.provider.getCreatedStatement();
         statement.execute("INSERT INTO APPLICATION_ACCOUNT (LOGIN, PASSWORD, ROLE) VALUES ('" + login + "', '" + password + "', '" + role + "')");
+        this.provider.commitChanges();
+    }
+
+    public void buyTicket(String passengerId, String departureId, String seat) throws SQLException {
+        CallableStatement statement = this.provider.getCreatedCallableStatement("{CALL buy_ticket_by_id(?, ?, ?)}",
+                new ArrayList<>(Arrays.asList(Integer.valueOf(passengerId), Integer.valueOf(departureId), Integer.valueOf(seat))));
+        statement.execute();
+        statement.close();
         this.provider.commitChanges();
     }
 

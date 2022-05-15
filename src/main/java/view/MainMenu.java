@@ -22,10 +22,10 @@ public class MainMenu extends JPanel {
 
         JPanel menuButtons = new JPanel(new GridBagLayout());
 
-        menuButtons.add(new JLabel() {{
-            setText("    MAIN MENU");
-            setFont(DisplaysManager.LABELS_DEFAULT_FONT);
-        }}, gridBagConstraints);
+        JLabel mainLabel = new JLabel();
+        mainLabel.setText("  MAIN MENU");
+        mainLabel.setFont(DisplaysManager.LABELS_DEFAULT_FONT);
+        menuButtons.add(mainLabel, gridBagConstraints);
         menuButtons.add(new JLabel(" "), gridBagConstraints);
 
         JButton disconnectButton = new DisconnectButton(controllerManager, parentDisplay);
@@ -41,12 +41,19 @@ public class MainMenu extends JPanel {
         menuButtons.add(new JLabel(" "), gridBagConstraints);
 
         if (ApplicationConstants.ADMIN.equals(controllerManager.getProvider().getRole())) {
+            mainLabel.setText("    MAIN MENU");
             JButton newAccountButton = new AddNewAccountButton(controllerManager);
             menuButtons.add(newAccountButton, gridBagConstraints);
             menuButtons.add(new JLabel(" "), gridBagConstraints);
 
             JButton generateDeparturesButton = new GenerateDeparturesButton(controllerManager);
             menuButtons.add(generateDeparturesButton, gridBagConstraints);
+            menuButtons.add(new JLabel(" "), gridBagConstraints);
+        }
+
+        if (ApplicationConstants.PASSENGER.equals(controllerManager.getProvider().getRole())) {
+            JButton buyTicketButton = new BuyTicketButton(controllerManager);
+            menuButtons.add(buyTicketButton, gridBagConstraints);
             menuButtons.add(new JLabel(" "), gridBagConstraints);
         }
 

@@ -34,6 +34,19 @@ public class BuyTicketButton extends JButton {
             if (result != JOptionPane.OK_OPTION) {
                 return;
             }
+            String resultMessage = "";
+            try {
+                if (buyImmediatelyCheckBox.isSelected()) {
+                    controllerManager.buyTicket(passengerTextField.getText(), departureTextField.getText(), seatTextField.getText());
+                    resultMessage = "Ticket was bought!";
+                } else {
+
+                }
+            } catch (Exception exception) {
+                resultMessage = exception.getMessage();
+            } finally {
+                JOptionPane.showMessageDialog(null, resultMessage);
+            }
 
         });
     }
