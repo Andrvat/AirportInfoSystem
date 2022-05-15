@@ -1,4 +1,4 @@
-create or replace PROCEDURE book_or_buy_ticket_by_id(in_passenger_id IN NUMBER, in_departure_id IN NUMBER, in_seat IN NUMBER, in_ticket_status_id IN NUMBER)
+create or replace PROCEDURE change_ticket_status_by_id(in_passenger_id IN NUMBER, in_departure_id IN NUMBER, in_seat IN NUMBER, in_ticket_status_id IN NUMBER)
     IS
 BEGIN
     UPDATE ticket SET ticket_status_id = in_ticket_status_id WHERE departure_id = in_departure_id AND seat = in_seat;
@@ -11,4 +11,4 @@ BEGIN
                                             ORDER BY status_set_date DESC)
                              WHERE ROWNUM = 1);
 
-END book_or_buy_ticket_by_id;
+END change_ticket_status_by_id;
