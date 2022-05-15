@@ -1,4 +1,5 @@
 INSERT ALL
+    INTO DEPARTURE_STATUS (description, reason) VALUES ('Запланирован', NULL)
     INTO DEPARTURE_STATUS (description, reason) VALUES ('Идет регистрация', NULL)
     INTO DEPARTURE_STATUS (description, reason) VALUES ('Идет посадка', NULL)
     INTO DEPARTURE_STATUS (description, reason) VALUES ('Посадка завершена', NULL)
