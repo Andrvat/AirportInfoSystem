@@ -1,0 +1,7 @@
+CREATE OR REPLACE TRIGGER CHECK_EMPLOYEE_BIRTH_DATE
+    BEFORE INSERT OR UPDATE OF BIRTH_DATE ON EMPLOYEE
+    FOR EACH ROW
+    WHEN (NEW.BIRTH_DATE >= CURRENT_DATE OR NEW.BIRTH_DATE < TO_DATE('1900/01/01', 'yyyy/mm/dd'))
+BEGIN
+    raise_application_error(-20000, 'Birth date cannot be greater than current date');
+END;
