@@ -10,5 +10,7 @@ CREATE TABLE PASSENGER
     international_passport VARCHAR2(20 CHAR) UNIQUE,
     custom_control         CHAR(1) CHECK (custom_control IN ('N', 'Y')),
     cargo                  CHAR(1) CHECK (cargo IN ('N', 'Y')),
-    constraint PASSENGER_PK PRIMARY KEY (passenger_id)
+    constraint PASSENGER_PK PRIMARY KEY (passenger_id),
+    constraint CHECK_PASSPORT CHECK (REGEXP_LIKE(PASSPORT, '^[[:digit:]]{4} [[:digit:]]{6}$')),
+    constraint CHECK_INTERNATIONAL_PASSPORT CHECK (REGEXP_LIKE(international_passport, '^[[:digit:]]{2} [[:digit:]]{7}$'))
 );
