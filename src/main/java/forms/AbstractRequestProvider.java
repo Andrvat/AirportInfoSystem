@@ -5,12 +5,13 @@ import entities.AbstractComponent;
 
 import java.text.Normalizer;
 import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractRequestProvider {
 
     private final String description;
-    private List<String> answers;
-    private List<String> selectedOptions;
+    private Map<String, String> answers;
+    private Map<String, String> selectedOptions;
 
     public AbstractRequestProvider(String description) {
         this.description = description;
@@ -19,19 +20,19 @@ public abstract class AbstractRequestProvider {
 
     public abstract FormPackage getPreparedFromPackage();
 
-    public List<String> getAnswers() {
+    public Map<String, String> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(List<String> answers) {
+    public void setAnswers(Map<String, String> answers) {
         this.answers = answers;
     }
 
-    public List<String> getSelectedOptions() {
+    public Map<String, String> getSelectedOptions() {
         return selectedOptions;
     }
 
-    public void setSelectedOptions(List<String> selectedOptions) {
+    public void setSelectedOptions(Map<String, String> selectedOptions) {
         this.selectedOptions = selectedOptions;
     }
 

@@ -4,14 +4,17 @@ import controller.ControllerManager;
 import forms.AbstractRequestProvider;
 import forms.FormPackage;
 import model.ApplicationConstants;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 
 public class MakeRequestButton extends JButton {
+
+    public static final String NO_OPTION = "Не выбрано";
+
     public MakeRequestButton(ControllerManager controllerManager, AbstractRequestProvider provider) {
         FormPackage formPackage = provider.getPreparedFromPackage();
         this.setText("Перейти к заполнению формы");
@@ -28,9 +31,8 @@ public class MakeRequestButton extends JButton {
             JPanel optionPanel = new JPanel(new GridLayout(0, 1, 5, 5));
             List<JComboBox<?>> optionComboBoxes = new ArrayList<>();
             for (var options : formPackage.getOptions()) {
-                var copy = Arrays.copyOf(options, options.length + 1);
-                copy[copy.length - 1] = "Не выбрано";
-                JComboBox<String> comboBox = new JComboBox<>(copy);
+                JComboBox<String> comboBox = new JComboBox<>(ArrayUtils.add(options, 0, NO_OPTION));
+                comboBox.setPreferredSize(new Dimension(200, 20));
                 optionComboBoxes.add(comboBox);
                 optionPanel.add(comboBox);
             }
@@ -51,13 +53,13 @@ public class MakeRequestButton extends JButton {
                 return;
             }
 
-            List<String> answers = new ArrayList<>();
-            for (var text : textFieldAnswers) {
-                answers.add(text.getText());
+            Map<String, String> answers = new LinkedHashMap<>();
+            for (var i = 0; i < formPackage.getLabelTexts().size(); ++i) {
+                answers.put(formPackage.getLabelTexts().get(i), textFieldAnswers.get(i).getText());
             }
-            List<String> selectedOptions = new ArrayList<>();
-            for (var comboBox : optionComboBoxes) {
-                selectedOptions.add((String) comboBox.getSelectedItem());
+            Map<String, String> selectedOptions = new LinkedHashMap<>();
+            for (var i = 0; i < formPackage.getLabelTexts().size(); ++i) {
+                selectedOptions.put(formPackage.getLabelTexts().get(i), (String) optionComboBoxes.get(i).getSelectedItem());
             }
 
             provider.setSelectedOptions(selectedOptions);
