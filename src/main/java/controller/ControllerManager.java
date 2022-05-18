@@ -114,7 +114,6 @@ public class ControllerManager {
         CallableStatement statement = this.provider.getCreatedCallableStatement("{CALL change_ticket_status_by_id(?, ?, ?, ?)}",
                 new ArrayList<>(Arrays.asList(passengerId, departureId, seat, actionType)));
         statement.execute();
-        System.out.println("Hi");
         statement.close();
         this.provider.commitChanges();
     }

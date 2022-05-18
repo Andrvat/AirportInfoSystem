@@ -40,6 +40,10 @@ public class MainMenu extends JPanel {
         menuButtons.add(manageTablesButton, gridBagConstraints);
         menuButtons.add(new JLabel(" "), gridBagConstraints);
 
+        JButton openRequestGridButton = new OpenRequestGridButton(controllerManager);
+        menuButtons.add(openRequestGridButton, gridBagConstraints);
+        menuButtons.add(new JLabel(" "), gridBagConstraints);
+
         if (ApplicationConstants.ADMIN.equals(controllerManager.getProvider().getRole())) {
             mainLabel.setText("    MAIN MENU");
             JButton newAccountButton = new AddNewAccountButton(controllerManager);
