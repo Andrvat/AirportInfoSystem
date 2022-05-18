@@ -14,10 +14,15 @@ public class OpenRequestGridButton extends JButton {
             JPanel panel = new JPanel(new GridLayout(4, 4, 5, 5));
             panel.setPreferredSize(new Dimension(1200, 1000));
 
+            JOptionPane jOptionPane = new JOptionPane();
+            jOptionPane.setOptionType(JOptionPane.OK_CANCEL_OPTION);
+
+            // add labels and corresponding buttons for all requests
             AbstractRequestProvider request1Provider = new Request1Provider();
+            var request1Button = new MakeRequestButton(controllerManager, request1Provider);
             JPanel in = new JPanel(new GridLayout(0, 1, 5, 5));
             in.add(new JLabel(request1Provider.getDescription()));
-            in.add(new MakeRequestButton(controllerManager, request1Provider));
+            in.add(request1Button);
             panel.add(in);
 
             for (var i = 0; i < 14; ++i) {
@@ -29,11 +34,17 @@ public class OpenRequestGridButton extends JButton {
                 in.add(new JButton("Перейти к заполнению формы"));
                 panel.add(in);
             }
+            // end of adding
 
-            int result = JOptionPane.showConfirmDialog(this, panel, "Requests grid", JOptionPane.OK_CANCEL_OPTION);
-            if (result != JOptionPane.OK_OPTION) {
-                return;
-            }
+
+            jOptionPane.setMessage(panel);
+            JDialog dialog = jOptionPane.createDialog(this, "Requests grid");
+
+            // set current grid dialog to all request buttons for calling dialog.dispose()
+            request1Button.setParentDialog(dialog);
+
+
+            dialog.setVisible(true);
         });
     }
 }

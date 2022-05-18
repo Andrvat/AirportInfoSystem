@@ -4,9 +4,9 @@ import controller.ControllerManager;
 import entities.Employee;
 import view.listenedButtons.MakeRequestButton;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 
 public class Request1Provider extends AbstractRequestProvider {
     private static final String DESCRIPTION = "<html>Получить список и общее число всех pаботников аэpопоpта, " +
@@ -37,9 +37,10 @@ public class Request1Provider extends AbstractRequestProvider {
     }
 
     @Override
-    public void performRequest(ControllerManager controllerManager) {
+    public RequestResultPackage getRequestResultRows(ControllerManager controllerManager) throws SQLException {
         var answers = this.getAnswers();
         var selectedOptions = this.getSelectedOptions();
+        var resultPackage = new RequestResultPackage();
         var noOption = MakeRequestButton.NO_OPTION;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(REQUEST_BLANK);
@@ -131,7 +132,28 @@ public class Request1Provider extends AbstractRequestProvider {
                     .append(answers.get("Размер заработной платы"))
                     .append(" ");
         }
-        System.out.println(stringBuilder);
+
+        if (stringBuilder.toString().endsWith("WHERE ")) {
+            stringBuilder.replace(stringBuilder.length() - "WHERE ".length(), stringBuilder.length(), "");
+        }
+
+        ResultSet resultSet = controllerManager.getProvider().getStringsQueryResultSet(stringBuilder.toString(), Collections.emptyList());
+        List<String[]> allRows = new ArrayList<>();
+        // EMPLOYEE_ID, SURNAME, NAME, PATRONYMIC, SPECIALTY_NAME, CREW_ID, DEPARTMENT_NAME
+        resultPackage.setColumnNames(new String[]{"ID сотрудника", "Имя", "Фамилия", "Отчество", "Специальность", "ID бригады", "Отдел"});
+        while (resultSet.next()) {
+            List<String> row = new ArrayList<>();
+            row.add(String.valueOf(resultSet.getInt(1)));
+            row.add(resultSet.getString(2));
+            row.add(resultSet.getString(3));
+            row.add(resultSet.getString(4));
+            row.add(resultSet.getString(5));
+            row.add(String.valueOf(resultSet.getInt(6)));
+            row.add(resultSet.getString(7));
+            allRows.add(row.toArray(new String[0]));
+        }
+        resultPackage.setResultRows(allRows.toArray(new String[0][]));
+        return resultPackage;
     }
 
     @Override

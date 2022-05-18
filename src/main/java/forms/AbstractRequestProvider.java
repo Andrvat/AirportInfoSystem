@@ -1,10 +1,8 @@
 package forms;
 
 import controller.ControllerManager;
-import entities.AbstractComponent;
 
-import java.text.Normalizer;
-import java.util.List;
+import java.sql.SQLException;
 import java.util.Map;
 
 public abstract class AbstractRequestProvider {
@@ -16,7 +14,7 @@ public abstract class AbstractRequestProvider {
     public AbstractRequestProvider(String description) {
         this.description = description;
     }
-    public abstract void performRequest(ControllerManager controllerManager);
+    public abstract RequestResultPackage getRequestResultRows(ControllerManager controllerManager) throws SQLException;
 
     public abstract FormPackage getPreparedFromPackage();
 

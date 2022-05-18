@@ -3,17 +3,19 @@ package view.listenedButtons;
 import controller.ControllerManager;
 import forms.AbstractRequestProvider;
 import forms.FormPackage;
-import model.ApplicationConstants;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.List;
 
 public class MakeRequestButton extends JButton {
 
     public static final String NO_OPTION = "Не выбрано";
+
+    private JDialog parentDialog;
 
     public MakeRequestButton(ControllerManager controllerManager, AbstractRequestProvider provider) {
         FormPackage formPackage = provider.getPreparedFromPackage();
@@ -62,9 +64,29 @@ public class MakeRequestButton extends JButton {
                 selectedOptions.put(formPackage.getLabelTexts().get(i), (String) optionComboBoxes.get(i).getSelectedItem());
             }
 
-            provider.setSelectedOptions(selectedOptions);
-            provider.setAnswers(answers);
-            provider.performRequest(controllerManager);
+            try {
+                provider.setSelectedOptions(selectedOptions);
+                provider.setAnswers(answers);
+                var resultPackage = provider.getRequestResultRows(controllerManager);
+
+                JFrame tableDisplay = new JFrame("View all rows");
+                JTable tableView = new JTable(resultPackage.getResultRows(), resultPackage.getColumnNames());
+                JScrollPane scrollPane = new JScrollPane(tableView);
+                tableView.setEnabled(false);
+                tableDisplay.getContentPane().add(scrollPane);
+                tableDisplay.setPreferredSize(new Dimension(600, 300));
+                tableDisplay.pack();
+                tableDisplay.setLocationRelativeTo(null);
+
+                this.parentDialog.dispose();
+                tableDisplay.setVisible(true);
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
         });
+    }
+
+    public void setParentDialog(JDialog parentDialog) {
+        this.parentDialog = parentDialog;
     }
 }
