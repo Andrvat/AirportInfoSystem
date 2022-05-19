@@ -52,7 +52,7 @@ public class Request6Provider extends AbstractRequestProvider {
         }
         if (!noOption.equals(selectedOptions.get("Место прилета"))) {
             stringBuilder.append((previousExists) ? "AND " : "");
-            stringBuilder.append("ARRIVAL_LOCATION_NAME")
+            stringBuilder.append("LOCATION_NAME")
                     .append(" ")
                     .append(selectedOptions.get("Место прилета"))
                     .append(" ")
