@@ -24,7 +24,7 @@ public class Flight extends AbstractComponent {
     @DbColumnNumber(name = "arrival_location_id", constrains = @DbConstrains(isAllowedNull = false))
     private Integer arrivalLocationId;
 
-    @DbColumnDate(name = "travel_time", constrains = @DbConstrains(isAllowedNull = false))
+    @DbColumnDate(name = "travel_time", constrains = @DbConstrains(isAllowedNull = false), type = TimeCalendar.TimeCalendarType.TIME_ONLY)
     private TimeCalendar travelTime;
 
     @DbColumnNumber(name = "ticket_price", constrains = @DbConstrains(isAllowedNull = false))

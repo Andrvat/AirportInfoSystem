@@ -12,7 +12,7 @@ public class PilotMedicalCheckupHistory extends AbstractComponent {
     @DbColumnNumber(name = "pilot_id", constrains = @DbConstrains(isPrimaryKey = true, isAllowedNull = false))
     private Integer idPilot;
 
-    @DbColumnDate(name = "medical_checkup_date", constrains = @DbConstrains(isPrimaryKey = true, isAllowedNull = false))
+    @DbColumnDate(name = "medical_checkup_date", constrains = @DbConstrains(isPrimaryKey = true, isAllowedNull = false), type = TimeCalendar.TimeCalendarType.DATE_ONLY)
     private TimeCalendar medicalCheckupDate;
 
     @DbColumnBoolean(name = "medical_checkup_result", constrains = @DbConstrains(isAllowedNull = false))

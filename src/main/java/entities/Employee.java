@@ -27,13 +27,13 @@ public class Employee extends AbstractComponent {
     @DbColumnVarchar(name = "university", value = 255, constrains = @DbConstrains(isAllowedNull = false))
     private String university;
 
-    @DbColumnDate(name = "birth_date", constrains = @DbConstrains(isAllowedNull = false))
+    @DbColumnDate(name = "birth_date", constrains = @DbConstrains(isAllowedNull = false), type = TimeCalendar.TimeCalendarType.DATE_ONLY)
     private TimeCalendar birthDate;
 
     @DbColumnNumber(name = "work_experience", constrains = @DbConstrains(isAllowedNull = false))
     private Integer workExperience;
 
-    @DbColumnDate(name = "employment_date", constrains = @DbConstrains(isAllowedNull = false))
+    @DbColumnDate(name = "employment_date", constrains = @DbConstrains(isAllowedNull = false), type = TimeCalendar.TimeCalendarType.DATE_ONLY)
     private TimeCalendar employmentDate;
 
     @DbColumnNumber(name = "salary", constrains = @DbConstrains(isAllowedNull = false))

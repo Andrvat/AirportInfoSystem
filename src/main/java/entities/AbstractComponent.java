@@ -211,7 +211,7 @@ public abstract class AbstractComponent {
                     } else if (field.getType() == Boolean.class) {
                         row.add(String.valueOf(value));
                     } else if (field.getType() == TimeCalendar.class) {
-                        row.add(value.toString());
+                        row.add(((TimeCalendar) value).toTypedString(field.getAnnotation(DbColumnDate.class).type()));
                     } else if (field.getType() == Float.class) {
                         row.add(String.valueOf(value));
                     }

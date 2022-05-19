@@ -21,7 +21,7 @@ public class AirplaneMaintenanceHistory extends AbstractComponent {
     @DbColumnNumber(name = "maintenance_type_id", constrains = @DbConstrains(isAllowedNull = false))
     private Integer maintenanceTypeId;
 
-    @DbColumnDate(name = "maintenance_date", constrains = @DbConstrains(isAllowedNull = false))
+    @DbColumnDate(name = "maintenance_date", constrains = @DbConstrains(isAllowedNull = false), type = TimeCalendar.TimeCalendarType.DATE_ONLY)
     private TimeCalendar maintenanceDate;
 
     @DbColumnBoolean(name = "final_serviceability", constrains = @DbConstrains(isAllowedNull = false))

@@ -21,7 +21,7 @@ public class AirplaneServiceHistory extends AbstractComponent {
     @DbColumnBoolean(name = "products_stock_refilling", constrains = @DbConstrains(isAllowedNull = false))
     private Boolean productsStockRefilling;
 
-    @DbColumnDate(name = "service_date", constrains = @DbConstrains(isAllowedNull = false))
+    @DbColumnDate(name = "service_date", constrains = @DbConstrains(isAllowedNull = false), type = TimeCalendar.TimeCalendarType.DATE_ONLY)
     private TimeCalendar serviceDate;
 
     public AirplaneServiceHistory() {

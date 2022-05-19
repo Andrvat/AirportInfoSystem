@@ -12,7 +12,7 @@ public class Pilot extends AbstractComponent {
     @DbColumnNumber(name = "pilot_id", constrains = @DbConstrains(isPrimaryKey = true, isAllowedNull = false))
     private Integer idPilot;
 
-    @DbColumnDate(name = "medical_checkup_date", constrains = @DbConstrains(isAllowedNull = false))
+    @DbColumnDate(name = "medical_checkup_date", constrains = @DbConstrains(isAllowedNull = false), type = TimeCalendar.TimeCalendarType.DATE_ONLY)
     private TimeCalendar medicalCheckupDate;
 
     @DbColumnBoolean(name = "professional_aptitude", constrains = @DbConstrains(isAllowedNull = false))

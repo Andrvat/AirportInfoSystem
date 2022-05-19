@@ -21,7 +21,7 @@ public class FlightDay extends AbstractComponent {
     @DbColumnNumber(name = "week_day", constrains = @DbConstrains(isAllowedNull = false))
     private Integer weekDay;
 
-    @DbColumnDate(name = "departure_time", constrains = @DbConstrains(isAllowedNull = false))
+    @DbColumnDate(name = "departure_time", constrains = @DbConstrains(isAllowedNull = false), type = TimeCalendar.TimeCalendarType.TIME_ONLY)
     private TimeCalendar departureTime;
 
     public FlightDay() {

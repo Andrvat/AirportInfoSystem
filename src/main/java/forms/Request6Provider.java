@@ -97,7 +97,7 @@ public class Request6Provider extends AbstractRequestProvider {
             row.add(String.valueOf(resultSet.getInt(1)));
             row.add(resultSet.getString(2));
             row.add(resultSet.getString(3));
-            row.add(new TimeCalendar(resultSet.getDate(4)).toString());
+            row.add(new TimeCalendar(resultSet.getDate(4)).toTypedString(TimeCalendar.TimeCalendarType.TIME_ONLY));
             row.add(String.valueOf(resultSet.getFloat(5)));
             allRows.add(row.toArray(new String[0]));
         }
