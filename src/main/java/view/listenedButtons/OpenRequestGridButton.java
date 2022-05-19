@@ -2,6 +2,7 @@ package view.listenedButtons;
 
 import controller.ControllerManager;
 import forms.AbstractRequestProvider;
+import forms.Request10Provider;
 import forms.Request1Provider;
 import forms.Request6Provider;
 
@@ -24,6 +25,7 @@ public class OpenRequestGridButton extends JButton {
             List<AbstractRequestProvider> requestProviders = new ArrayList<>();
             requestProviders.add(new Request1Provider());
             requestProviders.add(new Request6Provider());
+            requestProviders.add(new Request10Provider());
 
             List<MakeRequestButton> requestButtons = new ArrayList<>();
 

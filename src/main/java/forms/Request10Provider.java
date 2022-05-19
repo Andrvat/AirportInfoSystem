@@ -1,31 +1,32 @@
 package forms;
 
 import controller.ControllerManager;
-import model.support.TimeCalendar;
 import view.listenedButtons.MakeRequestButton;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class Request6Provider extends AbstractRequestProvider {
-    public Request6Provider() {
-        super("<html>Получить перечень и общее число pейсов по указанному маpшpуту, " +
-                        "по длительности пеpелета, по цене билета и по всем этим кpитеpиям сpазу</html>",
+public class Request10Provider extends AbstractRequestProvider {
+    public Request10Provider() {
+        super("<html>Получить перечень и общее число авиаpейсов указанной категоpии, " +
+                        "в определенном напpавлении, с указанным типом самолета</html>",
 
-                "SELECT FLIGHT_ID, DEPARTURE_LOCATION_NAME, LOCATION_NAME AS ARRIVAL_LOCATION_NAME, TRAVEL_TIME, TICKET_PRICE " +
+                "SELECT FLIGHT_ID, DEPARTURE_LOCATION_NAME, LOCATION_NAME AS ARRIVAL_LOCATION_NAME, CATEGORY_NAME, TYPE_NAME " +
                         "FROM FLIGHT " +
                         "LEFT JOIN (SELECT FLIGHT_ID, LOCATION_NAME AS DEPARTURE_LOCATION_NAME " +
                         "FROM FLIGHT " +
                         "LEFT JOIN LOCATION ON DEPARTURE_LOCATION_ID = LOCATION_ID) USING (FLIGHT_ID) " +
                         "LEFT JOIN LOCATION ON ARRIVAL_LOCATION_ID = LOCATION_ID " +
+                        "LEFT JOIN FLIGHT_CATEGORY USING (FLIGHT_CATEGORY_ID) " +
+                        "LEFT JOIN AIRPLANE_TYPE USING (AIRPLANE_TYPE_ID) " +
                         "WHERE ",
 
                 new LinkedHashMap<>() {{
                     put("Место вылета", new String[]{"="});
                     put("Место прилета", new String[]{"="});
-                    put("Длительность перелета", new String[]{"<", ">", "="});
-                    put("Цена билета", new String[]{"<", ">", "="});
+                    put("Категория рейса", new String[]{"="});
+                    put("Тип самолета", new String[]{"="});
                 }});
     }
 
@@ -62,25 +63,27 @@ public class Request6Provider extends AbstractRequestProvider {
                     .append(" ");
             previousExists = true;
         }
-        if (!noOption.equals(selectedOptions.get("Длительность перелета"))) {
-            String timeDate = "TO_DATE('" + answers.get("Длительность перелета") + "', 'HH24::MI:SS') - " +
-                    "TRUNC(TO_DATE('" + answers.get("Длительность перелета") + "', 'HH24::MI:SS'))";
+        if (!noOption.equals(selectedOptions.get("Категория рейса"))) {
             stringBuilder.append((previousExists) ? "AND " : "");
-            stringBuilder.append("TRAVEL_TIME - TRUNC(TRAVEL_TIME)")
+            stringBuilder.append("CATEGORY_NAME")
                     .append(" ")
-                    .append(selectedOptions.get("Длительность перелета"))
+                    .append(selectedOptions.get("Категория рейса"))
                     .append(" ")
-                    .append(timeDate)
+                    .append("'")
+                    .append(answers.get("Категория рейса"))
+                    .append("'")
                     .append(" ");
             previousExists = true;
         }
-        if (!noOption.equals(selectedOptions.get("Цена билета"))) {
+        if (!noOption.equals(selectedOptions.get("Тип самолета"))) {
             stringBuilder.append((previousExists) ? "AND " : "");
-            stringBuilder.append("TICKET_PRICE")
+            stringBuilder.append("TYPE_NAME")
                     .append(" ")
-                    .append(selectedOptions.get("Цена билета"))
+                    .append(selectedOptions.get("Тип самолета"))
                     .append(" ")
-                    .append(answers.get("Цена билета"))
+                    .append("'")
+                    .append(answers.get("Тип самолета"))
+                    .append("'")
                     .append(" ");
         }
 
@@ -88,15 +91,15 @@ public class Request6Provider extends AbstractRequestProvider {
 
         ResultSet resultSet = controllerManager.getProvider().getStringsQueryResultSet(stringBuilder.toString(), Collections.emptyList());
         List<String[]> allRows = new ArrayList<>();
-        // SELECT FLIGHT_ID, DEPARTURE_LOCATION_NAME, LOCATION_NAME AS ARRIVAL_LOCATION_NAME, TRAVEL_TIME, TICKET_PRICE
-        resultPackage.setColumnNames(new String[]{"ID рейса", "Место вылета", "Место прилета", "Время в пути", "Стоимость билета"});
+        // SELECT FLIGHT_ID, DEPARTURE_LOCATION_NAME, LOCATION_NAME AS ARRIVAL_LOCATION_NAME, CATEGORY_NAME, TYPE_NAME
+        resultPackage.setColumnNames(new String[]{"ID рейса", "Место вылета", "Место прилета", "Категория рейса", "Тип самолета"});
         while (resultSet.next()) {
             List<String> row = new ArrayList<>();
             row.add(String.valueOf(resultSet.getInt(1)));
             row.add(resultSet.getString(2));
             row.add(resultSet.getString(3));
-            row.add(new TimeCalendar(resultSet.getDate(4)).toTypedString(TimeCalendar.TimeCalendarType.TIME_ONLY));
-            row.add(String.valueOf(resultSet.getFloat(5)));
+            row.add(resultSet.getString(4));
+            row.add(resultSet.getString(5));
             allRows.add(row.toArray(new String[0]));
         }
         resultPackage.setResultRows(allRows.toArray(new String[0][]));

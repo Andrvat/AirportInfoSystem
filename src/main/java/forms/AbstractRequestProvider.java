@@ -58,4 +58,10 @@ public abstract class AbstractRequestProvider {
     public String getDescription() {
         return description;
     }
+
+    public static void removeWhereIfNeed(StringBuilder stringBuilder) {
+        if (stringBuilder.toString().endsWith("WHERE ")) {
+            stringBuilder.replace(stringBuilder.length() - "WHERE ".length(), stringBuilder.length(), "");
+        }
+    }
 }

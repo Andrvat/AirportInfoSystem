@@ -130,9 +130,7 @@ public class Request1Provider extends AbstractRequestProvider {
                     .append(" ");
         }
 
-        if (stringBuilder.toString().endsWith("WHERE ")) {
-            stringBuilder.replace(stringBuilder.length() - "WHERE ".length(), stringBuilder.length(), "");
-        }
+        AbstractRequestProvider.removeWhereIfNeed(stringBuilder);
 
         ResultSet resultSet = controllerManager.getProvider().getStringsQueryResultSet(stringBuilder.toString(), Collections.emptyList());
         List<String[]> allRows = new ArrayList<>();
