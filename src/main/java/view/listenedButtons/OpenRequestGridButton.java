@@ -36,12 +36,9 @@ public class OpenRequestGridButton extends JButton {
                 panel.add(inPanel);
             }
 
-            for (var i = 0; i < 12; ++i) {
+            for (var i = 0; i < 11; ++i) {
                 JPanel in = new JPanel(new GridLayout(0, 1, 5, 5));
-                in.add(new JLabel("<html>Получить список и общее число всех pаботников аэpопоpта, " +
-                        "начальников отделов, pаботников указанного отдела, по стажу pаботы в аэpопоpту, " +
-                        "половому пpизнаку, возpасту, пpизнаку наличия и количеству детей, " +
-                        "по pазмеpу заpаботной платы</html>"));
+                in.add(new JLabel("<html>Будущее за нами</html>"));
                 in.add(new JButton("Перейти к заполнению формы"));
                 panel.add(in);
             }
