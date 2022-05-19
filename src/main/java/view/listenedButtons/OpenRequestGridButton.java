@@ -1,10 +1,7 @@
 package view.listenedButtons;
 
 import controller.ControllerManager;
-import forms.AbstractRequestProvider;
-import forms.Request10Provider;
-import forms.Request1Provider;
-import forms.Request6Provider;
+import forms.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +23,7 @@ public class OpenRequestGridButton extends JButton {
             requestProviders.add(new Request1Provider());
             requestProviders.add(new Request6Provider());
             requestProviders.add(new Request10Provider());
+            requestProviders.add(new Request3Provider());
 
             List<MakeRequestButton> requestButtons = new ArrayList<>();
 
@@ -38,7 +36,7 @@ public class OpenRequestGridButton extends JButton {
                 panel.add(inPanel);
             }
 
-            for (var i = 0; i < 13; ++i) {
+            for (var i = 0; i < 12; ++i) {
                 JPanel in = new JPanel(new GridLayout(0, 1, 5, 5));
                 in.add(new JLabel("<html>Получить список и общее число всех pаботников аэpопоpта, " +
                         "начальников отделов, pаботников указанного отдела, по стажу pаботы в аэpопоpту, " +

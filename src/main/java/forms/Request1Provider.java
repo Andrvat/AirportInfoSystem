@@ -135,7 +135,7 @@ public class Request1Provider extends AbstractRequestProvider {
         ResultSet resultSet = controllerManager.getProvider().getStringsQueryResultSet(stringBuilder.toString(), Collections.emptyList());
         List<String[]> allRows = new ArrayList<>();
         // EMPLOYEE_ID, SURNAME, NAME, PATRONYMIC, SPECIALTY_NAME, CREW_ID, DEPARTMENT_NAME
-        resultPackage.setColumnNames(new String[]{"ID сотрудника", "Имя", "Фамилия", "Отчество", "Специальность", "ID бригады", "Отдел"});
+        resultPackage.setColumnNames(new String[]{"ID сотрудника", "Фамилия", "Имя", "Отчество", "Специальность", "ID бригады", "Отдел"});
         while (resultSet.next()) {
             List<String> row = new ArrayList<>();
             row.add(String.valueOf(resultSet.getInt(1)));
