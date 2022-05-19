@@ -9,31 +9,28 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class Request1Provider extends AbstractRequestProvider {
-    private static final String DESCRIPTION = "<html>Получить список и общее число всех pаботников аэpопоpта, " +
-            "начальников отделов, pаботников указанного отдела, по стажу pаботы в аэpопоpту, " +
-            "половому пpизнаку, возpасту, пpизнаку наличия и количеству детей, " +
-            "по pазмеpу заpаботной платы</html>";
-
-    private static final String REQUEST_BLANK =
-            "SELECT EMPLOYEE_ID, SURNAME, NAME, PATRONYMIC, SPECIALTY_NAME, CREW_ID, DEPARTMENT_NAME " +
-                    "FROM EMPLOYEE " +
-                    "LEFT JOIN SPECIALIZATION USING (SPECIALTY_ID) " +
-                    "LEFT OUTER JOIN DEPARTMENT USING (DEPARTMENT_ID) " +
-                    "WHERE ";
-
-    private final Map<String, String[]> options = new LinkedHashMap<>() {{
-        put("Специальность", new String[]{"="});
-        put("Отдел", new String[]{"="});
-        put("Стаж работы", new String[]{"<", ">", "="});
-        put("Возраст", new String[]{"<", ">", "="});
-        put("Пол (Y: муж., N: жен.)", new String[]{"="});
-        put("Наличие детей (Y: да, N: нет)", new String[]{"="});
-        put("Количество детей", new String[]{"<", ">", "="});
-        put("Размер заработной платы", new String[]{"<", ">", "="});
-    }};
-
     public Request1Provider() {
-        super(DESCRIPTION);
+        super("<html>Получить список и общее число всех pаботников аэpопоpта, " +
+                        "начальников отделов, pаботников указанного отдела, по стажу pаботы в аэpопоpту, " +
+                        "половому пpизнаку, возpасту, пpизнаку наличия и количеству детей, " +
+                        "по pазмеpу заpаботной платы</html>",
+
+                "SELECT EMPLOYEE_ID, SURNAME, NAME, PATRONYMIC, SPECIALTY_NAME, CREW_ID, DEPARTMENT_NAME " +
+                        "FROM EMPLOYEE " +
+                        "LEFT JOIN SPECIALIZATION USING (SPECIALTY_ID) " +
+                        "LEFT OUTER JOIN DEPARTMENT USING (DEPARTMENT_ID) " +
+                        "WHERE ",
+
+                new LinkedHashMap<>() {{
+                    put("Специальность", new String[]{"="});
+                    put("Отдел", new String[]{"="});
+                    put("Стаж работы", new String[]{"<", ">", "="});
+                    put("Возраст", new String[]{"<", ">", "="});
+                    put("Пол (Y: муж., N: жен.)", new String[]{"="});
+                    put("Наличие детей (Y: да, N: нет)", new String[]{"="});
+                    put("Количество детей", new String[]{"<", ">", "="});
+                    put("Размер заработной платы", new String[]{"<", ">", "="});
+                }});
     }
 
     @Override
@@ -43,7 +40,7 @@ public class Request1Provider extends AbstractRequestProvider {
         var resultPackage = new RequestResultPackage();
         var noOption = MakeRequestButton.NO_OPTION;
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(REQUEST_BLANK);
+        stringBuilder.append(this.getRequestBlank());
         boolean previousExists = false;
 
         if (!noOption.equals(selectedOptions.get("Специальность"))) {
@@ -154,14 +151,5 @@ public class Request1Provider extends AbstractRequestProvider {
         }
         resultPackage.setResultRows(allRows.toArray(new String[0][]));
         return resultPackage;
-    }
-
-    @Override
-    public FormPackage getPreparedFromPackage() {
-        FormPackage formPackage = new FormPackage();
-        formPackage.setDescription(this.getDescription());
-        formPackage.setLabelTexts(this.options.keySet().toArray(new String[0]));
-        formPackage.setOptions(new ArrayList<>(this.options.values()));
-        return formPackage;
     }
 }
