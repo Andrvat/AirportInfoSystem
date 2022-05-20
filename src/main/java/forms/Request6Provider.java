@@ -26,7 +26,8 @@ public class Request6Provider extends AbstractRequestProvider {
                     put("Место прилета", new String[]{"="});
                     put("Длительность перелета", new String[]{"<", ">", "="});
                     put("Цена билета", new String[]{"<", ">", "="});
-                }});
+                }}
+        );
     }
 
     @Override
