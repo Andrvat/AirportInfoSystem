@@ -28,6 +28,7 @@ public class OpenRequestGridButton extends JButton {
             requestProviders.add(new Request2Provider());
             requestProviders.add(new Request7Provider());
             requestProviders.add(new Request9AProvider());
+            requestProviders.add(new Request9BProvider());
 
             List<MakeRequestButton> requestButtons = new ArrayList<>();
 
