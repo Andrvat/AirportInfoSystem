@@ -31,6 +31,7 @@ public class OpenRequestGridButton extends JButton {
             requestProviders.add(new Request9BProvider());
             requestProviders.add(new Request12Provider());
             requestProviders.add(new Request11Provider());
+            requestProviders.add(new Request8AProvider());
 
             List<MakeRequestButton> requestButtons = new ArrayList<>();
 
@@ -41,13 +42,6 @@ public class OpenRequestGridButton extends JButton {
                 inPanel.add(new JLabel(provider.getDescription()));
                 inPanel.add(requestButton);
                 panel.add(inPanel);
-            }
-
-            for (var i = 0; i < 5; ++i) {
-                JPanel in = new JPanel(new GridLayout(0, 1, 5, 5));
-                in.add(new JLabel("<html>Будущее за нами</html>"));
-                in.add(new JButton("Перейти к заполнению формы"));
-                panel.add(in);
             }
             // end of adding
 
