@@ -8,4 +8,5 @@ INSERT ALL
     INTO DEPARTURE_STATUS (description, reason) VALUES ('Отменен', 'Военный конфликт')
     INTO DEPARTURE_STATUS (description, reason) VALUES ('Задержан', 'Плохие погодные условия')
     INTO DEPARTURE_STATUS (description, reason) VALUES ('Задержан', 'Наложение в расписании')
+    INTO DEPARTURE_STATUS (description, reason) VALUES ('Приземлился', NULL)
 SELECT 1 FROM DUAL;
