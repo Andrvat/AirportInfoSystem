@@ -21,18 +21,19 @@ public class OpenRequestGridButton extends JButton {
 
             List<AbstractRequestProvider> requestProviders = new ArrayList<>();
             requestProviders.add(new Request1Provider());
-            requestProviders.add(new Request6Provider());
-            requestProviders.add(new Request10Provider());
+            requestProviders.add(new Request2Provider());
             requestProviders.add(new Request3Provider());
             requestProviders.add(new Request5Provider());
-            requestProviders.add(new Request2Provider());
+            requestProviders.add(new Request6Provider());
             requestProviders.add(new Request7Provider());
-            requestProviders.add(new Request9AProvider());
-            requestProviders.add(new Request9BProvider());
-            requestProviders.add(new Request12Provider());
-            requestProviders.add(new Request11Provider());
             requestProviders.add(new Request8AProvider());
             requestProviders.add(new Request8BProvider());
+            requestProviders.add(new Request9AProvider());
+            requestProviders.add(new Request9BProvider());
+            requestProviders.add(new Request10Provider());
+            requestProviders.add(new Request11Provider());
+            requestProviders.add(new Request12Provider());
+            requestProviders.add(new Request13Provider());
 
             List<MakeRequestButton> requestButtons = new ArrayList<>();
 
