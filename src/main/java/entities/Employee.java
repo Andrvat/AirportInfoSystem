@@ -21,7 +21,7 @@ public class Employee extends AbstractComponent {
     @DbColumnVarchar(name = "patronymic", value = 255, constrains = @DbConstrains(isAllowedNull = false))
     private String patronymic;
 
-    @DbColumnBoolean(name = "sex", constrains = @DbConstrains(isAllowedNull = false))
+    @DbColumnBoolean(name = "sex", constrains = @DbConstrains(isAllowedNull = false), type = DbColumnBoolean.BooleanValueType.MAN_WOMAN)
     private Boolean sex;
 
     @DbColumnVarchar(name = "university", value = 255, constrains = @DbConstrains(isAllowedNull = false))

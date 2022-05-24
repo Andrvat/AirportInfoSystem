@@ -17,7 +17,7 @@ public class Location extends AbstractComponent {
     @DbColumnVarchar(name = "location_name", value = 255, constrains = @DbConstrains(isAllowedNull = false))
     private String locationName;
 
-    @DbColumnBoolean(name = "weather_conditions", constrains = @DbConstrains(isAllowedNull = false))
+    @DbColumnBoolean(name = "weather_conditions", constrains = @DbConstrains(isAllowedNull = false), type = DbColumnBoolean.BooleanValueType.GOOD_BAD)
     private Boolean weatherConditions;
 
     @DbColumnNumber(name = "timezone", constrains = @DbConstrains(isAllowedNull = false))

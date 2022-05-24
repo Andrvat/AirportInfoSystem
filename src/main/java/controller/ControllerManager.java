@@ -1,9 +1,6 @@
 package controller;
 
-import annotations.DbColumnBoolean;
-import annotations.DbColumnDate;
-import annotations.DbColumnNumber;
-import annotations.DbColumnVarchar;
+import annotations.*;
 import dbConnection.OracleDbProvider;
 import entities.AbstractComponent;
 import lombok.Builder;

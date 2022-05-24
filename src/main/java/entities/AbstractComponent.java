@@ -1,6 +1,7 @@
 package entities;
 
 import annotations.*;
+import converters.BooleanValueConverter;
 import dbConnection.OracleDbProvider;
 import model.support.TimeCalendar;
 
@@ -209,7 +210,7 @@ public abstract class AbstractComponent {
                     } else if (field.getType() == String.class) {
                         row.add((String) value);
                     } else if (field.getType() == Boolean.class) {
-                        row.add(String.valueOf(value));
+                        row.add(BooleanValueConverter.convertByType(field.getAnnotation(DbColumnBoolean.class).type(), (Boolean) value));
                     } else if (field.getType() == TimeCalendar.class) {
                         row.add(((TimeCalendar) value).toTypedString(field.getAnnotation(DbColumnDate.class).type()));
                     } else if (field.getType() == Float.class) {

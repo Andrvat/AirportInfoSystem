@@ -26,7 +26,7 @@ public class Passenger extends AbstractComponent {
     @DbColumnVarchar(name = "patronymic", value = 255)
     private String patronymic;
 
-    @DbColumnBoolean(name = "sex", constrains = @DbConstrains(isAllowedNull = false))
+    @DbColumnBoolean(name = "sex", constrains = @DbConstrains(isAllowedNull = false), type = DbColumnBoolean.BooleanValueType.MAN_WOMAN)
     private Boolean sex;
     @DbColumnDate(name = "birth_date", constrains = @DbConstrains(isAllowedNull = false), type = TimeCalendar.TimeCalendarType.DATE_ONLY)
     private TimeCalendar birthDate;
@@ -36,10 +36,10 @@ public class Passenger extends AbstractComponent {
     @DbColumnVarchar(name = "international_passport", value = 20, constrains = @DbConstrains(isUnique = true))
     private String internationalPassport;
 
-    @DbColumnBoolean(name = "custom_control")
+    @DbColumnBoolean(name = "custom_control", type = DbColumnBoolean.BooleanValueType.YES_NO)
     private Boolean isCustomControlPassed;
 
-    @DbColumnBoolean(name = "cargo")
+    @DbColumnBoolean(name = "cargo", type = DbColumnBoolean.BooleanValueType.YES_NO)
     private Boolean isHavingCargo;
 
 

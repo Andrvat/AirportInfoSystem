@@ -15,7 +15,7 @@ public class Pilot extends AbstractComponent {
     @DbColumnDate(name = "medical_checkup_date", constrains = @DbConstrains(isAllowedNull = false), type = TimeCalendar.TimeCalendarType.DATE_ONLY)
     private TimeCalendar medicalCheckupDate;
 
-    @DbColumnBoolean(name = "professional_aptitude", constrains = @DbConstrains(isAllowedNull = false))
+    @DbColumnBoolean(name = "professional_aptitude", constrains = @DbConstrains(isAllowedNull = false), type = DbColumnBoolean.BooleanValueType.YES_NO)
     private Boolean professionalAptitude;
 
     @DbColumnNumber(name = "flight_hours", constrains = @DbConstrains(isAllowedNull = false))
