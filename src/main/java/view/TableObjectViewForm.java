@@ -3,23 +3,18 @@ package view;
 import annotations.DbTable;
 import controller.ControllerManager;
 import converters.TitlesConverter;
-import entities.Passenger;
-import jdk.net.UnixDomainPrincipal;
 import view.listenedButtons.DeleteRowByIdButton;
 import view.listenedButtons.UpdateRowButton;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.font.TextAttribute;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class TableObjectViewForm extends JFrame {
     public TableObjectViewForm(ControllerManager controllerManager, String tableName,
                                String[] columns, String[] values)
             throws ClassNotFoundException {
-        this.setSize(new Dimension(400, 700));
+        this.setSize(new Dimension(400, 930));
         this.setTitle("View object form");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
