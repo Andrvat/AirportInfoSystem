@@ -24,8 +24,8 @@ public abstract class AbstractComponent {
         this.tableName = tableName;
     }
 
-    public int getRowsNumber(OracleDbProvider provider) throws SQLException {
-        String query = "SELECT COUNT(*) AS amount FROM " + this.tableName;
+    public static int getRowsNumber(OracleDbProvider provider, String initialQuery) throws SQLException {
+        String query = "SELECT COUNT(*) AS amount FROM ( " + initialQuery + " )";
         ResultSet resultSet = provider.getStringsQueryResultSet(query, Collections.emptyList());
         resultSet.next();
         return resultSet.getInt(1);

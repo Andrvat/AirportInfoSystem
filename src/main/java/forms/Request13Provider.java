@@ -53,11 +53,9 @@ public class Request13Provider extends AbstractRequestProvider {
         );
     }
 
-    @Override
-    public RequestResultPackage getRequestResultRows(ControllerManager controllerManager) throws SQLException {
+    private String getCompletedRequestQuery() {
         var answers = this.getAnswers();
         var selectedOptions = this.getSelectedOptions();
-        var resultPackage = new RequestResultPackage();
         var noOption = MakeRequestButton.NO_OPTION;
         StringBuilder stringBuilder = new StringBuilder(this.getRequestBlank()
                 .replaceAll("@dep_id@", answers.get("Номер вылета")));
@@ -139,7 +137,20 @@ public class Request13Provider extends AbstractRequestProvider {
                     .append(answers.get("Возраст")).append(" * 365.25")
                     .append(" ");
         }
-        ResultSet resultSet = controllerManager.getProvider().getStringsQueryResultSet(stringBuilder.toString(), Collections.emptyList());
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public RequestResultPackage getRequestResultRowsNumber(ControllerManager controllerManager) throws SQLException {
+        var requestQuery = this.getCompletedRequestQuery();
+        return AbstractRequestProvider.makePackageWithRowsNumber(controllerManager, requestQuery);
+    }
+
+    @Override
+    public RequestResultPackage getRequestResultRows(ControllerManager controllerManager) throws SQLException {
+        var requestQuery = this.getCompletedRequestQuery();
+        var resultPackage = new RequestResultPackage();
+        ResultSet resultSet = controllerManager.getProvider().getStringsQueryResultSet(requestQuery, Collections.emptyList());
         List<String[]> allRows = new ArrayList<>();
         // COUNT(SEAT) AS RETURNED_TICKETS_NUM
         resultPackage.setColumnNames(new String[]{"Число сданных билетов"});

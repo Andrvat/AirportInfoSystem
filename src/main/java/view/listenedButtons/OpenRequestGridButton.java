@@ -18,7 +18,6 @@ public class OpenRequestGridButton extends JButton {
             JOptionPane jOptionPane = new JOptionPane();
             jOptionPane.setOptionType(JOptionPane.OK_CANCEL_OPTION);
 
-
             List<AbstractRequestProvider> requestProviders = new ArrayList<>();
             requestProviders.add(new Request1Provider());
             requestProviders.add(new Request2Provider());
@@ -45,8 +44,6 @@ public class OpenRequestGridButton extends JButton {
                 inPanel.add(requestButton);
                 panel.add(inPanel);
             }
-            // end of adding
-
 
             jOptionPane.setMessage(panel);
             JDialog dialog = jOptionPane.createDialog(this, "Requests grid");

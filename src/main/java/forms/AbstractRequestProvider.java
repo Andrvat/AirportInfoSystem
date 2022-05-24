@@ -1,9 +1,11 @@
 package forms;
 
 import controller.ControllerManager;
+import entities.AbstractComponent;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractRequestProvider {
@@ -28,6 +30,18 @@ public abstract class AbstractRequestProvider {
     public String getRequestBlank() {
         return requestBlank;
     }
+
+    public static RequestResultPackage makePackageWithRowsNumber(ControllerManager controllerManager, String requestQuery) throws SQLException {
+        int rowsNumber = AbstractComponent.getRowsNumber(controllerManager.getProvider(), requestQuery);
+        List<String[]> allRows = new ArrayList<>();
+        allRows.add(new String[]{String.valueOf(rowsNumber)});
+        var resultPackage = new RequestResultPackage();
+        resultPackage.setColumnNames(new String[]{"Количество"});
+        resultPackage.setResultRows(allRows.toArray(new String[0][]));
+        return resultPackage;
+    }
+
+    public abstract RequestResultPackage getRequestResultRowsNumber(ControllerManager controllerManager) throws SQLException;
 
     public abstract RequestResultPackage getRequestResultRows(ControllerManager controllerManager) throws SQLException;
 

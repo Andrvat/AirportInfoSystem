@@ -32,11 +32,9 @@ public class Request5Provider extends AbstractRequestProvider {
         );
     }
 
-    @Override
-    public RequestResultPackage getRequestResultRows(ControllerManager controllerManager) throws SQLException {
+    private String getCompletedRequestQuery() {
         var answers = this.getAnswers();
         var selectedOptions = this.getSelectedOptions();
-        var resultPackage = new RequestResultPackage();
         var noOption = MakeRequestButton.NO_OPTION;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(this.getRequestBlank());
@@ -72,8 +70,20 @@ public class Request5Provider extends AbstractRequestProvider {
                     .append(answers.get("Возраст самолета"))
                     .append(" ");
         }
+        return stringBuilder.toString();
+    }
 
-        ResultSet resultSet = controllerManager.getProvider().getStringsQueryResultSet(stringBuilder.toString(), Collections.emptyList());
+    @Override
+    public RequestResultPackage getRequestResultRowsNumber(ControllerManager controllerManager) throws SQLException {
+        var requestQuery = this.getCompletedRequestQuery();
+        return AbstractRequestProvider.makePackageWithRowsNumber(controllerManager, requestQuery);
+    }
+
+    @Override
+    public RequestResultPackage getRequestResultRows(ControllerManager controllerManager) throws SQLException {
+        var requestQuery = this.getCompletedRequestQuery();
+        var resultPackage = new RequestResultPackage();
+        ResultSet resultSet = controllerManager.getProvider().getStringsQueryResultSet(requestQuery, Collections.emptyList());
         List<String[]> allRows = new ArrayList<>();
         // SELECT DISTINCT AIRPLANE_ID, TYPE_NAME, FINAL_SERVICEABILITY,
         // (EXTRACT(YEAR FROM CURRENT_DATE) - MANUFACTURE_YEAR) AS AIRPLANE_AGE

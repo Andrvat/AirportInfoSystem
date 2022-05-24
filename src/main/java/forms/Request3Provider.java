@@ -31,11 +31,9 @@ public class Request3Provider extends AbstractRequestProvider {
                 }});
     }
 
-    @Override
-    public RequestResultPackage getRequestResultRows(ControllerManager controllerManager) throws SQLException {
+    private String getCompletedRequestQuery() {
         var answers = this.getAnswers();
         var selectedOptions = this.getSelectedOptions();
-        var resultPackage = new RequestResultPackage();
         var noOption = MakeRequestButton.NO_OPTION;
         String preQuery = this.getRequestBlank();
         boolean previousExists = false;
@@ -86,8 +84,19 @@ public class Request3Provider extends AbstractRequestProvider {
         }
 
         AbstractRequestProvider.removeWhereIfNeed(stringBuilder);
+        return stringBuilder.toString();
+    }
+    @Override
+    public RequestResultPackage getRequestResultRowsNumber(ControllerManager controllerManager) throws SQLException {
+        var requestQuery = this.getCompletedRequestQuery();
+        return AbstractRequestProvider.makePackageWithRowsNumber(controllerManager, requestQuery);
+    }
 
-        ResultSet resultSet = controllerManager.getProvider().getStringsQueryResultSet(stringBuilder.toString(), Collections.emptyList());
+    @Override
+    public RequestResultPackage getRequestResultRows(ControllerManager controllerManager) throws SQLException {
+        var requestQuery = this.getCompletedRequestQuery();
+        var resultPackage = new RequestResultPackage();
+        ResultSet resultSet = controllerManager.getProvider().getStringsQueryResultSet(requestQuery, Collections.emptyList());
         List<String[]> allRows = new ArrayList<>();
         // SELECT EMPLOYEE_ID, SURNAME, NAME, PATRONYMIC, SEX, MEDICAL_CHECKUP_RESULT, (CURRENT_DATE - BIRTH_DATE) / 365.25 AS AGE, SALARY
         resultPackage.setColumnNames(new String[]{"ID сотрудника", "Фамилия", "Имя", "Отчество", "Пол", "Результат мед. осм.", "Возраст", "Зарплата"});

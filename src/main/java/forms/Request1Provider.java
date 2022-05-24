@@ -1,6 +1,7 @@
 package forms;
 
 import controller.ControllerManager;
+import entities.AbstractComponent;
 import entities.Employee;
 import view.listenedButtons.MakeRequestButton;
 
@@ -33,11 +34,9 @@ public class Request1Provider extends AbstractRequestProvider {
                 }});
     }
 
-    @Override
-    public RequestResultPackage getRequestResultRows(ControllerManager controllerManager) throws SQLException {
+    private String getCompletedRequestQuery() {
         var answers = this.getAnswers();
         var selectedOptions = this.getSelectedOptions();
-        var resultPackage = new RequestResultPackage();
         var noOption = MakeRequestButton.NO_OPTION;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(this.getRequestBlank());
@@ -131,8 +130,20 @@ public class Request1Provider extends AbstractRequestProvider {
         }
 
         AbstractRequestProvider.removeWhereIfNeed(stringBuilder);
+        return stringBuilder.toString();
+    }
 
-        ResultSet resultSet = controllerManager.getProvider().getStringsQueryResultSet(stringBuilder.toString(), Collections.emptyList());
+    @Override
+    public RequestResultPackage getRequestResultRowsNumber(ControllerManager controllerManager) throws SQLException {
+        var requestQuery = this.getCompletedRequestQuery();
+        return AbstractRequestProvider.makePackageWithRowsNumber(controllerManager, requestQuery);
+    }
+
+    @Override
+    public RequestResultPackage getRequestResultRows(ControllerManager controllerManager) throws SQLException {
+        var requestQuery = this.getCompletedRequestQuery();
+        var resultPackage = new RequestResultPackage();
+        ResultSet resultSet = controllerManager.getProvider().getStringsQueryResultSet(requestQuery, Collections.emptyList());
         List<String[]> allRows = new ArrayList<>();
         // EMPLOYEE_ID, SURNAME, NAME, PATRONYMIC, SPECIALTY_NAME, CREW_ID, DEPARTMENT_NAME
         resultPackage.setColumnNames(new String[]{"ID сотрудника", "Фамилия", "Имя", "Отчество", "Специальность", "ID бригады", "Отдел"});

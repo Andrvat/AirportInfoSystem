@@ -3,6 +3,7 @@ package view.listenedButtons;
 import controller.ControllerManager;
 import forms.AbstractRequestProvider;
 import forms.FormPackage;
+import forms.RequestResultPackage;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.swing.*;
@@ -50,8 +51,18 @@ public class MakeRequestButton extends JButton {
             }
             panel.add(controlPanel, BorderLayout.EAST);
 
-            int result = JOptionPane.showConfirmDialog(this, panel, "Request", JOptionPane.OK_CANCEL_OPTION);
-            if (result != JOptionPane.OK_OPTION) {
+            Map<String, Integer> answerOptions = new LinkedHashMap<>() {{
+                put("Перечень", 1);
+                put("Количество", 2);
+                put("Отмена", 3);
+            }};
+            var stringOptions = answerOptions.keySet().toArray(new String[0]);
+            int result = JOptionPane.showOptionDialog(this,
+                    panel, "Request",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                    null, stringOptions, stringOptions[0]);
+            result++;
+            if (result == answerOptions.get("Отмена")) {
                 return;
             }
 
@@ -67,7 +78,12 @@ public class MakeRequestButton extends JButton {
             try {
                 provider.setSelectedOptions(selectedOptions);
                 provider.setAnswers(answers);
-                var resultPackage = provider.getRequestResultRows(controllerManager);
+                RequestResultPackage resultPackage;
+                if (result == answerOptions.get("Перечень")) {
+                    resultPackage = provider.getRequestResultRows(controllerManager);
+                } else {
+                    resultPackage = provider.getRequestResultRowsNumber(controllerManager);
+                }
 
                 JFrame tableDisplay = new JFrame("View all rows");
                 JTable tableView = new JTable(resultPackage.getResultRows(), resultPackage.getColumnNames());

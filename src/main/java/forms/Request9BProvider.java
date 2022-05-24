@@ -64,11 +64,9 @@ public class Request9BProvider extends AbstractRequestProvider {
         );
     }
 
-    @Override
-    public RequestResultPackage getRequestResultRows(ControllerManager controllerManager) throws SQLException {
+    private String getCompletedRequestQuery() {
         var answers = this.getAnswers();
         var selectedOptions = this.getSelectedOptions();
-        var resultPackage = new RequestResultPackage();
         var noOption = MakeRequestButton.NO_OPTION;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(this.getRequestBlank());
@@ -145,8 +143,20 @@ public class Request9BProvider extends AbstractRequestProvider {
         }
         AbstractRequestProvider.removeWhereIfNeed(stringBuilder);
         stringBuilder.append(Request9BProvider.LAST_REQUEST_BLANK_PART);
+        return stringBuilder.toString();
+    }
 
-        ResultSet resultSet = controllerManager.getProvider().getStringsQueryResultSet(stringBuilder.toString(), Collections.emptyList());
+    @Override
+    public RequestResultPackage getRequestResultRowsNumber(ControllerManager controllerManager) throws SQLException {
+        var requestQuery = this.getCompletedRequestQuery();
+        return AbstractRequestProvider.makePackageWithRowsNumber(controllerManager, requestQuery);
+    }
+
+    @Override
+    public RequestResultPackage getRequestResultRows(ControllerManager controllerManager) throws SQLException {
+        var requestQuery = this.getCompletedRequestQuery();
+        var resultPackage = new RequestResultPackage();
+        ResultSet resultSet = controllerManager.getProvider().getStringsQueryResultSet(requestQuery, Collections.emptyList());
         List<String[]> allRows = new ArrayList<>();
         resultPackage.setColumnNames(new String[]{"Средняя цена проданных билетов"});
         while (resultSet.next()) {

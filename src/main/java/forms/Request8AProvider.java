@@ -41,11 +41,9 @@ public class Request8AProvider extends AbstractRequestProvider {
         );
     }
 
-    @Override
-    public RequestResultPackage getRequestResultRows(ControllerManager controllerManager) throws SQLException {
+    private String getCompletedRequestQuery() {
         var answers = this.getAnswers();
         var selectedOptions = this.getSelectedOptions();
-        var resultPackage = new RequestResultPackage();
         var noOption = MakeRequestButton.NO_OPTION;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(this.getRequestBlank());
@@ -83,7 +81,21 @@ public class Request8AProvider extends AbstractRequestProvider {
                     .append("'")
                     .append(" ");
         }
-        ResultSet resultSet = controllerManager.getProvider().getStringsQueryResultSet(stringBuilder.toString(), Collections.emptyList());
+        return stringBuilder.toString();
+    }
+
+
+    @Override
+    public RequestResultPackage getRequestResultRowsNumber(ControllerManager controllerManager) throws SQLException {
+        var requestQuery = this.getCompletedRequestQuery();
+        return AbstractRequestProvider.makePackageWithRowsNumber(controllerManager, requestQuery);
+    }
+
+    @Override
+    public RequestResultPackage getRequestResultRows(ControllerManager controllerManager) throws SQLException {
+        var requestQuery = this.getCompletedRequestQuery();
+        var resultPackage = new RequestResultPackage();
+        ResultSet resultSet = controllerManager.getProvider().getStringsQueryResultSet(requestQuery, Collections.emptyList());
         List<String[]> allRows = new ArrayList<>();
         // SELECT DEPARTURE_ID, FLIGHT_ID, DEPARTURE_DATE, ARRIVAL_DATE, ARRIVAL_LOCATION_NAME, DEPARTURE_LOCATION_NAME, AIRLINE_NAME
         resultPackage.setColumnNames(new String[]{"ID вылета", "ID рейса", "Дата вылета", "Дата прилета", "Место прилета", "Место вылета", "Авиакомпания"});
