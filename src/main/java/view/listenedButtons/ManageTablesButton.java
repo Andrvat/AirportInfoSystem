@@ -23,47 +23,51 @@ public class ManageTablesButton extends JButton {
                 return;
             }
             String selectedTableName = (String) tableViewer.getComboBox().getSelectedItem();
-            try {
-                List<TableColumnInfo> columnInfos = controllerManager.getTableColumnInfos(
-                        selectedTableName, TableColumnRequestOption.VIEW);
-                List<String> columnNamesList = new ArrayList<>();
-                for (TableColumnInfo info : columnInfos) {
-                    columnNamesList.add(info.getName().replaceAll("_", " "));
-                }
-                String[] columnNames = columnNamesList.toArray(new String[0]);
-                String[][] allRows = controllerManager.getAllRowsValues(selectedTableName);
+            ManageTablesButton.manageTable(controllerManager, selectedTableName);
+        });
+    }
 
-                JFrame tableDisplay = new JFrame("View all rows");
+    public static void manageTable(ControllerManager controllerManager, String tableName) {
+        try {
+            List<TableColumnInfo> columnInfos = controllerManager.getTableColumnInfos(
+                    tableName, TableColumnRequestOption.VIEW);
+            List<String> columnNamesList = new ArrayList<>();
+            for (TableColumnInfo info : columnInfos) {
+                columnNamesList.add(info.getName().replaceAll("_", " "));
+            }
+            String[] columnNames = columnNamesList.toArray(new String[0]);
+            String[][] allRows = controllerManager.getAllRowsValues(tableName);
 
-                JTable tableView = new JTable(allRows, columnNames);
-                JScrollPane scrollPane = new JScrollPane(tableView);
+            JFrame tableDisplay = new JFrame("View all rows");
 
-                tableView.setEnabled(false);
-                tableView.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        if (e.getClickCount() == 2) {
-                            int row = tableView.rowAtPoint(e.getPoint());
-                            if (row >= 0) {
-                                String[] objectValues = allRows[row];
-                                try {
-                                    new TableObjectViewForm(controllerManager, selectedTableName, columnNames, objectValues);
-                                } catch (ClassNotFoundException ex) {
-                                    throw new RuntimeException(ex);
-                                }
+            JTable tableView = new JTable(allRows, columnNames);
+            JScrollPane scrollPane = new JScrollPane(tableView);
+
+            tableView.setEnabled(false);
+            tableView.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) {
+                        int row = tableView.rowAtPoint(e.getPoint());
+                        if (row >= 0) {
+                            String[] objectValues = allRows[row];
+                            try {
+                                new TableObjectViewForm(controllerManager, tableName, columnNames, objectValues);
+                            } catch (ClassNotFoundException ex) {
+                                throw new RuntimeException(ex);
                             }
                         }
                     }
-                });
+                }
+            });
 
-                tableDisplay.getContentPane().add(scrollPane);
-                tableDisplay.setPreferredSize(new Dimension(600, 300));
-                tableDisplay.pack();
-                tableDisplay.setLocationRelativeTo(null);
-                tableDisplay.setVisible(true);
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e.getMessage());
-            }
-        });
+            tableDisplay.getContentPane().add(scrollPane);
+            tableDisplay.setPreferredSize(new Dimension(600, 300));
+            tableDisplay.pack();
+            tableDisplay.setLocationRelativeTo(null);
+            tableDisplay.setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }
 }
