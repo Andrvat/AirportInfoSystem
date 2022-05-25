@@ -39,6 +39,7 @@ public class MainMenu extends JPanel {
         }
 
         if (ApplicationConstants.PASSENGER.equals(controllerManager.getProvider().getRole())) {
+            this.addComponentTo(menuButtons, gridBagConstraints, new PrettyViewingTablesButton(controllerManager));
             this.addComponentTo(menuButtons, gridBagConstraints, new BuyTicketButton(controllerManager));
             this.addComponentTo(menuButtons, gridBagConstraints, new CommitPurchaseButton(controllerManager));
             this.addComponentTo(menuButtons, gridBagConstraints, new CancelPurchaseButton(controllerManager));

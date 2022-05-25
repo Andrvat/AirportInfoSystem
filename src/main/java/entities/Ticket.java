@@ -5,7 +5,9 @@ import annotations.DbColumnVarchar;
 import annotations.DbConstrains;
 import annotations.DbTable;
 import dbConnection.OracleDbProvider;
+import forms.RequestResultPackage;
 
+import javax.naming.spi.DirStateFactory;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
@@ -106,5 +108,30 @@ public class Ticket extends AbstractComponent {
                     put(Ticket.getDepartureIdAnnotationName(), String.valueOf(departureId));
                     put(Ticket.getSeatAnnotationName(), String.valueOf(seat));
                 }});
+    }
+
+    @Override
+    public RequestResultPackage getPrettyViewingResultPackage(OracleDbProvider provider) throws SQLException {
+        var resultPackage = new RequestResultPackage();
+        resultPackage.setTableName(this.getTableName());
+        resultPackage.setColumnNames(new String[]{"Номер вылета", "Место", "Статус", "Макс. вместимость багажа"});
+
+        var resultSet = provider.getStringsQueryResultSet(
+                "SELECT departure_id, seat, description, bag_max_capacity " +
+                        "FROM TICKET " +
+                        "LEFT JOIN TICKET_STATUS USING (ticket_status_id) " +
+                        "ORDER BY departure_id, seat",
+                Collections.emptyList());
+        List<String[]> allRows = new ArrayList<>();
+        while (resultSet.next()) {
+            List<String> row = new ArrayList<>();
+            row.add(String.valueOf(resultSet.getInt(1)));
+            row.add(String.valueOf(resultSet.getInt(2)));
+            row.add(resultSet.getString(3));
+            row.add(String.valueOf(resultSet.getInt(4)));
+            allRows.add(row.toArray(new String[0]));
+        }
+        resultPackage.setResultRows(allRows.toArray(new String[0][]));
+        return resultPackage;
     }
 }

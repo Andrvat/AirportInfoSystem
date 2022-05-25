@@ -13,7 +13,7 @@ public class ManageEmployeesButton extends JButton {
             try {
                 var resultPackage = ManageTablesButton.getResultPackageByName(controllerManager,
                         Employee.class.getAnnotation(DbTable.class).name());
-                ManageTablesButton.manageTable(controllerManager, resultPackage);
+                ManageTablesButton.manageTable(controllerManager, resultPackage, ManageTablesButton.ManageType.FULL_MANAGEMENT);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

@@ -15,6 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManageTablesButton extends JButton {
+    public enum ManageType {
+        PRETTY_VIEW,
+        FULL_MANAGEMENT
+    }
+
     public ManageTablesButton(ControllerManager controllerManager) {
         this.setText("Manage tables");
         this.addActionListener(event -> {
@@ -26,15 +31,14 @@ public class ManageTablesButton extends JButton {
             try {
                 var selectedTableName = (String) tableViewer.getComboBox().getSelectedItem();
                 var resultPackage = ManageTablesButton.getResultPackageByName(controllerManager, selectedTableName);
-                ManageTablesButton.manageTable(controllerManager, resultPackage);
+                ManageTablesButton.manageTable(controllerManager, resultPackage, ManageType.FULL_MANAGEMENT);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e.getMessage());
             }
         });
     }
 
-    public static RequestResultPackage getResultPackageByName(ControllerManager controllerManager,
-                                                              String tableName) throws Exception {
+    public static RequestResultPackage getResultPackageByName(ControllerManager controllerManager, String tableName) throws Exception {
         List<TableColumnInfo> columnInfos = controllerManager.getTableColumnInfos(
                 tableName, TableColumnRequestOption.VIEW);
         List<String> columnNamesList = new ArrayList<>();
@@ -48,29 +52,31 @@ public class ManageTablesButton extends JButton {
         return resultPackage;
     }
 
-    public static void manageTable(ControllerManager controllerManager, RequestResultPackage resultPackage) {
+    public static void manageTable(ControllerManager controllerManager, RequestResultPackage resultPackage, ManageType type) {
         JFrame tableDisplay = new JFrame("View all rows");
 
         JTable tableView = new JTable(resultPackage.getResultRows(), resultPackage.getColumnNames());
         JScrollPane scrollPane = new JScrollPane(tableView);
 
         tableView.setEnabled(false);
-        tableView.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    int row = tableView.rowAtPoint(e.getPoint());
-                    if (row >= 0) {
-                        String[] objectValues = resultPackage.getResultRows()[row];
-                        try {
-                            new TableObjectViewForm(controllerManager, resultPackage.getTableName(), resultPackage.getColumnNames(), objectValues);
-                        } catch (ClassNotFoundException ex) {
-                            throw new RuntimeException(ex);
+        if (ManageType.FULL_MANAGEMENT.equals(type)) {
+            tableView.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) {
+                        int row = tableView.rowAtPoint(e.getPoint());
+                        if (row >= 0) {
+                            String[] objectValues = resultPackage.getResultRows()[row];
+                            try {
+                                new TableObjectViewForm(controllerManager, resultPackage.getTableName(), resultPackage.getColumnNames(), objectValues);
+                            } catch (ClassNotFoundException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
 
         tableDisplay.getContentPane().add(scrollPane);
         tableDisplay.setPreferredSize(new Dimension(600, 300));

@@ -3,6 +3,7 @@ package entities;
 import annotations.*;
 import converters.BooleanValueConverter;
 import dbConnection.OracleDbProvider;
+import forms.RequestResultPackage;
 import model.support.TimeCalendar;
 
 import java.lang.annotation.Annotation;
@@ -43,6 +44,10 @@ public abstract class AbstractComponent {
     public abstract void deleteRowByPrimaryKey(OracleDbProvider provider) throws NoSuchFieldException, SQLException;
 
     public abstract void updateRow(OracleDbProvider provider) throws SQLException, IllegalAccessException, NoSuchFieldException;
+
+    public RequestResultPackage getPrettyViewingResultPackage(OracleDbProvider provider) throws SQLException {
+        return new RequestResultPackage();
+    }
 
     public static <T> void saveTo(Class<T> classType, T instance, OracleDbProvider provider, String tableName) throws SQLException, IllegalAccessException {
         StringBuilder query = new StringBuilder()

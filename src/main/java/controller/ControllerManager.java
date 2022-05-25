@@ -3,6 +3,7 @@ package controller;
 import annotations.*;
 import dbConnection.OracleDbProvider;
 import entities.AbstractComponent;
+import forms.RequestResultPackage;
 import lombok.Builder;
 import model.DbModel;
 import view.utilities.TableColumnInfo;
@@ -94,11 +95,23 @@ public class ControllerManager {
         return entitiesClasses.keySet().toArray(new String[0]);
     }
 
+    public String[] getPrettyViewingTableNames() {
+        var names = this.model.getPrettyViewingTables();
+        return names.toArray(new String[0]);
+    }
+
     public String[][] getAllRowsValues(String tableName) throws Exception {
         AbstractComponent component = (AbstractComponent) this.model.getEntityClassByKey(tableName)
                 .getConstructor()
                 .newInstance();
         return component.getAllRows(this.provider);
+    }
+
+    public RequestResultPackage getPrettyViewingRowsValues(String tableName) throws Exception {
+        AbstractComponent component = (AbstractComponent) this.model.getEntityClassByKey(tableName)
+                .getConstructor()
+                .newInstance();
+        return component.getPrettyViewingResultPackage(this.provider);
     }
 
     public void registerNewAccount(String login, String password, String role) throws SQLException {
