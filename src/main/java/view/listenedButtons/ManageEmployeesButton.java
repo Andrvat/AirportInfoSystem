@@ -10,7 +10,13 @@ public class ManageEmployeesButton extends JButton {
     public ManageEmployeesButton(ControllerManager controllerManager) {
         this.setText("Manage employees");
         this.addActionListener(event -> {
-            ManageTablesButton.manageTable(controllerManager, Employee.class.getAnnotation(DbTable.class).name());
+            try {
+                var resultPackage = ManageTablesButton.getResultPackageByName(controllerManager,
+                        Employee.class.getAnnotation(DbTable.class).name());
+                ManageTablesButton.manageTable(controllerManager, resultPackage);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 }
