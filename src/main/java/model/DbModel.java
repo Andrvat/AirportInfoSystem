@@ -1,6 +1,7 @@
 package model;
 
 import annotations.DbTable;
+import entities.Airline;
 import entities.Departure;
 import entities.Location;
 import entities.Ticket;
@@ -13,9 +14,10 @@ public class DbModel {
     private final HashMap<String, Class<?>> entitiesClasses = new HashMap<>();
 
     private final List<String> prettyViewingTables = new ArrayList<>() {{
-       add(Ticket.class.getAnnotation(DbTable.class).name());
-       add(Departure.class.getAnnotation(DbTable.class).name());
-       add(Location.class.getAnnotation(DbTable.class).name());
+        add(Ticket.class.getAnnotation(DbTable.class).name());
+        add(Departure.class.getAnnotation(DbTable.class).name());
+        add(Location.class.getAnnotation(DbTable.class).name());
+        add(Airline.class.getAnnotation(DbTable.class).name());
     }};
 
     public DbModel() {
@@ -43,5 +45,15 @@ public class DbModel {
 
     public List<String> getPrettyViewingTables() {
         return prettyViewingTables;
+    }
+
+    public static String[][] getAllRowsWithoutId(String[][] allRows) {
+        List<String[]> rowsWithoutId = new ArrayList<>();
+        for (String[] row : allRows) {
+            List<String> list = new ArrayList<>(Arrays.asList(row));
+            list.remove(0);
+            rowsWithoutId.add(list.toArray(new String[0]));
+        }
+        return rowsWithoutId.toArray(new String[0][]);
     }
 }

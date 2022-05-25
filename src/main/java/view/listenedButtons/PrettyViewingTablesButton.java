@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public class PrettyViewingTablesButton extends JButton {
     public PrettyViewingTablesButton(ControllerManager controllerManager) {
-        this.setText("Pretty view table");
+        this.setText("Pretty table view");
         this.addActionListener(event -> {
             ChooseOptionViewer tableViewer = new ChooseOptionViewer(controllerManager.getPrettyViewingTableNames(),
                     "Choose the table");

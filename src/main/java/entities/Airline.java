@@ -5,6 +5,8 @@ import annotations.DbColumnVarchar;
 import annotations.DbConstrains;
 import annotations.DbTable;
 import dbConnection.OracleDbProvider;
+import forms.RequestResultPackage;
+import model.DbModel;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -69,5 +71,14 @@ public class Airline extends AbstractComponent {
                 new HashMap<>() {{
                     put(Airline.getIdAirlineAnnotationName(), String.valueOf(idAirline));
                 }});
+    }
+
+    @Override
+    public RequestResultPackage getPrettyViewingResultPackage(OracleDbProvider provider) throws SQLException, IllegalAccessException {
+        var resultPackage = new RequestResultPackage();
+        resultPackage.setTableName(this.getTableName());
+        resultPackage.setColumnNames(new String[]{"Название авиакомпании"});
+        resultPackage.setResultRows(DbModel.getAllRowsWithoutId(this.getAllRows(provider)));
+        return resultPackage;
     }
 }

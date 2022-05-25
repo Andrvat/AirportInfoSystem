@@ -28,11 +28,11 @@ public class MainMenu extends JPanel {
         this.addComponentTo(menuButtons, gridBagConstraints, mainLabel);
 
         this.addComponentTo(menuButtons, gridBagConstraints, new DisconnectButton(controllerManager, parentDisplay));
-        this.addComponentTo(menuButtons, gridBagConstraints, new InsertDataButton(controllerManager));
         if (!ApplicationConstants.PASSENGER.equals(controllerManager.getProvider().getRole())) {
+            this.addComponentTo(menuButtons, gridBagConstraints, new InsertDataButton(controllerManager));
             this.addComponentTo(menuButtons, gridBagConstraints, new ManageTablesButton(controllerManager));
+            this.addComponentTo(menuButtons, gridBagConstraints, new OpenRequestGridButton(controllerManager));
         }
-        this.addComponentTo(menuButtons, gridBagConstraints, new OpenRequestGridButton(controllerManager));
 
         if (ApplicationConstants.ADMIN.equals(controllerManager.getProvider().getRole())) {
             mainLabel.setText("    MAIN MENU");

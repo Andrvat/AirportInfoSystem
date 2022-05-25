@@ -3,6 +3,7 @@ package entities;
 import annotations.*;
 import dbConnection.OracleDbProvider;
 import forms.RequestResultPackage;
+import model.DbModel;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -120,15 +121,7 @@ public class Location extends AbstractComponent {
         var resultPackage = new RequestResultPackage();
         resultPackage.setTableName(this.getTableName());
         resultPackage.setColumnNames(new String[]{"Страна", "Город", "Погодные условия", "Время отн. МСК"});
-        var allRows = this.getAllRows(provider);
-
-        List<String[]> rowsWithoutId = new ArrayList<>();
-        for (String[] row : allRows) {
-            List<String> list = new ArrayList<>(Arrays.asList(row));
-            list.remove(0);
-            rowsWithoutId.add(list.toArray(new String[0]));
-        }
-        resultPackage.setResultRows(rowsWithoutId.toArray(new String[0][]));
+        resultPackage.setResultRows(DbModel.getAllRowsWithoutId(this.getAllRows(provider)));
         return resultPackage;
     }
 }
