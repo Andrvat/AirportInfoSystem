@@ -13,10 +13,10 @@ public class OpenRequestGridButton extends JButton {
         this.setText("Open requests grid");
         this.addActionListener(event -> {
             JPanel panel = new JPanel(new GridLayout(4, 4, 5, 5));
-            panel.setPreferredSize(new Dimension(1200, 1000));
+            panel.setPreferredSize(new Dimension(1200, 800));
 
             JOptionPane jOptionPane = new JOptionPane();
-            jOptionPane.setOptionType(JOptionPane.OK_CANCEL_OPTION);
+            jOptionPane.setOptionType(JOptionPane.DEFAULT_OPTION);
 
             List<AbstractRequestProvider> requestProviders = new ArrayList<>();
             requestProviders.add(new Request1Provider());
@@ -40,9 +40,9 @@ public class OpenRequestGridButton extends JButton {
             for (var provider : requestProviders) {
                 var requestButton = new MakeRequestButton(controllerManager, provider);
                 requestButtons.add(requestButton);
-                JPanel inPanel = new JPanel(new GridLayout(0, 1, 5, 5));
-                inPanel.add(new JLabel(provider.getDescription()));
-                inPanel.add(requestButton);
+                JPanel inPanel = new JPanel(new BorderLayout());
+                inPanel.add(new JLabel(provider.getDescription()), BorderLayout.CENTER);
+                inPanel.add(requestButton, BorderLayout.SOUTH);
                 panel.add(inPanel);
             }
 
