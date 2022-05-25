@@ -2,6 +2,7 @@ package model;
 
 import annotations.DbTable;
 import dbConnection.OracleDbProvider;
+import entities.Departure;
 import entities.Ticket;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
@@ -13,6 +14,7 @@ public class DbModel {
 
     private final List<String> prettyViewingTables = new ArrayList<>() {{
        add(Ticket.class.getAnnotation(DbTable.class).name());
+       add(Departure.class.getAnnotation(DbTable.class).name());
     }};
 
     public DbModel() {

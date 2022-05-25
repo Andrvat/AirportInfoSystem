@@ -39,6 +39,12 @@ public class TimeCalendar {
         this.calendar.set(Calendar.SECOND, seconds);
     }
 
+    public TimeCalendar(Integer hours, Integer minutes, Integer seconds) {
+        this.calendar.set(Calendar.HOUR_OF_DAY, hours);
+        this.calendar.set(Calendar.MINUTE, minutes);
+        this.calendar.set(Calendar.SECOND, seconds);
+    }
+
     public String toTypedString(TimeCalendarType type) {
         switch (type) {
             case DATE_ONLY -> {
@@ -63,7 +69,18 @@ public class TimeCalendar {
         return null;
     }
 
+    public boolean isBetween(TimeCalendar min, TimeCalendar max) {
+        return min.getSecondsFromMidnight() < this.getSecondsFromMidnight() &&
+                this.getSecondsFromMidnight() < max.getSecondsFromMidnight();
+    }
+
     public String toSqlStringDate() {
         return "TO_DATE(" + "'" + this + "', " + "'" + SQL_DATE_FORMAT + "'" + ")";
+    }
+
+    private int getSecondsFromMidnight() {
+        return this.calendar.get(Calendar.HOUR_OF_DAY) * 3600 +
+                this.calendar.get(Calendar.MINUTE) * 60 +
+                this.calendar.get(Calendar.SECOND);
     }
 }

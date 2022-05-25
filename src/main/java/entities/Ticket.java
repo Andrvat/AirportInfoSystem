@@ -114,14 +114,13 @@ public class Ticket extends AbstractComponent {
     public RequestResultPackage getPrettyViewingResultPackage(OracleDbProvider provider) throws SQLException {
         var resultPackage = new RequestResultPackage();
         resultPackage.setTableName(this.getTableName());
-        resultPackage.setColumnNames(new String[]{"Номер вылета", "Место", "Статус", "Макс. вместимость багажа"});
-
         var resultSet = provider.getStringsQueryResultSet(
                 "SELECT departure_id, seat, description, bag_max_capacity " +
                         "FROM TICKET " +
                         "LEFT JOIN TICKET_STATUS USING (ticket_status_id) " +
                         "ORDER BY departure_id, seat",
                 Collections.emptyList());
+        resultPackage.setColumnNames(new String[]{"Номер вылета", "Место", "Статус", "Макс. вместимость багажа"});
         List<String[]> allRows = new ArrayList<>();
         while (resultSet.next()) {
             List<String> row = new ArrayList<>();
