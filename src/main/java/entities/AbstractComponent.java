@@ -45,7 +45,7 @@ public abstract class AbstractComponent {
 
     public abstract void updateRow(OracleDbProvider provider) throws SQLException, IllegalAccessException, NoSuchFieldException;
 
-    public RequestResultPackage getPrettyViewingResultPackage(OracleDbProvider provider) throws SQLException {
+    public RequestResultPackage getPrettyViewingResultPackage(OracleDbProvider provider) throws SQLException, IllegalAccessException {
         return new RequestResultPackage();
     }
 
