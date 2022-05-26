@@ -1,6 +1,7 @@
 package forms;
 
 import controller.ControllerManager;
+import model.support.TimeCalendar;
 import view.listenedButtons.MakeRequestButton;
 
 import java.sql.ResultSet;
@@ -15,10 +16,8 @@ public class Request3Provider extends AbstractRequestProvider {
 
                 "WITH SUITABLE_PILOTS AS " +
                         "(SELECT PILOT_ID, MEDICAL_CHECKUP_DATE, MEDICAL_CHECKUP_RESULT " +
-                        "FROM PILOT_MEDICAL_CHECKUP_HISTORY " +
-                        "WHERE MEDICAL_CHECKUP_DATE - TO_DATE('@year@/01/01', 'YYYY/MM/DD') @first@ 365.25 " +
-                        "@cond@ MEDICAL_CHECKUP_DATE - TO_DATE('@year@/01/01', 'YYYY/MM/DD') @second@ 0) " +
-                        "SELECT EMPLOYEE_ID, SURNAME, NAME, PATRONYMIC, SEX, MEDICAL_CHECKUP_RESULT, " +
+                        "FROM PILOT_MEDICAL_CHECKUP_HISTORY) " +
+                        "SELECT DISTINCT EMPLOYEE_ID, SURNAME, NAME, PATRONYMIC, SEX, MEDICAL_CHECKUP_RESULT, " +
                         "(CURRENT_DATE - BIRTH_DATE) / 365.25 AS AGE, SALARY " +
                         "FROM SUITABLE_PILOTS LEFT JOIN EMPLOYEE ON EMPLOYEE_ID = PILOT_ID " +
                         "WHERE ",
@@ -35,23 +34,23 @@ public class Request3Provider extends AbstractRequestProvider {
         var answers = this.getAnswers();
         var selectedOptions = this.getSelectedOptions();
         var noOption = MakeRequestButton.NO_OPTION;
-        String preQuery = this.getRequestBlank();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(this.getRequestBlank());
         boolean previousExists = false;
-
         if (!noOption.equals(selectedOptions.get("Год медосмотра"))) {
-            preQuery = preQuery.replaceAll("@year@", answers.get("Год медосмотра"));
+            String queryPattern = "MEDICAL_CHECKUP_DATE - TO_DATE('@year@/01/01', 'YYYY/MM/DD') @cond1@ 365.25 " +
+                    "AND MEDICAL_CHECKUP_DATE - TO_DATE('@year@/01/01', 'YYYY/MM/DD') @cond2@ 0 ";
+            queryPattern = queryPattern.replaceAll("@year@", answers.get("Год медосмотра"));
             if ("=".equals(selectedOptions.get("Год медосмотра"))) {
-                preQuery = preQuery.replaceAll("@first@", "<=")
-                        .replaceAll("@second@", ">")
-                        .replaceAll("@cond@", "AND");
+                queryPattern = queryPattern.replaceAll("@cond1@", "<");
+                queryPattern = queryPattern.replaceAll("@cond2@", ">=");
             } else if ("!=".equals(selectedOptions.get("Год медосмотра"))) {
-                preQuery = preQuery.replaceAll("@first@", ">")
-                        .replaceAll("@second@", "<=")
-                        .replaceAll("@cond@", "OR");
+                queryPattern = queryPattern.replaceAll("@cond1@", ">=");
+                queryPattern = queryPattern.replaceAll("@cond2@", "<");
             }
+            stringBuilder.append(queryPattern);
+            previousExists = true;
         }
-
-        StringBuilder stringBuilder = new StringBuilder(preQuery);
         if (!noOption.equals(selectedOptions.get("Пол (Y: муж., N: жен.)"))) {
             stringBuilder.append("SEX")
                     .append(" ")
@@ -86,6 +85,7 @@ public class Request3Provider extends AbstractRequestProvider {
         AbstractRequestProvider.removeWhereIfNeed(stringBuilder);
         return stringBuilder.toString();
     }
+
     @Override
     public RequestResultPackage getRequestResultRowsNumber(ControllerManager controllerManager) throws SQLException {
         var requestQuery = this.getCompletedRequestQuery();
