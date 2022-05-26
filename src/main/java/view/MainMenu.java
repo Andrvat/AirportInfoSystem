@@ -28,6 +28,7 @@ public class MainMenu extends JPanel {
         this.addComponentTo(menuButtons, gridBagConstraints, mainLabel);
 
         this.addComponentTo(menuButtons, gridBagConstraints, new DisconnectButton(controllerManager, parentDisplay));
+        this.addComponentTo(menuButtons, gridBagConstraints, new PrettyViewingTablesButton(controllerManager));
         if (!ApplicationConstants.PASSENGER.equals(controllerManager.getProvider().getRole())) {
             this.addComponentTo(menuButtons, gridBagConstraints, new InsertDataButton(controllerManager));
             this.addComponentTo(menuButtons, gridBagConstraints, new ManageTablesButton(controllerManager));
@@ -40,7 +41,6 @@ public class MainMenu extends JPanel {
             this.addComponentTo(menuButtons, gridBagConstraints, new GenerateDeparturesButton(controllerManager));
         }
 
-        this.addComponentTo(menuButtons, gridBagConstraints, new PrettyViewingTablesButton(controllerManager));
         if (ApplicationConstants.PASSENGER.equals(controllerManager.getProvider().getRole())) {
             this.addComponentTo(menuButtons, gridBagConstraints, new BuyTicketButton(controllerManager));
             this.addComponentTo(menuButtons, gridBagConstraints, new CommitPurchaseButton(controllerManager));
